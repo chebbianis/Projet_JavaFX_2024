@@ -11,4 +11,6 @@ module com.example.pi {
     opens com.example.pi.DB to javafx.fxml;
     exports com.example.pi.Controllers;
     opens com.example.pi.Controllers to javafx.fxml;
+
+    opens com.example.pi.Entities to javafx.base;
 }

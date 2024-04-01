@@ -1,6 +1,5 @@
 package com.example.pi.DB;
 
-import com.example.pi.Controllers.LoggedInController;
 import com.example.pi.Entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
-import java.util.Objects;
 
 
 public class DBUtils {

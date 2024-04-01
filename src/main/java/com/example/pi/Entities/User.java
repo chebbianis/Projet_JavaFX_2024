@@ -3,14 +3,14 @@ package com.example.pi.Entities;
 import java.util.Objects;
 
 public class User {
-    private String id;
+    private int id;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     private String email;
     private String location;
-    private Role roleUser;
+    private String roleUser;
 
     // Constructeur
     public User(String username, String password) {
@@ -18,14 +18,36 @@ public class User {
         this.password = password;
     }
 
+    public User(int id, String username, String password, String firstName, String lastName, String email, String location, String roleUser) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.location = location;
+        if (roleUser != null) {
+            this.roleUser = roleUser;
+        } else {
+            this.roleUser = "USER";
+        }}
+//        if (roleUser != null) {
+//            this.roleUser = Role.valueOf(roleUser);
+//        } else {
+//            // Gérer le cas où roleUser est null
+//            // Par exemple, vous pouvez attribuer une valeur par défaut
+//            this.roleUser = Role.USER;
+//        }
+
+
     // Getters et Setters
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -69,11 +91,11 @@ public class User {
         this.email = email;
     }
 
-    public Role getRoleUser() {
+    public String getRoleUser() {
         return roleUser;
     }
 
-    public void setRoleUser(Role roleUser) {
+    public void setRoleUser(String roleUser) {
         this.roleUser = roleUser;
     }
 
