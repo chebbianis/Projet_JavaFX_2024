@@ -113,7 +113,8 @@
         </columns>
       </TableView>
       <Button fx:id="btn_insert" layoutX="14.0" layoutY="416.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9CE794;" text="Insert" />
-      <Button fx:id="btn_update" layoutX="119.0" layoutY="416.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #FFA17A;" text="Update" />
+      <Button fx:id="btn_update" layoutX="224.0" layoutY="469.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #FFA17A;" text="Update" />
       <Button fx:id="btn_delete" layoutX="224.0" layoutY="415.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9C0054;" text="Delete" textFill="WHITE" />
+      <Button fx:id="btn_clear" layoutX="14.0" layoutY="469.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #F9F871;" text="Clear" />
    </children>
 </AnchorPane>

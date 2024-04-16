@@ -85,7 +85,7 @@ public class DBUtils {
             if (resultSet.isBeforeFirst()) {
                 System.out.println("USER already exists !");
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("You cannot use this username!");
+                alert.setContentText("You cannot use this Email!");
                 alert.show();
             } else {
                 // Créer un nouvel objet User avec les informations fournies

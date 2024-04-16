@@ -8,12 +8,22 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.sql.*;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UserController implements Initializable {
     @FXML
@@ -25,7 +35,7 @@ public class UserController implements Initializable {
     @FXML
     private Button btn_delete;
     @FXML
-    private TextField tf_id;
+    private Button btn_clear;
     @FXML
     private TextField tf_password;
     @FXML
@@ -57,9 +67,23 @@ public class UserController implements Initializable {
     @FXML
     private TableColumn<User, String> col_role;
 
+    private final Image iconValid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/check.png")));
+    private final Image iconInvalid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/cross.png")));
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        addCharCountListener(tf_username,-300);
+        addCharCountListener(tf_firstname,105);
+        addCharCountListener(tf_lastname,8);
+        addCharCountListener(tf_location,9);
+        addCharCountListenerEmail(tf_email,-175);
+
+
+
+
 
         button_logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -67,6 +91,7 @@ public class UserController implements Initializable {
                 DBUtils.changeScene(event,"/com/example/pi/hello-view.fxml","Login",null);
             }
         });
+
 
         btn_insert.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -81,6 +106,12 @@ public class UserController implements Initializable {
             public void handle(ActionEvent event) {
                 updateUser();
                 showUsers();
+            }
+        });
+        btn_clear.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                clearForm();
             }
         });
 
@@ -118,6 +149,100 @@ public class UserController implements Initializable {
         tf_location.clear();
         cb_role.getSelectionModel().clearSelection();
     }
+
+
+    private void addCharCountListenerEmail(TextField textField,int place) {
+        Label validationLabel = new Label();
+        ImageView validationIcon = new ImageView();
+
+        // Définissez la taille de l'icône
+        validationIcon.setFitWidth(16); // Largeur de l'icône
+        validationIcon.setFitHeight(16); // Hauteur de l'icône
+
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.isEmpty()) {
+                // Si la nouvelle valeur est nulle ou vide, effacez l'icône et le texte de validation
+                validationIcon.setImage(null);
+                validationLabel.setText("");
+            } else {
+                if (isValidEmail(newValue)) {
+                    // Si l'e-mail est valide, afficher une icône de coche verte et un message vide
+                    validationIcon.setImage(iconValid);
+                    validationLabel.setText("E-mail valide");
+                } else {
+                    // Si l'e-mail est invalide, afficher une icône de croix rouge et un message d'erreur
+                    validationIcon.setImage(iconInvalid);
+                    validationLabel.setText("E-mail non valide");
+                }
+            }
+        });
+
+        // Créez un conteneur HBox pour placer le label et l'icône horizontalement
+        HBox container = new HBox(validationLabel, validationIcon);
+        container.setSpacing(50); // Ajoutez un espace entre le label et l'icône
+
+        // Ajoutez le conteneur HBox au conteneur parent du champ TextField (par exemple, un VBox)
+        VBox parentContainer = (VBox) textField.getParent(); // Assurez-vous d'avoir le bon conteneur parent
+        parentContainer.getChildren().add(container);
+
+        // Réglez le positionnement du conteneur au-dessus du champ TextField
+        VBox.setMargin(container, new Insets(place, 0, 0, 0)); // Ajustez les marges au besoin
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+
+    private void addCharCountListener(TextField textField,int place) {
+        Label charCountLabel = new Label();
+        ImageView validationIcon = new ImageView();
+
+        // Définissez la taille de l'icône
+        validationIcon.setFitWidth(16); // Largeur de l'icône
+        validationIcon.setFitHeight(16); // Hauteur de l'icône
+
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                // Si newValue est null, le champ de texte est vide, donc pas d'icône ni de texte de compteur de caractères
+                validationIcon.setImage(null);
+                charCountLabel.setText("");
+            } else {
+                int length = newValue.length();
+                if (length == 0) {
+                    validationIcon.setImage(null);
+                    charCountLabel.setText("");
+                } else if (length <= 2 || length > 50) {
+                    // Afficher une icône de croix rouge pour indiquer une erreur de saisie
+                    validationIcon.setImage(iconInvalid);
+                    charCountLabel.setText(length + "/50");
+                } else {
+                    // Afficher une icône de coche verte pour indiquer une saisie valide
+                    validationIcon.setImage(iconValid);
+                    charCountLabel.setText(length + "/50");
+                }
+            }
+            // Mettre à jour le texte du label avec le nombre de caractères saisis
+        });
+
+        // Créez un conteneur HBox pour placer le label et l'icône horizontalement
+        HBox container = new HBox(charCountLabel, validationIcon);
+        container.setSpacing(120); // Ajoutez un espace entre le label et l'icône
+
+        // Ajoutez le conteneur HBox au conteneur parent du champ TextField (par exemple, un VBox)
+        VBox parentContainer = (VBox) textField.getParent(); // Assurez-vous d'avoir le bon conteneur parent
+        parentContainer.getChildren().add(container);
+
+        // Réglez le positionnement du conteneur au-dessus du champ TextField
+        VBox.setMargin(container, new Insets(place, 0, 0, 0)); // Ajustez les marges au besoin
+    }
+
+
+
+
 
 
     public Connection getConnection(){
@@ -184,7 +309,10 @@ public class UserController implements Initializable {
         if (isUsernameExists(tf_username.getText())) {
             // Afficher un message d'erreur
             System.out.println("Erreur : Le nom d'utilisateur existe déjà.");
-            return; // Sortir de la méthode sans insérer l'utilisateur
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Erreur : Le nom d'utilisateur existe déjà.");
+            alert.show();
+            return;
         }
 
         // Le nom d'utilisateur n'existe pas encore, procéder à l'insertion
