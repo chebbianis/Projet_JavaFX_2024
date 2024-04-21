@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="656.0" prefWidth="966.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.Front">
+   <top>
+      <HBox prefHeight="86.0" prefWidth="966.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="42.0" prefWidth="133.0" text="       TunVista    " textFill="#2d81b1">
+               <font>
+                  <Font name="Bell MT" size="17.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="42.0" prefWidth="459.0">
+               <children>
+                  <TextField alignment="TOP_LEFT" opacity="0.98" prefHeight="34.0" prefWidth="447.0" promptText="Recherche.." />
+               </children>
+            </HBox>
+            <ComboBox fx:id="typeFilterComboBox" onAction="#filtrerParType" prefHeight="34.0" prefWidth="310.0" />
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <VBox prefHeight="481.0" prefWidth="131.0" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <VBox prefHeight="437.0" prefWidth="676.0" BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane prefHeight="646.0" prefWidth="945.0">
+               <content>
+                  <VBox fx:id="homeContainer" prefHeight="613.0" prefWidth="952.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="487.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterVisit">
+   <children>
+      <TextField fx:id="numV" layoutX="298.0" layoutY="129.0" promptText="Numero" />
+      <TextField fx:id="nomV" layoutX="298.0" layoutY="181.0" promptText="Nom" />
+      <TextField fx:id="emailV" layoutX="298.0" layoutY="232.0" promptText="Email" />
+      <DatePicker fx:id="dateV" layoutX="297.0" layoutY="278.0" prefHeight="26.0" prefWidth="150.0" promptText="JJ/MM/AAAA" />
+      <ComboBox fx:id="comboV" layoutX="297.0" layoutY="324.0" prefHeight="26.0" prefWidth="150.0" />
+      <Button layoutX="322.0" layoutY="386.0" mnemonicParsing="false" onAction="#ajouterVisit" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: #65c13e;" text="Valider">
+         <font>
+            <Font name="Bell MT" size="16.0" />
+         </font></Button>
+      <Pane layoutX="-5.0" prefHeight="490.0" prefWidth="177.0" style="-fx-background-color: #65c13e;" />
+      <Label layoutX="269.0" layoutY="14.0" prefHeight="42.0" prefWidth="190.0" style="-fx-background-color: #65c13e;" text="   Demander une Visite" textFill="#080303">
+         <font>
+            <Font name="Bell MT" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
