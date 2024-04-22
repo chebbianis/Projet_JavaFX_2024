@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="497.0" prefWidth="626.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterVoitureController">
+   <children>
+      <Label layoutX="52.0" layoutY="86.0" text="Marque Voiture">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label layoutX="116.0" layoutY="138.0" prefHeight="36.0" prefWidth="78.0" text="Annee">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="83.0" layoutY="188.0" text="Prix par jour">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtVoiture_Marque" layoutX="283.0" layoutY="91.0" />
+      <DatePicker fx:id="txtAnnee" layoutX="283.0" layoutY="143.0" prefHeight="26.0" prefWidth="150.0" />
+      <TextField fx:id="txtPrix_j" layoutX="284.0" layoutY="195.0" />
+      <Button fx:id="AjouterButton" layoutX="307.0" layoutY="421.0" mnemonicParsing="false" onAction="#ajouterAction" prefHeight="40.0" prefWidth="105.0" text="Ajouter" />
+      <TextField fx:id="txtKilometrage" layoutX="283.0" layoutY="247.0" />
+      <TextField fx:id="txtNbrPlaces" layoutX="285.0" layoutY="298.0" />
+      <Label layoutX="83.0" layoutY="240.0" text="Kilométrage">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="46.0" layoutY="291.0" text="Nombre de places">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
