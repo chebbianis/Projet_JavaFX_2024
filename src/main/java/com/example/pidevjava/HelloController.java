@@ -23,6 +23,9 @@ public class HelloController implements Initializable {
     @FXML
     private Button btn_voyage;
 
+    @FXML
+    private Button btn_voyageur;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btn_voyage.setOnAction(new EventHandler<ActionEvent>() {
@@ -30,6 +33,28 @@ public class HelloController implements Initializable {
             public void handle(ActionEvent event) {
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/pidevjava/Voyage.fxml"));
+                    Parent root = fxmlLoader.load();
+
+                    // Create a new scene
+                    Scene scene = new Scene(root);
+
+                    // Get the stage from the button's scene
+                    Stage stage = (Stage) btn_voyage.getScene().getWindow();
+
+                    // Set the new scene
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        btn_voyageur.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/pidevjava/Voyageur.fxml"));
                     Parent root = fxmlLoader.load();
 
                     // Create a new scene

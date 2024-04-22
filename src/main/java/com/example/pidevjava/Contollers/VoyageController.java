@@ -12,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class VoyageController {
     @FXML
@@ -19,6 +21,7 @@ public class VoyageController {
 
     @FXML
     private TableColumn<?, ?> col_programme;
+
     @FXML
     private TableColumn<?, ?> col_datearrive;
 
@@ -27,6 +30,7 @@ public class VoyageController {
 
     @FXML
     private TableColumn<?, ?> col_destination;
+
     @FXML
     private TableView<Voyage> table_voyage;
 
@@ -47,12 +51,16 @@ public class VoyageController {
 
     @FXML
     private TextField tf_prog;
+
     @FXML
     private Button btn_delete;
+
     @FXML
     private Button btn_update;
+
     @FXML
     private Button btn_insert;
+
     private final serviceVoyage serviceVoyage = new serviceVoyage();
 
     public void initialize() {
@@ -69,15 +77,10 @@ public class VoyageController {
         // Ajout de l'événement pour sélectionner un voyage dans le formulaire
         table_voyage.setOnMouseClicked(event -> selectVoyage(event));
 
-
-        // Load data into TableView
-        loadVoyageData();
-
         btn_delete.setOnAction(event -> supprimerVoyage());
         btn_update.setOnAction(event -> modifierVoyage(event));
         btn_insert.setOnAction(event -> ajouterVoyage(event));
     }
-
 
     private void selectVoyage(MouseEvent event) {
         if (event.getClickCount() == 1) { // Vérifie si un clic simple a été effectué
@@ -92,7 +95,6 @@ public class VoyageController {
             }
         }
     }
-
 
     private ObservableList<Voyage> getVoyageList() {
         ObservableList<Voyage> voyages = FXCollections.observableArrayList();
@@ -109,7 +111,6 @@ public class VoyageController {
         table_voyage.setItems(voyages);
     }
 
-
     @FXML
     void ajouterVoyage(ActionEvent event) {
         String programmeValue = tf_prog.getText();
@@ -120,9 +121,25 @@ public class VoyageController {
 
         // Vérification des valeurs saisies
         if (programmeValue.isEmpty() || dateDepartValue == null || dateArriveValue == null || prixValue.isEmpty() || destinationValue.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Ajout impossible", "Veuillez remplir tous les champs.");
+            return;
+        }
 
-            showAlert(Alert.AlertType.WARNING, "ajout imposible", "Veuillez remplir tous les champs.");
+        // Vérification de la longueur du champ programme
+        if (programmeValue.length() > 100) {
+            showAlert(Alert.AlertType.WARNING, "Ajout impossible", "Le champ programme ne doit pas dépasser 100 caractères.");
+            return;
+        }
 
+        // Vérification du format des dates et que dateDepart < dateArrive
+        if (!isValidDate(dateDepartValue) || !isValidDate(dateArriveValue) || dateDepartValue.isAfter(dateArriveValue)) {
+            showAlert(Alert.AlertType.WARNING, "Dates incorrectes", "Les dates doivent être au format jj/mm/aaaa et la date de départ doit être antérieure à la date d'arrivée.");
+            return;
+        }
+
+        // Vérification du format et contenu du champ prix
+        if (!isValidPrice(prixValue)) {
+            showAlert(Alert.AlertType.WARNING, "Prix incorrect", "Le champ prix ne doit contenir que des chiffres.");
             return;
         }
 
@@ -131,26 +148,18 @@ public class VoyageController {
 
         try {
             // Ajout du voyage à la base de données
-            serviceVoyage serviceVoyage = new serviceVoyage();
             serviceVoyage.ajouter(voyage);
 
             // Affichage d'un message de succès
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Succès");
-            alert.setContentText("Voyage ajouté avec succès.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Voyage ajouté avec succès.");
 
             // Rafraîchissement de la TableView
             loadVoyageData();
         } catch (SQLException e) {
             // Affichage d'un message d'erreur en cas d'échec
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setContentText("Erreur lors de l'ajout du voyage : " + e.getMessage());
-            alert.showAndWait();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ajout du voyage : " + e.getMessage());
         }
     }
-
 
     @FXML
     void modifierVoyage(ActionEvent event) {
@@ -169,27 +178,18 @@ public class VoyageController {
             voyage.setPrix(prix);
             voyage.setDestination(destination);
 
-            serviceVoyage serviceVoyage = new serviceVoyage();
             try {
                 serviceVoyage.modifier(voyage);
                 loadVoyageData(); // Mettre à jour la TableView après modification
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Succès");
-                alert.setContentText("Voyage modifié avec succès");
-                alert.showAndWait();
+                showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Voyage modifié avec succès");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Aucun voyage sélectionné");
-            alert.setHeaderText(null);
-            alert.setContentText("Veuillez sélectionner un voyage à modifier.");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Aucun voyage sélectionné", "Veuillez sélectionner un voyage à modifier.");
         }
     }
-
 
     private void supprimerVoyage() {
         Voyage voyage = table_voyage.getSelectionModel().getSelectedItem();
@@ -204,6 +204,20 @@ public class VoyageController {
         } else {
             showAlert(Alert.AlertType.WARNING, "Aucun voyage sélectionné", "Veuillez sélectionner un voyage.");
         }
+    }
+
+    private boolean isValidDate(LocalDate date) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            formatter.format(date);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
+    private boolean isValidPrice(String price) {
+        return price.matches("\\d+"); // Vérifie que le prix contient uniquement des chiffres
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {

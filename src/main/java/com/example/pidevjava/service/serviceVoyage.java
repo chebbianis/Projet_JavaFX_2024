@@ -1,10 +1,13 @@
 package com.example.pidevjava.service;
 import com.example.pidevjava.Entities.Voyage;
 import com.example.pidevjava.DataBase.MyConnection;
+import com.example.pidevjava.Entities.Voyageur;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class serviceVoyage implements iservice<Voyage> {
 
@@ -54,22 +57,42 @@ public class serviceVoyage implements iservice<Voyage> {
 
     // Méthode pour afficher tous les voyages
     public List<Voyage> afficher() throws SQLException {
-        String sql = "SELECT * FROM voyage";
+        String sql = "SELECT v.id, v.programme, v.date_depart, v.date_arrive, v.prix, v.destination, " +
+                "vr.id AS voyageur_id, vr.num_pass, vr.nom, vr.prenom, vr.age, vr.etat_civil, vr.email " +
+                "FROM voyage v LEFT JOIN voyageur vr ON v.id = vr.voyage_id";
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
         List<Voyage> voyages = new ArrayList<>();
-        while (rs.next()) {
-            Voyage voyage = new Voyage();
-            voyage.setId(rs.getInt("id"));
-            voyage.setProgramme(rs.getString("programme"));
-            voyage.setDateDepart(rs.getDate("date_depart").toLocalDate());
-            voyage.setDateArrive(rs.getDate("date_arrive").toLocalDate());
-            voyage.setPrix(rs.getString("prix"));
-            voyage.setDestination(rs.getString("destination"));
-            voyages.add(voyage);
-        }
-        return voyages;
+        Map<Integer, Voyage> voyageMap = new HashMap<>(); // Pour éviter de créer des doublons de voyages
 
+        while (rs.next()) {
+            int voyageId = rs.getInt("id");
+            if (!voyageMap.containsKey(voyageId)) {
+                Voyage voyage = new Voyage();
+                voyage.setId(voyageId);
+                voyage.setProgramme(rs.getString("programme"));
+                voyage.setDateDepart(rs.getDate("date_depart").toLocalDate());
+                voyage.setDateArrive(rs.getDate("date_arrive").toLocalDate());
+                voyage.setPrix(rs.getString("prix"));
+                voyage.setDestination(rs.getString("destination"));
+                voyage.setVoyageurs(new ArrayList<>());
+                voyageMap.put(voyageId, voyage);
+            }
+
+            Voyageur voyageur = new Voyageur();
+            voyageur.setId(rs.getInt("voyageur_id"));
+            voyageur.setNum_pass(rs.getInt("num_pass"));
+            voyageur.setNom(rs.getString("nom"));
+            voyageur.setPrenom(rs.getString("prenom"));
+            voyageur.setAge(rs.getInt("age"));
+            voyageur.setEtat_civil(rs.getString("etat_civil"));
+            voyageur.setEmail(rs.getString("email"));
+
+            voyageMap.get(voyageId).getVoyageurs().add(voyageur);
+        }
+
+        voyages.addAll(voyageMap.values());
+        return voyages;
     }
 }
 

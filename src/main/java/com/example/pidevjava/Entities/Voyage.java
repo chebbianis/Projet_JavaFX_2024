@@ -1,6 +1,7 @@
 package com.example.pidevjava.Entities;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Voyage {
     private int id;
@@ -10,6 +11,56 @@ public class Voyage {
     private String prix;
     private String destination;
     private String image;
+    private List<Voyageur> voyageurs;
+
+    // Constructeurs, getters et setters existants...
+
+    public List<Voyageur> getVoyageurs() {
+        return voyageurs;
+    }
+
+    public void setVoyageurs(List<Voyageur> voyageurs) {
+        this.voyageurs = voyageurs;
+    }
+
+    // Ajoutez ces méthodes pour gérer les voyageurs dans la liste
+
+    public void addVoyageur(Voyageur voyageur) {
+        voyageurs.add(voyageur);
+    }
+
+    public void removeVoyageur(Voyageur voyageur) {
+        voyageurs.remove(voyageur);
+    }
+
+    public Voyageur getVoyageurById(int voyageurId) {
+        for (Voyageur voyageur : voyageurs) {
+            if (voyageur.getId() == voyageurId) {
+                return voyageur;
+            }
+        }
+        return null; // Si le voyageur n'est pas trouvé
+    }
+
+    public boolean hasVoyageur(Voyageur voyageur) {
+        return voyageurs.contains(voyageur);
+    }
+
+    // Autres méthodes nécessaires...
+
+    @Override
+    public String toString() {
+        return "Voyage{" +
+                "id=" + id +
+                ", programme='" + programme + '\'' +
+                ", date_depart=" + date_depart +
+                ", date_arrive=" + date_arrive +
+                ", prix='" + prix + '\'' +
+                ", destination='" + destination + '\'' +
+                ", image='" + image + '\'' +
+                ", voyageurs=" + voyageurs +
+                '}';
+    }
 
     public Voyage() {
 
@@ -66,19 +117,6 @@ public class Voyage {
     }
 
 
-    @Override
-    public String toString() {
-        return "voyage{" +
-                "id=" + id +
-                ", programme='" + programme + '\'' +
-                ", date_depart=" + date_depart +
-                ", date_arrive=" + date_arrive +
-                ", prix='" + prix + '\'' +
-                ", destination='" + destination + '\'' +
-                ", image='" + image + '\'' +
-                '}';
-
-    }
 
 
     public void setId(int id) {
