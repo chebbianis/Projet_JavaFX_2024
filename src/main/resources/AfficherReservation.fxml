@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="578.0" prefWidth="826.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherReservvation">
+   <children>
+      <Label layoutX="309.0" layoutY="14.0" prefHeight="63.0" prefWidth="286.0" text="List Reservation" textFill="BLUE">
+         <font>
+            <Font name="Book Antiqua" size="34.0" />
+         </font>
+      </Label>
+      <TableView fx:id="tableRev" layoutX="13.0" layoutY="83.0" onMouseClicked="#getData" prefHeight="266.0" prefWidth="798.0">
+         <columns>
+            <TableColumn fx:id="idCol" maxWidth="70.0" minWidth="49.5999755859375" prefWidth="52.79998779296875" text="id_client" />
+            <TableColumn fx:id="dateArriveeCol" maxWidth="122.4000244140625" minWidth="52.79998779296875" prefWidth="85.60000610351562" text="date_arrivee" />
+            <TableColumn fx:id="dateDepartCol" maxWidth="157.60000610351562" minWidth="64.800048828125" prefWidth="88.80001831054688" text="date_depart" />
+            <TableColumn fx:id="typeRCol" maxWidth="175.199951171875" prefWidth="61.59996032714844" text="type_r" />
+            <TableColumn fx:id="prixTotalCol" maxWidth="200.0001220703125" minWidth="0.0" prefWidth="73.5999755859375" text="prix_total" />
+            <TableColumn fx:id="nbreChambreCol" maxWidth="201.60003662109375" minWidth="0.0" prefWidth="98.4000244140625" text="nbre_chambre" />
+            <TableColumn fx:id="typeChambreCol" prefWidth="96.00006103515625" text="type_chambre" />
+            <TableColumn fx:id="nbreAdulteCol" prefWidth="76.0" text="nbre_adulte" />
+            <TableColumn fx:id="nbreEnfantCol" prefWidth="87.20001220703125" text="nbre_enfant" />
+            <TableColumn fx:id="nomHotelCol" prefWidth="80.7999267578125" text="nom_hotel" />
+         </columns>
+      </TableView>
+      <Button fx:id="updateRev" layoutX="683.0" layoutY="390.0" mnemonicParsing="false" onAction="#updateRev" style="-fx-background-color: blue;" text="Update" textFill="#f2f2f2">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteRev" layoutX="683.0" layoutY="464.0" mnemonicParsing="false" onAction="#deleteRev" prefHeight="40.0" prefWidth="92.0" style="-fx-background-color: blue;" text="Delete" textFill="#f7f4f4">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Pane layoutX="14.0" layoutY="350.0" prefHeight="227.0" prefWidth="314.0" style="-fx-background-color: grey;">
+         <children>
+            <Label layoutX="34.0" layoutY="30.0" text="id_client" textFill="#101010">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="63.0" text="date_arrivee" textFill="#181818">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="31.0" layoutY="103.0" text="date_depart" textFill="#101010">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="137.0" text="type_r" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="idClientModif" layoutX="150.0" layoutY="26.0" />
+            <Label layoutX="32.0" layoutY="178.0" text="prix_total" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="prixtotalModif" layoutX="150.0" layoutY="176.0" />
+            <DatePicker fx:id="dateArriveModif" layoutX="150.0" layoutY="59.0" prefHeight="25.0" prefWidth="149.0" />
+            <DatePicker fx:id="dateDepartModif" layoutX="150.0" layoutY="101.0" prefHeight="25.0" prefWidth="149.0" />
+            <TextField fx:id="typeRModif" layoutX="150.0" layoutY="135.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="328.0" layoutY="350.0" prefHeight="227.0" prefWidth="323.0" style="-fx-background-color: grey;">
+         <children>
+            <Label layoutX="23.0" layoutY="27.0" text="nbre_chambre" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="23.0" layoutY="62.0" text="type_chambre" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="31.0" layoutY="103.0" text="nbre_adulte" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="30.0" layoutY="142.0" text="nbre_enfant" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nbreChambreModif" layoutX="162.0" layoutY="25.0" />
+            <TextField fx:id="nbreAdulteModif" layoutX="162.0" layoutY="101.0" />
+            <TextField fx:id="nbreEnfantModif" layoutX="162.0" layoutY="140.0" />
+            <Label layoutX="34.0" layoutY="182.0" text="nom_hotel" textFill="#101010">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="typeChambreModif" layoutX="162.0" layoutY="60.0" />
+            <TextField fx:id="nomHotelModif" layoutX="162.0" layoutY="178.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
