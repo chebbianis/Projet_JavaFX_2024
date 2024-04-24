@@ -7,9 +7,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class VoyageurController {
@@ -24,6 +26,11 @@ public class VoyageurController {
     private Button btn_update;
 
     @FXML
+    private Button bn_pdf;
+
+
+
+    @FXML
     private TableColumn<Voyageur, Integer> col_age;
 
     @FXML
@@ -34,6 +41,10 @@ public class VoyageurController {
 
     @FXML
     private TableColumn<Voyageur, String> col_nom;
+
+    @FXML
+    private TableColumn<Voyageur, String> col_email;
+
 
     @FXML
     private TableColumn<Voyageur, Integer> col_pass;
@@ -74,6 +85,15 @@ public class VoyageurController {
     @FXML
     private Label tr_prenom;
 
+    @FXML
+    private TextField rechercheField;
+
+    @FXML
+    void onRechercheFieldTextChanged(KeyEvent event) {
+        String rechercheText = rechercheField.getText().trim();
+        rechercherVoyageur(rechercheText);
+    }
+
     private serviceVoyageur service = new serviceVoyageur();
 
     public void initialize() {
@@ -84,6 +104,8 @@ public class VoyageurController {
         col_prenom.setCellValueFactory(new PropertyValueFactory<>("prenom"));
         col_age.setCellValueFactory(new PropertyValueFactory<>("age"));
         col_etat.setCellValueFactory(new PropertyValueFactory<>("etat_civil"));
+        col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
+
 
         loadVoyageurData(); // Chargement des données dans la TableView
 
@@ -96,21 +118,18 @@ public class VoyageurController {
     }
 
     private boolean isValidEmail(String email) {
-        // Vérifier que l'e-mail respecte le format standard
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return email.matches(emailRegex);
     }
 
     private boolean isValidAge(String age) {
-        // Vérifier que l'âge contient uniquement des chiffres et a une longueur de 2 caractères
         return age.matches("\\d{2}");
     }
 
     private boolean validateFields() {
-        // Vérifier que tous les champs requis sont remplis et que l'e-mail est valide
         return !tf_num.getText().isEmpty() &&
-                tf_num.getText().length() == 7 &&  // Vérifier la longueur du champ
-                !tf_nom.getText().isEmpty() && tf_nom.getText().length() <= 50 &&  // Contrôle de la longueur du champ Nom
+                tf_num.getText().length() == 7 &&
+                !tf_nom.getText().isEmpty() && tf_nom.getText().length() <= 50 &&
                 !tf_prenom.getText().isEmpty() && tf_prenom.getText().length() <= 50 &&
                 !tf_age.getText().isEmpty() && isValidAge(tf_age.getText()) &&
                 !tf_etat.getText().isEmpty() && tf_etat.getText().length() <= 20 &&
@@ -118,18 +137,18 @@ public class VoyageurController {
     }
 
     private void ajouterVoyageur() {
-        // Vérifier la validité des champs avant d'ajouter le voyageur
+
         if (!validateFields()) {
-            // Afficher un message d'erreur indiquant les champs invalides
+
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
             alert.setHeaderText(null);
             alert.setContentText("Veuillez remplir tous les champs correctement.");
             alert.showAndWait();
-            return; // Sortir de la méthode sans ajouter le voyageur
+            return;
         }
 
-        // Créer un nouveau voyageur avec les valeurs des champs de texte
+
         Voyageur newVoyageur = new Voyageur(
                 Integer.parseInt(tf_num.getText()),
                 tf_nom.getText(),
@@ -140,17 +159,17 @@ public class VoyageurController {
         );
 
         try {
-            service.ajouter(newVoyageur); // Appel de la méthode de service pour ajouter le nouveau voyageur
-            loadVoyageurData(); // Recharger les données après l'ajout
+            service.ajouter(newVoyageur);
+            loadVoyageurData();
         } catch (SQLException e) {
-            e.printStackTrace(); // Gérer l'exception de manière appropriée (affichage ou journalisation)
+            e.printStackTrace();
         }
     }
 
     private void modifierVoyageur() {
         Voyageur selectedVoyageur = table_voyageur.getSelectionModel().getSelectedItem();
         if (selectedVoyageur != null) {
-            // Mettre à jour les détails du voyageur avec les valeurs des champs de texte
+
             selectedVoyageur.setNum_pass(Integer.parseInt(tf_num.getText()));
             selectedVoyageur.setNom(tf_nom.getText());
             selectedVoyageur.setPrenom(tf_prenom.getText());
@@ -229,6 +248,20 @@ public class VoyageurController {
                 tf_etat.setText(selectedVoyageur.getEtat_civil());
                 tf_email.setText(selectedVoyageur.getEmail());
             }
+        }
+    }
+    private void rechercherVoyageur(String rechercheText) {
+        serviceVoyageur voyageurService = new serviceVoyageur();
+        try {
+            List<Voyageur> biens = voyageurService.rechercher(rechercheText);
+
+            ObservableList<Voyageur> observableList = FXCollections.observableList(biens);
+            table_voyageur.setItems(observableList);
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 }

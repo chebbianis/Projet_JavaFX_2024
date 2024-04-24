@@ -23,7 +23,7 @@ public class Voyage {
         this.voyageurs = voyageurs;
     }
 
-    // Ajoutez ces méthodes pour gérer les voyageurs dans la liste
+
 
     public void addVoyageur(Voyageur voyageur) {
         voyageurs.add(voyageur);
@@ -39,14 +39,13 @@ public class Voyage {
                 return voyageur;
             }
         }
-        return null; // Si le voyageur n'est pas trouvé
+        return null;
     }
 
     public boolean hasVoyageur(Voyageur voyageur) {
         return voyageurs.contains(voyageur);
     }
 
-    // Autres méthodes nécessaires...
 
     @Override
     public String toString() {

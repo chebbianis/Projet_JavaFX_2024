@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pidevjava.Contollers.VoyageurController">
+<AnchorPane prefHeight="575.0" prefWidth="853.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pidevjava.Contollers.VoyageurController">
     <children>
 
         <VBox layoutX="14.0" layoutY="76.0" prefHeight="316.0" prefWidth="112.0" spacing="25.0">
@@ -84,20 +84,22 @@
 
             </children>
         </VBox>
-        <TableView fx:id="table_voyageur" layoutX="310.0" layoutY="14.0" prefHeight="415.0" prefWidth="543.0">
+        <TableView fx:id="table_voyageur" layoutX="310.0" layoutY="74.0" prefHeight="415.0" prefWidth="543.0">
             <columns>
                 <TableColumn fx:id="col_idv" prefWidth="35.0" text="ID" />
                 <TableColumn fx:id="col_pass" prefWidth="73.0" text="Num Pass" />
                 <TableColumn fx:id="col_nom" minWidth="0.0" prefWidth="42.0" text="Nom" />
-                <TableColumn fx:id="col_prenom" prefWidth="45.0" text="Prenom" />
-                <TableColumn fx:id="col_age" minWidth="0.0" prefWidth="33.0" text="Age" />
-                <TableColumn fx:id="col_etat" minWidth="0.0" prefWidth="183.0" text="Etat Civil" />
-                <TableColumn fx:id="col_email" prefWidth="75.0" text="Email" />
+                <TableColumn fx:id="col_prenom" prefWidth="63.0" text="Prenom" />
+                <TableColumn fx:id="col_age" minWidth="0.0" prefWidth="34.0" text="Age" />
+                <TableColumn fx:id="col_etat" minWidth="0.0" prefWidth="60.0" text="Etat Civil" />
+                <TableColumn fx:id="col_email" prefWidth="235.0" text="Email" />
             </columns>
         </TableView>
         <Button fx:id="btn_insert" layoutX="14.0" layoutY="416.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9CE794;" text="Insert" />
         <Button fx:id="btn_update" layoutX="119.0" layoutY="416.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #FFA17A;" text="Update" />
         <Button fx:id="btn_delete" layoutX="224.0" layoutY="415.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9C0054;" text="Delete" textFill="WHITE" />
+      <TextField fx:id="rechercheField" layoutX="310.0" layoutY="40.0" onKeyReleased="#onRechercheFieldTextChanged" />
+      <Button fx:id="bn_pdf" layoutX="745.0" layoutY="40.0" mnemonicParsing="false" text="PDF" />
     </children>
 
 </AnchorPane>

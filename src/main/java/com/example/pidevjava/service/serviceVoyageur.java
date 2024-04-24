@@ -88,5 +88,30 @@ public class serviceVoyageur implements iservice<Voyageur> {
 
         return voyageurs;  // Renvoie la liste des voyageurs récupérés
     }
+    public List<Voyageur> rechercher(String rechercheText) throws SQLException {
+        String sql = "SELECT * FROM voyageur WHERE num_pass = ? OR nom LIKE ? OR prenom LIKE ? OR age = ? OR etat_civil LIKE ? OR email LIKE ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1,  rechercheText );
+        preparedStatement.setString(2, "%" + rechercheText + "%");
+        preparedStatement.setString(3, "%" + rechercheText + "%");
+        preparedStatement.setString(4,  rechercheText );
+        preparedStatement.setString(5, "%" + rechercheText + "%");
+        preparedStatement.setString(6, "%" + rechercheText + "%");
+
+        ResultSet rs = preparedStatement.executeQuery();
+
+        List<Voyageur> Voyageurs = new ArrayList<>();
+        while (rs.next()) {
+            Voyageur Voyageur = new Voyageur();
+            Voyageur.setId(rs.getInt("id"));
+            Voyageur.setNom(rs.getString("nom"));
+            Voyageur.setPrenom(rs.getString("prenom"));
+           Voyageur.setAge(rs.getInt("age"));
+            Voyageur.setEtat_civil(rs.getString("etat_civil"));
+            Voyageur.setEmail(rs.getString("email"));
+            Voyageurs.add(Voyageur);
+        }
+        return Voyageurs;
+    }
     }
 

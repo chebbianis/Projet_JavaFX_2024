@@ -8,12 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 public class VoyageController {
     @FXML
@@ -60,6 +62,8 @@ public class VoyageController {
 
     @FXML
     private Button btn_insert;
+
+    @FXML
 
     private final serviceVoyage serviceVoyage = new serviceVoyage();
 
@@ -125,38 +129,33 @@ public class VoyageController {
             return;
         }
 
-        // Vérification de la longueur du champ programme
         if (programmeValue.length() > 100) {
             showAlert(Alert.AlertType.WARNING, "Ajout impossible", "Le champ programme ne doit pas dépasser 100 caractères.");
             return;
         }
 
-        // Vérification du format des dates et que dateDepart < dateArrive
+
         if (!isValidDate(dateDepartValue) || !isValidDate(dateArriveValue) || dateDepartValue.isAfter(dateArriveValue)) {
             showAlert(Alert.AlertType.WARNING, "Dates incorrectes", "Les dates doivent être au format jj/mm/aaaa et la date de départ doit être antérieure à la date d'arrivée.");
             return;
         }
 
-        // Vérification du format et contenu du champ prix
+
         if (!isValidPrice(prixValue)) {
             showAlert(Alert.AlertType.WARNING, "Prix incorrect", "Le champ prix ne doit contenir que des chiffres.");
             return;
         }
 
-        // Création du voyage
         Voyage voyage = new Voyage(programmeValue, dateDepartValue, dateArriveValue, prixValue, destinationValue);
 
         try {
-            // Ajout du voyage à la base de données
+
             serviceVoyage.ajouter(voyage);
 
-            // Affichage d'un message de succès
             showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Voyage ajouté avec succès.");
 
-            // Rafraîchissement de la TableView
             loadVoyageData();
         } catch (SQLException e) {
-            // Affichage d'un message d'erreur en cas d'échec
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ajout du voyage : " + e.getMessage());
         }
     }
@@ -165,7 +164,6 @@ public class VoyageController {
     void modifierVoyage(ActionEvent event) {
         Voyage voyage = table_voyage.getSelectionModel().getSelectedItem();
         if (voyage != null) {
-            // Récupérer les valeurs des champs texte
             String programme = tf_prog.getText();
             LocalDate dateDepart = tf_dated.getValue();
             LocalDate dateArrive = tf_dateA.getValue();
@@ -180,7 +178,7 @@ public class VoyageController {
 
             try {
                 serviceVoyage.modifier(voyage);
-                loadVoyageData(); // Mettre à jour la TableView après modification
+                loadVoyageData();
 
                 showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Voyage modifié avec succès");
             } catch (SQLException e) {
@@ -196,7 +194,7 @@ public class VoyageController {
         if (voyage != null) {
             try {
                 serviceVoyage.supprimer(voyage);
-                loadVoyageData(); // Mettre à jour la TableView après suppression
+                loadVoyageData();
                 showAlert(Alert.AlertType.INFORMATION, "Suppression réussie", "Le voyage a été supprimé avec succès.");
             } catch (SQLException e) {
                 showAlert(Alert.AlertType.ERROR, "Erreur lors de la suppression", "Une erreur s'est produite lors de la suppression du voyage : " + e.getMessage());
@@ -217,7 +215,7 @@ public class VoyageController {
     }
 
     private boolean isValidPrice(String price) {
-        return price.matches("\\d+"); // Vérifie que le prix contient uniquement des chiffres
+        return price.matches("\\d+");
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
@@ -227,4 +225,6 @@ public class VoyageController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+
 }

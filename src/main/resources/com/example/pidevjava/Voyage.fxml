@@ -65,7 +65,7 @@
 
             </children>
         </VBox>
-        <TableView fx:id="table_voyage" layoutX="306.0" layoutY="26.0" prefHeight="415.0" prefWidth="579.0">
+        <TableView fx:id="table_voyage" layoutX="307.0" layoutY="69.0" prefHeight="415.0" prefWidth="579.0">
             <columns>
                 <TableColumn fx:id="col_id" prefWidth="35.0" text="ID" />
                 <TableColumn fx:id="col_programme" prefWidth="156.0" text="Programe" />
