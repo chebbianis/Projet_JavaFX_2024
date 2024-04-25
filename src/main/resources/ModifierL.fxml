@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="584.0" prefWidth="693.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifierLocationController">
+    <children>
+        <Label layoutX="101.0" layoutY="305.0" text="Votre ID" />
+        <Label layoutX="93.0" layoutY="191.0" prefHeight="21.0" prefWidth="147.0" text="Date debut" />
+        <Label layoutX="102.0" layoutY="250.0" text="Date fin" />
+        <TextField fx:id="txtUser_id" layoutX="224.0" layoutY="301.0" />
+        <Label layoutX="224.0" layoutY="65.0" text="Modifier Location">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="modify_btn" layoutX="463.0" layoutY="500.0" mnemonicParsing="false" onAction="#ModifierAction" prefHeight="31.0" prefWidth="71.0" text="Modifier" />
+        <Label layoutX="93.0" layoutY="138.0" text="ID Location" />
+        <TextField fx:id="txtIdL" editable="false" layoutX="224.0" layoutY="133.0" />
+        <Button fx:id="supprimer_btn" layoutX="558.0" layoutY="500.0" mnemonicParsing="false" onAction="#SupprimerAction" prefHeight="31.0" prefWidth="78.0" text="Supprimer" />
+        <TextField fx:id="txtVoiture_id" layoutX="224.0" layoutY="358.0" />
+        <TextField fx:id="txtTypePaiement" layoutX="224.0" layoutY="411.0" />
+        <Label layoutX="73.0" layoutY="362.0" text="ID de votre Voiture" />
+        <Label layoutX="72.0" layoutY="415.0" text="Type de Paiement" />
+        <DatePicker fx:id="txtDate_fin" layoutX="224.0" layoutY="243.0" prefHeight="31.0" prefWidth="187.0" />
+      <TextField fx:id="txtOptions_supp" layoutX="224.0" layoutY="461.0" prefHeight="88.0" prefWidth="180.0" />
+      <Label layoutX="56.0" layoutY="465.0" text="Options Supplémentaires" />
+      <DatePicker fx:id="txtDate_debut" layoutX="224.0" layoutY="186.0" prefHeight="31.0" prefWidth="187.0" />
+    </children>
+</AnchorPane>

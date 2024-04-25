@@ -8,6 +8,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
+import javafx.event.ActionEvent;
+//import java.awt.event.MouseEvent;
+import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -21,7 +24,10 @@ import javafx.stage.Stage;
 import models.Voiture;
 import services.VoitureService;
 
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.scene.control.Button;
+
 
 public class AfficherVControllers {
 
@@ -48,20 +54,27 @@ public class AfficherVControllers {
     private TableView<Voiture> tableviewVoiture;
 
     @FXML
-    private TableColumn<?, ?> marque;
+    private TableColumn<Voiture, String> colMarque;
 
     @FXML
-    private TableColumn<?, ?> annee;
+    private TableColumn<Voiture, LocalDate> colAnnee;
 
     @FXML
-    private TableColumn<?, ?> prix_j;
+    private TableColumn<Voiture, Integer> colPrix_j;
 
     @FXML
-    private TableColumn<?, ?> kilometrage;
+    private TableColumn<Voiture, Integer> colKilometrage;
 
     @FXML
-    private TableColumn<?, ?> nbrPlaces;
+    private TableColumn<Voiture, Integer> colNbrPlaces;
 
+    private VoitureService voitureService;
+
+    @FXML
+    private Button deleteButton;
+
+    @FXML
+    private Button updateButton;
 
 
 
@@ -69,7 +82,7 @@ public class AfficherVControllers {
     private Scene scene;
     private Parent root;
 
-    VoitureService sv = new VoitureService();
+
 
 
 
@@ -121,40 +134,95 @@ public class AfficherVControllers {
             e.printStackTrace();
         }
     }
-    public void initialize(URL url, ResourceBundle rb) {
+
+    private void selectVoiture(MouseEvent event) {
+        if (event.getClickCount() == 1) { // Vérifie si un clic simple a été effectué
+            Voiture selectedVoiture = tableviewVoiture.getSelectionModel().getSelectedItem();
+            if (selectedVoiture != null) {
+                // Affichage des détails du voyage sélectionné dans le formulaire
+                txtVoiture_Marque.setText(selectedVoiture.getMarque());
+                txtAnnee.setValue(selectedVoiture.getAnnee());
+                txtPrix_j.setText(String.valueOf(selectedVoiture.getPrix_j()));
+                txtKilometrage.setText(String.valueOf(selectedVoiture.getKilometrage()));
+                txtNbrPlaces.setText(String.valueOf(selectedVoiture.getNbrPlaces()));
+            }
+        }
+    }
+
+    public void initialize() {
+        voitureService = new VoitureService();
+        setupTableView();
+        loadVoitures();
+    }
+
+    private void setupTableView() {
+        colMarque.setCellValueFactory(new PropertyValueFactory<>("marque"));
+        colAnnee.setCellValueFactory(new PropertyValueFactory<>("annee"));
+        colPrix_j.setCellValueFactory(new PropertyValueFactory<>("prix_j"));
+        colKilometrage.setCellValueFactory(new PropertyValueFactory<>("kilometrage"));
+        colNbrPlaces.setCellValueFactory(new PropertyValueFactory<>("nbrPlaces"));
+    }
+
+    private void loadVoitures() {
         try {
-            showRec();
-            //searchRec();
+            List<Voiture> voitures = voitureService.recuperer();
+            tableviewVoiture.getItems().addAll(voitures);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace(); // Gérer l'erreur
         }
-
-    }
-    public ObservableList<Voiture> getVoitureList() throws SQLException {
-        ObservableList<Voiture> voitureList = FXCollections.observableArrayList();
-
-        try {
-            voitureList.addAll(sv.recuperer());
-            System.out.println(voitureList);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-
-        return voitureList;
     }
 
-    public void showRec() throws SQLException {
+    @FXML
+    public void handleRowSelection(MouseEvent event) {
+        Voiture selectedVoiture = tableviewVoiture.getSelectionModel().getSelectedItem();
+        if (selectedVoiture != null) {
+            deleteButton.setDisable(false); // Enable delete button
+            updateButton.setDisable(false); // Enable update button
+        } else {
+            deleteButton.setDisable(true); // Disable delete button if no row is selected
+            updateButton.setDisable(true); // Disable update button if no row is selected
+        }
+    }
 
-        ObservableList<Voiture> list = getVoitureList();
-        marque.setCellValueFactory(new PropertyValueFactory<>("marque"));
-        annee.setCellValueFactory(new PropertyValueFactory<>("annee"));
-        prix_j.setCellValueFactory(new PropertyValueFactory<>("prix_j"));
-        kilometrage.setCellValueFactory(new PropertyValueFactory<>("kilometrage"));
-        nbrPlaces.setCellValueFactory(new PropertyValueFactory<>("nbrPlaces"));
+    @FXML
+    public void handleDeleteButton(ActionEvent event) {
+        Voiture selectedVoiture = tableviewVoiture.getSelectionModel().getSelectedItem();
+        if (selectedVoiture != null) {
+            try {
+                // Call your delete method with selectedVoiture.getId() as parameter
+                voitureService.supprimer(selectedVoiture.getId_voiture());
+                // Remove the selected row from the TableView
+                tableviewVoiture.getItems().remove(selectedVoiture);
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle error
+            }
+        }
+    }
 
+    public void handleUpdateButton(ActionEvent event) {
+        Voiture selectedVoiture = tableviewVoiture.getSelectionModel().getSelectedItem();
+        if (selectedVoiture != null) {
+            try {
+                // Load the ModifierVoiture.fxml file
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierV.fxml"));
+                Parent root = loader.load();
 
-        tableviewVoiture.setItems(list);
+                // Get the controller for ModifierV.fxml
+                ModifierVoitureController modifierController = loader.getController();
 
+                // Pass the selected voiture to the controller to pre-fill fields
+                modifierController.setTextFields(selectedVoiture);
+
+                // Create a new stage
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Modifier Voiture");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace(); // Handle error loading FXML
+            }
+
+        }
     }
 
 

@@ -78,6 +78,8 @@ public class ModifierVoitureController {
             existingVoiture.setMarque(txtVoiture_Marque.getText());
             existingVoiture.setAnnee(txtAnnee.getValue());
             existingVoiture.setPrix_j((int) Long.parseLong(txtPrix_j.getText()));
+            existingVoiture.setKilometrage(Integer.parseInt(txtKilometrage.getText()));
+            existingVoiture.setNbrPlaces(Integer.parseInt(txtNbrPlaces.getText()));
             existingVoiture.setId_voiture(Integer.parseInt(txtId.getText()));
 
             // Call the modifier method with the modified Transport object
@@ -86,7 +88,7 @@ public class ModifierVoitureController {
             // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Succes");
-            alert.setContentText("Transport modifiée avec succès");
+            alert.setContentText("Voiture modifiée avec succès");
             alert.show();
 
             // Reload the view

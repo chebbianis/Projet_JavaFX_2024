@@ -1,0 +1,35 @@
+.myButton {
+    -fx-background-color: #4CAF50; /* Green background */
+    -fx-text-fill: white; /* White text color */
+    -fx-font-size: 14px; /* Font size */
+    -fx-padding: 10px 20px; /* Padding */
+}
+
+/* Define a lighter shade of green */
+.lighter-green {
+    -fx-background-color: #ccffcc; /* Change the color code as per your preference */
+}
+
+/* Style for TableView */
+.table-view {
+    -fx-background-color: white; /* Change the background color of TableView */
+}
+
+/* Style for labels */
+.label {
+    -fx-font-size: 16px; /* Increase the font size */
+    -fx-font-weight: bold; /* Make the font bold */
+    -fx-text-fill: #007F7F; /* Set the text color to a shade of green */
+}
+
+/* Style for text fields */
+.text-field {
+    -fx-background-color: #ADD8E6; /* Set the background color to light blue */
+    -fx-text-fill: #0000FF; /* Set the text color to blue */
+}
+
+/* Style for date pickers */
+.date-picker {
+    -fx-background-color: #ADD8E6; /* Set the background color to light blue */
+    -fx-text-fill: #0000FF; /* Set the text color to blue */
+}
