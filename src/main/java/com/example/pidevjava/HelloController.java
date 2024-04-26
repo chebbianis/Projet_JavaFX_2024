@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,9 +26,11 @@ public class HelloController implements Initializable {
 
     @FXML
     private Button btn_voyageur;
-
+    @FXML
+    private Button btn_stat;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         btn_voyage.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -71,7 +74,11 @@ public class HelloController implements Initializable {
                 }
             }
         });
+
+
     }
+
+
 
     @FXML
     protected void onHelloButtonClick(ActionEvent event) {

@@ -2,17 +2,22 @@ package com.example.pidevjava.Contollers;
 
 import com.example.pidevjava.Entities.Voyageur;
 import com.example.pidevjava.service.serviceVoyageur;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.chart.PieChart;
 
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class VoyageurController {
 
@@ -24,6 +29,8 @@ public class VoyageurController {
 
     @FXML
     private Button btn_update;
+
+
 
     @FXML
     private Button bn_pdf;
@@ -85,8 +92,12 @@ public class VoyageurController {
     @FXML
     private Label tr_prenom;
 
+
     @FXML
     private TextField rechercheField;
+
+
+
 
     @FXML
     void onRechercheFieldTextChanged(KeyEvent event) {
@@ -253,9 +264,9 @@ public class VoyageurController {
     private void rechercherVoyageur(String rechercheText) {
         serviceVoyageur voyageurService = new serviceVoyageur();
         try {
-            List<Voyageur> biens = voyageurService.rechercher(rechercheText);
+            List<Voyageur> Voyagurs = voyageurService.rechercher(rechercheText);
 
-            ObservableList<Voyageur> observableList = FXCollections.observableList(biens);
+            ObservableList<Voyageur> observableList = FXCollections.observableList(Voyagurs);
             table_voyageur.setItems(observableList);
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -264,4 +275,8 @@ public class VoyageurController {
             alert.showAndWait();
         }
     }
+
+
+
+
 }

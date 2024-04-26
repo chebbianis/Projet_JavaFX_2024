@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pidevjava.Contollers.EtatCivil">
+   <children>
+      <Label layoutX="264.0" layoutY="32.0" text="ETAT CIVIL" textFill="#83286c">
+         <font>
+            <Font name="Arial Italic" size="24.0" />
+         </font>
+      </Label>
+      <PieChart fx:id="pieChart" layoutX="78.0" layoutY="79.0" />
+   </children>
+</AnchorPane>
