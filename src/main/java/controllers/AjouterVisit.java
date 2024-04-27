@@ -28,6 +28,62 @@ public class AjouterVisit {
     @FXML
     private TextField emailV;
 
+    public ComboBox<String> getComboV() {
+        return comboV;
+    }
+
+    public void setComboV(ComboBox<String> comboV) {
+        this.comboV = comboV;
+    }
+
+    public DatePicker getDateV() {
+        return dateV;
+    }
+
+    public void setDateV(DatePicker dateV) {
+        this.dateV = dateV;
+    }
+
+    public TextField getEmailV() {
+        return emailV;
+    }
+
+    public void setEmailV(TextField emailV) {
+        this.emailV = emailV;
+    }
+
+    public TextField getNomV() {
+        return nomV;
+    }
+
+    public void setNomV(TextField nomV) {
+        this.nomV = nomV;
+    }
+
+    public TextField getNumV() {
+        return numV;
+    }
+
+    public void setNumV(TextField numV) {
+        this.numV = numV;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Visit getVisit() {
+        return visit;
+    }
+
+    public void setVisit(Visit visit) {
+        this.visit = visit;
+    }
+
     @FXML
     private TextField nomV;
 
@@ -134,7 +190,7 @@ public class AjouterVisit {
                if (dateVisit.isBefore(today) ) {
                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                    successAlert.setTitle("Wrong date");
-                   successAlert.setHeaderText("Please select dates from today onwards");
+                   successAlert.setHeaderText("Veuillez sélectionner les dates à partir d'aujourd'hui");
                    successAlert.showAndWait();
                    return;
                }

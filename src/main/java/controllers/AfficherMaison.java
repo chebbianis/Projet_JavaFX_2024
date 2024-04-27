@@ -56,15 +56,13 @@ public class AfficherMaison {
     private TableColumn<?, ?> typeCol;
 
     @FXML
-    private TextField typeModif;
+    private ComboBox<String> typeModif;
     @FXML
     private Button btnModifier;
     @FXML
     private TextField rechercheField;
     @FXML
     private Button btnSupprimer;
-
-
     @FXML
     private TableColumn<?, ?> imageCol;
     @FXML
@@ -77,10 +75,10 @@ public class AfficherMaison {
     @FXML
     private Text cheminImage;
     @FXML
-    private TextField montantTNDField;
+    private TextField montantTNDField; // Champ de texte pour saisir le montant en TND
 
     @FXML
-    private TextField montantEURField;
+    private TextField montantEURField; // Champ de texte pour afficher le montant converti en EUR
     @FXML
     private Button convertirTNDenEUR;
 
@@ -94,12 +92,11 @@ public class AfficherMaison {
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showOpenDialog(btnModifier.getScene().getWindow());
         if (file != null) {
-            // Charger l'image sélectionnée dans l'ImageView
-           Image image1 = new Image(file.toURI().toString());
+            Image image1 = new Image(file.toURI().toString());
             imageModif.setImage(image1);
             cheminImage.setText(file.getAbsolutePath());
             image = file.getAbsolutePath();
-          /*Image image1 = new Image(file.toURI().toString());
+         /*   Image image1 = new Image(file.toURI().toString());
             imageModif.setImage(image1);
             String fileName = file.getName();
            // cheminImage.setText(fileName);
@@ -116,16 +113,16 @@ public class AfficherMaison {
         }
 
     }
+
     @FXML
     void getData(MouseEvent event) {
-     Maison maison =tableView.getSelectionModel().getSelectedItem();
+        Maison maison =tableView.getSelectionModel().getSelectedItem();
 
         nomModif.setText(maison.getNom());
         adresseModif.setText(maison.getAdresse());
         nombreChambreModif.setText(String.valueOf(maison.getNombreChambre()));
         prixModif.setText(String.valueOf(maison.getPrix()));
-        typeModif.setText(maison.getType());
-        cheminImage.setText(maison.getImage());
+        typeModif.setValue(maison.getType());
         image = maison.getImage();
         double prixTND = maison.getPrix();
         double prixEUR = convertirTNDenEUR(prixTND, tauxChangeTND_EUR);
@@ -144,12 +141,13 @@ public class AfficherMaison {
     void modifierMaison(ActionEvent event) {
         Maison maison = tableView.getSelectionModel().getSelectedItem();
         if (maison != null) {
+            // Retrieve values from text fields
             String nom = nomModif.getText();
             String adresse = adresseModif.getText();
             int nombreChambre = Integer.parseInt(nombreChambreModif.getText());
             int prix = Integer.parseInt(prixModif.getText());
-            String type = typeModif.getText();
-          //  String image = this.image;
+            String type = typeModif.getValue();
+            //  String image = this.image;
 
             maison.setNom(nom);
             maison.setAdresse(adresse);
@@ -191,16 +189,13 @@ public class AfficherMaison {
                 serviceMaison.supprimer(maison);
                 tableView.getItems().remove(maison);
                 clear();
-                // Mettre à jour l'affichage après la suppression
                 serviceMaison.afficher();
-                // Afficher un message de confirmation
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Suppression réussie");
                 alert.setHeaderText(null);
                 alert.setContentText("La maison a été supprimée avec succès.");
                 alert.showAndWait();
             } catch (SQLException e) {
-                // En cas d'erreur lors de la suppression, afficher un message d'erreur
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Erreur lors de la suppression");
                 alert.setHeaderText(null);
@@ -208,7 +203,6 @@ public class AfficherMaison {
                 alert.showAndWait();
             }
         } else {
-            // Aucune maison sélectionnée
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Aucune maison sélectionnée");
             alert.setHeaderText(null);
@@ -221,8 +215,7 @@ public class AfficherMaison {
         adresseModif.setText(null);
         nombreChambreModif.setText(null);
         prixModif.setText(null);
-        typeModif.setText(null);
-        cheminImage.setText(null);
+        typeModif.setValue(null);
         imageModif.setImage(null);
         // btnModif.setDisable(false);
     }
@@ -264,10 +257,10 @@ public class AfficherMaison {
     @FXML
     void initialize() {
         rechercherMaison("");
-        ServiceMaison serviceMaison =new ServiceMaison();
+        ServiceMaison serviceMaison = new ServiceMaison();
         try {
-            List<Maison> maison= serviceMaison.afficher();
-            ObservableList<Maison> observableList= FXCollections.observableList(maison);
+            List<Maison> maison = serviceMaison.afficher();
+            ObservableList<Maison> observableList = FXCollections.observableList(maison);
             tableView.setItems(observableList);
 
             refCol.setCellValueFactory(new PropertyValueFactory<>("refB"));
@@ -278,12 +271,15 @@ public class AfficherMaison {
             typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
             imageCol.setCellValueFactory(new PropertyValueFactory<>("image"));
 
+            // Charger les types de maisons dans le ComboBox
+            ObservableList<String> types = FXCollections.observableArrayList("Villa", "Appartement", "Studio");
+            typeModif.setItems(types);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
+
 
 
 

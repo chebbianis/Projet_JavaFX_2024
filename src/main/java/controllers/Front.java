@@ -1,13 +1,19 @@
 package controllers;
 
 import entities.Maison;
+import entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -15,6 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import services.ServiceMaison;
 
 import java.io.IOException;
@@ -44,6 +51,7 @@ public class Front implements Initializable {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     void filtrerParType(ActionEvent event) {
@@ -115,9 +123,37 @@ public class Front implements Initializable {
         Label prixLabel = new Label("Prix : " + maison.getPrix());
         Label typeLabel = new Label("Type : " + maison.getType());
         Label adresseLabel = new Label("Adresse : " + maison.getAdresse());
+        Button addButton = new Button("Demander une visite ");
+        addButton.getStyleClass().add("addbuttonevaluation");
+        maisonBox.getChildren().addAll(imageView, nameLabel, prixLabel, typeLabel, adresseLabel, addButton);
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            public void handle(ActionEvent event) {
+                try {
+                    // Charger la vue AjouterE.fxml
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVisit.fxml"));
+                    Parent root = loader.load();
+                    User user =new User(1,"syrine","fffff","syrine","Trablsi","syrinet6@gmail.com","role","s");
+                    AjouterVisit controller =loader.getController();
+                    controller.getNomV().setText(user.getUsername());
+                    controller.getEmailV().setText(user.getEmail());
 
 
-        maisonBox.getChildren().addAll(imageView, nameLabel, prixLabel, typeLabel, adresseLabel);
+                    // Créer une nouvelle instance
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+
+                    // Afficher la scène
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        maisonBox.setSpacing(20);
+        maisonBox.setAlignment(Pos.CENTER);
+
 
         return maisonBox;
     }

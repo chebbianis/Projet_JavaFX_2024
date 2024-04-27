@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -16,6 +17,7 @@ import services.ServiceVisit;
 import utils.MyDB;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,7 +85,6 @@ public class AfficherVisit {
 void modifierVisit(ActionEvent event) {
     Visit visit = tableViewV.getSelectionModel().getSelectedItem();
     if (visit != null) {
-        // Récupérer les valeurs des champs texte
         String ref_bText = refModif.getText().toString();
         String numeroText = numModif.getText();
         LocalDate date_visit = dateModif.getValue();
@@ -107,11 +108,9 @@ void modifierVisit(ActionEvent event) {
         visit.setRefB(ref_b);
         visit.setDateVisit(date_visit);
 
-        // Mettre à jour l'objet Visite dans la base de données
         ServiceVisit serviceVisite = new ServiceVisit();
         try {
             serviceVisite.modifier(visit);
-            // Rafraîchir la table view
             initialize();
             clear();
 
@@ -153,7 +152,7 @@ void modifierVisit(ActionEvent event) {
     private void rechercherMaison(String rechercheText) {
         ServiceVisit serviceVisit = new ServiceVisit();
         try {
-            List<Visit> visits = serviceVisit.rechercher(rechercheText); // Remplacez cette ligne avec votre méthode de recherche personnalisée
+            List<Visit> visits = serviceVisit.rechercher(rechercheText);
 
             ObservableList<Visit> observableList = FXCollections.observableList(visits);
             tableViewV.setItems(observableList);
@@ -178,9 +177,7 @@ void modifierVisit(ActionEvent event) {
                 serviceVisit.supprimer(visit);
                 tableViewV.getItems().remove(visit);
                 clear();
-                // Mettre à jour l'affichage après la suppression
                 serviceVisit.afficher();
-                // Afficher un message de confirmation
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Suppression réussie");
                 alert.setHeaderText(null);
@@ -195,7 +192,6 @@ void modifierVisit(ActionEvent event) {
                 alert.showAndWait();
             }
         } else {
-            // Aucune maison sélectionnée
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Aucune maison sélectionnée");
             alert.setHeaderText(null);
@@ -210,7 +206,19 @@ void modifierVisit(ActionEvent event) {
         refModif.setText(null);
         dateModif.setValue(null);
     }
+    @FXML
+    void retourPage (ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/AjouterMaison.fxml"));
+        try {
+            nomModif.getScene().setRoot(fxmlLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
+
+
 
 /*    public void afficherListe() {
         try {

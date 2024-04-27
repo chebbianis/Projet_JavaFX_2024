@@ -1,4 +1,5 @@
 package test;
+import entities.EmailSender;
 import entities.Maison;
 import entities.Visit;
 import services.ServiceMaison;
@@ -16,13 +17,15 @@ public class Main {
         // maison.setRefB(15);
         LocalDate date1 = LocalDate.of(2024, 04, 5);
         Visit visit= new Visit(99687111,"nourhenne","malekbdiri05@gmail.com",20, date1);
+        EmailSender email = new EmailSender();
+        email.sendWelcomeEmailWithSignature("syrinet6@gmail.com", "syrine");
         ServiceMaison serviceMaison=new ServiceMaison ();
         ServiceVisit serviceVisit=new ServiceVisit ();
         try {
              //serviceMaison.ajouter(maison);
              //serviceMaison.modifier(maison);
            // System.out.println(serviceVisit.afficher());
-            serviceVisit.ajouter(visit);
+           serviceVisit.ajouter(visit);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

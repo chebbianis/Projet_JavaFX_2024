@@ -6,10 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -48,13 +45,21 @@ public class AjouterMaison {
     private TextField prix ;
     @FXML
     private TextField type ;
-
+    @FXML
+    private ComboBox<String> typeComboBox;
 
     @FXML
     void initialize() {
         adressesGouvernorats = FXCollections.observableArrayList(getAdressesGouvernorats());
         listView.setItems(adressesGouvernorats);
         listView.setVisible(false);
+        typeComboBox.getItems().addAll("Villa", "Appartement", "Studio");
+        typeComboBox.setOnAction(event -> {
+            String selectedValue = typeComboBox.getValue();
+            if (selectedValue != null) {
+                System.out.println("Type sélectionné : " + selectedValue);
+            }
+        });
     }
     public List<String> getAdressesGouvernorats() {
         List<String> adressesGouvernorats = new ArrayList<>();
@@ -89,22 +94,25 @@ public class AjouterMaison {
     void insertImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir une image de maison");
+        // Filtre pour afficher uniquement les fichiers d'image
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers image (*.png, *.jpg, *.jpeg)", "*.png", "*.jpg", "*.jpeg");
         fileChooser.getExtensionFilters().add(extFilter);
+        // Afficher la boîte de dialogue de sélection de fichier
         File file = fileChooser.showOpenDialog(btnAjout.getScene().getWindow());
         if (file != null) {
+            // Charger l'image sélectionnée dans l'ImageView
             Image image1 = new Image(file.toURI().toString());
             imageView.setImage(image1);
-            cheminImage.setText(file.getAbsolutePath());
+            // cheminImage.setText(file.getAbsolutePath());
             image = file.getAbsolutePath();
         }
-
-    /*    Image image1 = new Image(file.toURI().toString());
+        /*
+        Image image1 = new Image(file.toURI().toString());
         imageView.setImage(image1);
         String fileName = file.getName();
         cheminImage.setText(fileName);
-        image = fileName;*/
-
+        image = fileName;
+         */
     }
     @FXML
     void naviguerVisite(ActionEvent event) {
@@ -132,7 +140,7 @@ public class AjouterMaison {
     void ajouterMaison(ActionEvent event) {
 
         if (nom.getText().isEmpty() || adresse.getText().isEmpty() || nombre_chambre.getText().isEmpty()
-                || prix.getText().isEmpty() || type.getText().isEmpty()) {
+                || prix.getText().isEmpty() || (typeComboBox.getValue() == null)){
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setTitle("Champs non remplis");
             errorAlert.setHeaderText(null);
@@ -140,15 +148,7 @@ public class AjouterMaison {
             errorAlert.showAndWait();
             return;
         }
-        String nomValue = nom.getText();
-        if (!nomValue.matches("[a-zA-Z\\s]+")) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Entrée invalide");
-            errorAlert.setHeaderText(null);
-            errorAlert.setContentText("Le champ 'Nom' ne doit contenir que des lettres et des espaces.");
-            errorAlert.showAndWait();
-            return; // Arrêter l'exécution de la méthode
-        }
+
         // Vérifier si le champ "nombre_chambre" contient un nombre valide
         String nombreChambreValue = nombre_chambre.getText();
         if (!nombreChambreValue.matches("\\d+") || Integer.parseInt(nombreChambreValue) <= 0 ) {
@@ -160,7 +160,6 @@ public class AjouterMaison {
             errorAlert.showAndWait();
             return; // Arrêter l'exécution de la méthode
         }
-
         String prixValue = prix.getText();
         if (!prixValue.matches("\\d+") || Integer.parseInt(prixValue) <= 0 ) {
             // Afficher un message d'erreur à l'utilisateur
@@ -169,16 +168,18 @@ public class AjouterMaison {
             errorAlert.setHeaderText(null);
             errorAlert.setContentText("Le champ 'prix' doit être un nombre  positif .");
             errorAlert.showAndWait();
-            return;
+            return; // Arrêter l'exécution de la méthode
         }
 
-
+        // Convertir les valeurs des champs en entiers
         int nombreChambre = Integer.parseInt(nombreChambreValue);
         int Prix = Integer.parseInt(prixValue);
-     
+        String typeValue = typeComboBox.getValue();
 
-        Maison maison = new Maison(nom.getText(), adresse.getText(), nombreChambre, Prix, type.getText(), image);
 
+        Maison maison = new Maison(nom.getText(), adresse.getText(), nombreChambre, Prix, typeValue, image);
+
+        // Appeler la méthode d'ajout de ServiceMaison
         ServiceMaison serviceMaison = new ServiceMaison();
         try {
             serviceMaison.ajouter(maison);
@@ -193,25 +194,24 @@ public class AjouterMaison {
             alert.setTitle("Erreur");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-          //  throw new RuntimeException(e);
+            //  throw new RuntimeException(e);
         }
     }
     private String image;
-  void clear (){
+    void clear (){
         nom.setText(null);
         adresse.setText(null);
         nombre_chambre.setText(null);
         prix.setText(null);
-        type.setText(null);
-        cheminImage.setText(null);
+        typeComboBox.setValue(null);
         imageView.setImage(null);
-      //  btnAjout.setDisable(false);
-  }
+        //  btnAjout.setDisable(false);
+    }
     @FXML
     void onAdresseInputChanged() {
-        String input = adresse.getText().toLowerCase();
+        String input = adresse.getText();
         List<String> filteredAddresses = adressesGouvernorats.stream()
-                .filter(address -> address.toLowerCase().startsWith(input))
+                .filter(address -> address.startsWith(input))
                 .collect(Collectors.toList());
         if (filteredAddresses.isEmpty()) {
             listView.setVisible(false);
@@ -219,6 +219,7 @@ public class AjouterMaison {
             listView.setItems(FXCollections.observableArrayList(filteredAddresses));
             listView.setVisible(true);
         }
+
     }
 
 
@@ -230,7 +231,48 @@ public class AjouterMaison {
             listView.setVisible(false);
         }
     }
+    @FXML
+    void retour (ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Front.fxml"));
+        try {
+            nom.getScene().setRoot(fxmlLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
+    }
+
+    private void setupAutoComplete() {
+        ObservableList<String> autoCompleteList = FXCollections.observableArrayList(adressesGouvernorats);
+
+        adresse.textProperty().addListener((observable, oldValue, newValue) -> {
+            List<String> filteredItems = adressesGouvernorats.stream()
+                    .filter(item -> item.toLowerCase().startsWith(newValue.toLowerCase()))
+                    .collect(Collectors.toList());
+
+            if (filteredItems.isEmpty() || newValue.isEmpty()) {
+                listView.setVisible(false);
+            } else {
+                listView.setItems(FXCollections.observableArrayList(filteredItems));
+                listView.setVisible(true);
+            }
+        });
+
+        listView.setOnMouseClicked(event -> {
+            String selectedAddress = listView.getSelectionModel().getSelectedItem();
+            if (selectedAddress != null) {
+                adresse.setText(selectedAddress);
+                adresse.end();
+                listView.setVisible(false);
+            }
+        });
+
+        adresse.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                listView.setVisible(false);
+            }
+        });
+    }
 
 
   /*  @FXML
