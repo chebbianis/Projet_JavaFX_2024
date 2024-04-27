@@ -113,5 +113,29 @@ public class serviceVoyageur implements iservice<Voyageur> {
         }
         return Voyageurs;
     }
+
+    public List<Voyageur> rechercherAll() throws SQLException {
+        List<Voyageur> voyageurs = new ArrayList<>();
+
+        String sql = "SELECT * FROM voyageur";
+        try (Statement statement = connection.createStatement();
+             ResultSet rs = statement.executeQuery(sql)) {
+            while (rs.next()) {
+                Voyageur voyageur = new Voyageur(
+                        rs.getInt("num_pass"),
+                        rs.getString("nom"),
+                        rs.getString("prenom"),
+                        rs.getInt("age"),
+                        rs.getString("etat_civil"),
+                        rs.getString("email")
+                );
+                voyageur.setId(rs.getInt("id"));
+                voyageurs.add(voyageur);
+            }
+        }
+
+        return voyageurs;
     }
+
+}
 

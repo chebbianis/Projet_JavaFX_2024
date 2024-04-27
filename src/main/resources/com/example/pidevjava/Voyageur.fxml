@@ -101,6 +101,7 @@
       <TextField fx:id="rechercheField" layoutX="310.0" layoutY="40.0" onKeyReleased="#onRechercheFieldTextChanged" />
       <Button fx:id="bn_pdf" layoutX="704.0" layoutY="40.0" mnemonicParsing="false" style="-fx-background-color: #002e83;" text="PDF" textFill="#f5f5f5" />
       <Button fx:id="btn_stat" layoutX="763.0" layoutY="40.0" mnemonicParsing="false" style="-fx-background-color: #002e83;" text="Stat" textFill="WHITE" />
+      <Button fx:id="btn_ret" layoutX="14.0" layoutY="527.0" mnemonicParsing="false" style="-fx-background-color: #95d3f2;" text="Retour" />
     </children>
 
 </AnchorPane>

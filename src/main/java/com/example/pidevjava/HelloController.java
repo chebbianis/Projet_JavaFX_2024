@@ -26,8 +26,7 @@ public class HelloController implements Initializable {
 
     @FXML
     private Button btn_voyageur;
-    @FXML
-    private Button btn_stat;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -74,6 +73,7 @@ public class HelloController implements Initializable {
                 }
             }
         });
+
 
 
     }

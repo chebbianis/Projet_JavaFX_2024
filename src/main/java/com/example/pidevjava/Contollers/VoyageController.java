@@ -5,12 +5,18 @@ import com.example.pidevjava.service.serviceVoyage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -64,6 +70,9 @@ public class VoyageController {
     private Button btn_insert;
 
     @FXML
+    private Button btn_ret;
+
+    @FXML
 
     private final serviceVoyage serviceVoyage = new serviceVoyage();
 
@@ -84,6 +93,29 @@ public class VoyageController {
         btn_delete.setOnAction(event -> supprimerVoyage());
         btn_update.setOnAction(event -> modifierVoyage(event));
         btn_insert.setOnAction(event -> ajouterVoyage(event));
+
+        btn_ret.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/pidevjava/hello-view.fxml"));
+                    Parent root = fxmlLoader.load();
+
+                    // Create a new scene
+                    Scene scene = new Scene(root);
+
+                    // Get the stage from the button's scene
+                    Stage stage = (Stage) btn_ret.getScene().getWindow();
+
+                    // Set the new scene
+                    stage.setScene(scene);
+                    stage.show();
+                 } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     private void selectVoyage(MouseEvent event) {

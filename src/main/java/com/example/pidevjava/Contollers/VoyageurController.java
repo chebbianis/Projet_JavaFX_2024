@@ -6,13 +6,19 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.chart.PieChart;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,7 +36,8 @@ public class VoyageurController {
     @FXML
     private Button btn_update;
 
-
+    @FXML
+    private Button btn_stat;
 
     @FXML
     private Button bn_pdf;
@@ -96,7 +103,8 @@ public class VoyageurController {
     @FXML
     private TextField rechercheField;
 
-
+    @FXML
+    private Button btn_ret;
 
 
     @FXML
@@ -126,6 +134,51 @@ public class VoyageurController {
         btn_delete.setOnAction(event -> supprimerVoyageur());
         btn_update.setOnAction(event -> modifierVoyageur());
         btn_insert.setOnAction(event -> ajouterVoyageur());
+
+        btn_stat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/pidevjava/EtatCivil.fxml"));
+                    Parent root = fxmlLoader.load();
+
+                    // Create a new scene
+                    Scene scene = new Scene(root);
+
+                    // Get the stage from the button's scene
+                    Stage stage = (Stage) btn_stat.getScene().getWindow();
+
+                    // Set the new scene
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        btn_ret.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/pidevjava/hello-view.fxml"));
+                    Parent root = fxmlLoader.load();
+
+                    // Create a new scene
+                    Scene scene = new Scene(root);
+
+                    // Get the stage from the button's scene
+                    Stage stage = (Stage) btn_ret.getScene().getWindow();
+
+                    // Set the new scene
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     private boolean isValidEmail(String email) {
