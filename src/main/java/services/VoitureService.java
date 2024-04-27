@@ -72,8 +72,8 @@ public class VoitureService implements IService<Voiture>{
             v.setMarque(rs.getString("marque"));
             v.setAnnee(rs.getDate("annee").toLocalDate());
             v.setPrix_j(rs.getInt("prix_j"));
-            v.setPrix_j(rs.getInt("kilometrage"));
-            v.setPrix_j(rs.getInt("nbrPlaces"));
+            v.setKilometrage(rs.getInt("kilometrage"));
+            v.setNbrPlaces(rs.getInt("nbrPlaces"));
             voitures.add(v);
         }
         return voitures;

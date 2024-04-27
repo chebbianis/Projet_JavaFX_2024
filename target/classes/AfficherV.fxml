@@ -3,25 +3,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="modifier_btn" prefHeight="576.0" prefWidth="821.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVControllers" stylesheets="@css/styles.css" styleClass="lighter-green">
+<AnchorPane fx:id="modifier_btn" prefHeight="651.0" prefWidth="976.0" styleClass="lighter-green" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVControllers">
 <children>
-    <Button fx:id="Modifier_btn" layoutX="57.0" layoutY="397.0" mnemonicParsing="false" onAction="#goToModification" text="modifier Cette Voiture" />
-    <TableView fx:id="tableviewVoiture" layoutX="244.0" layoutY="88.0" onMouseClicked="#handleRowSelection" prefHeight="295.0" prefWidth="535.0" styleClass="table-view">
+    <Button fx:id="Modifier_btn" layoutX="36.0" layoutY="389.0" mnemonicParsing="false" onAction="#goToModification" styleClass="myButton" text="modifier Cette Voiture" />
+    <TableView fx:id="tableviewVoiture" layoutX="244.0" layoutY="88.0" onMouseClicked="#handleRowSelection" prefHeight="295.0" prefWidth="576.0" styleClass="table-view">
         <columns>
             <TableColumn fx:id="colMarque" prefWidth="75.0" text="Marque" />
             <TableColumn fx:id="colAnnee" prefWidth="122.19998168945312" text="Annee" />
-            <TableColumn fx:id="colPrix_j" prefWidth="97.79997253417969" text="Prix par jour" />
-            <TableColumn fx:id="colKilometrage" prefWidth="105.5999755859375" text="Kilométrage" />
-            <TableColumn fx:id="colNbrPlaces" prefWidth="143.60003662109375" text="Nombre de Places" />
+            <TableColumn fx:id="colPrix_j" prefWidth="113.39996337890625" text="Prix par jour" />
+            <TableColumn fx:id="colKilometrage" prefWidth="116.20001220703125" text="Kilométrage" />
+            <TableColumn fx:id="colNbrPlaces" prefWidth="146.0" text="Nombre de Places" />
         </columns>
     </TableView>
-    <TextField fx:id="txtVoiture_Marque" layoutX="50.0" layoutY="118.0" styleClass="text-field"/>
-    <DatePicker fx:id="txtAnnee" layoutX="51.0" layoutY="170.0" prefHeight="26.0" prefWidth="150.0" styleClass="date-picker"/>
+    <TextField fx:id="txtVoiture_Marque" layoutX="50.0" layoutY="118.0" styleClass="text-field" />
+    <DatePicker fx:id="txtAnnee" layoutX="51.0" layoutY="170.0" prefHeight="26.0" prefWidth="150.0" styleClass="date-picker" />
     <TextField fx:id="txtPrix_j" layoutX="51.0" layoutY="223.0" />
     <TextField fx:id="txtKilometrage" layoutX="51.0" layoutY="276.0" />
     <TextField fx:id="txtNbrPlaces" layoutX="51.0" layoutY="334.0" />
     <TextField fx:id="txtId" layoutX="51.0" layoutY="63.0" />
-    <Button fx:id="deleteButton" layoutX="369.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleDeleteButton" text="Supprimer" styleClass="myButton"/>
-    <Button fx:id="updateButton" layoutX="477.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleUpdateButton" text="Modifier" styleClass="myButton"/>
+    <Button fx:id="deleteButton" layoutX="369.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleDeleteButton" styleClass="myButton" text="Supprimer" />
+    <Button fx:id="updateButton" layoutX="532.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleUpdateButton" styleClass="myButton" text="Modifier" />
 </children>
 </AnchorPane>
