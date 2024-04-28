@@ -4,44 +4,73 @@ import java.util.Objects;
 
 public class User {
     private int id;
-    private String username;
+    //private int regionId;
+    private String email;
     private String password;
     private String firstName;
     private String lastName;
-    private String email;
-    private String location;
-    private String roleUser;
+    private String adresse;
+    private String ville;
+    private String roles;
+    private String githubId;
+    private String mapsLink;
+    private String test;
+    private Region region;
+    private String regionName;
 
-    // Constructeur
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+
+    public String getRegionName() {
+        return regionName;
     }
 
-    public User(int id, String username, String password, String firstName, String lastName, String email, String location, String roleUser) {
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public User() {
+    }
+
+    public User(int id, String email, String password, String firstName, String lastName, String adresse, String ville, String roles, Region region) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.adresse = adresse;
+        this.ville = ville;
+        this.roles = roles;
+        this.region = region;
+    }
+
+    public User(String email, String password) {
         this.email = email;
-        this.location = location;
-        if (roleUser != null) {
-            this.roleUser = roleUser;
-        } else {
-            this.roleUser = "USER";
-        }}
-//        if (roleUser != null) {
-//            this.roleUser = Role.valueOf(roleUser);
-//        } else {
-//            // Gérer le cas où roleUser est null
-//            // Par exemple, vous pouvez attribuer une valeur par défaut
-//            this.roleUser = Role.USER;
-//        }
+        this.password = password;
+    }
+
+    public User(String roles) {
+        this.roles = roles;
+    }
 
 
-    // Getters et Setters
+    public User(int id, String email, String password, String firstName, String lastName, String adresse, String ville, String roles) {
 
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.adresse = adresse;
+        this.ville = ville;
+        this.roles = roles;
+    }
 
     public int getId() {
         return id;
@@ -51,12 +80,13 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -83,40 +113,69 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getAdresse() {
+        return adresse;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
 
-    public String getRoleUser() {
-        return roleUser;
+    public String getVille() {
+        return ville;
     }
 
-    public void setRoleUser(String roleUser) {
-        this.roleUser = roleUser;
+    public void setVille(String ville) {
+        this.ville = ville;
     }
 
-    public String getLocation() {
-        return location;
+    public String getGithubId() {
+        return githubId;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setGithubId(String githubId) {
+        this.githubId = githubId;
+    }
+
+    public String getMapsLink() {
+        return mapsLink;
+    }
+
+    public void setMapsLink(String mapsLink) {
+        this.mapsLink = mapsLink;
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", location='" + location + '\'' +
-                ", roleUser=" + roleUser +
+                ", adresse='" + adresse + '\'' +
+                ", ville='" + ville + '\'' +
+                ", roles='" + roles + '\'' +
+                ", githubId='" + githubId + '\'' +
+                ", mapsLink='" + mapsLink + '\'' +
+                ", test='" + test + '\'' +
+                ", region=" + region +
                 '}';
     }
 
@@ -124,13 +183,11 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(getUsername(), user.getUsername()) && Objects.equals(getPassword(), user.getPassword());
+        return Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword());
+        return Objects.hash(getEmail(), getPassword());
     }
-
-
 }

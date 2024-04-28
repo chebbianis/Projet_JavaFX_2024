@@ -22,12 +22,11 @@ public class MainController implements Initializable {
     @FXML
     private Button button_login;
 
-
     @FXML
     private Button button_sign_up;
 
     @FXML
-    private TextField tf_username;
+    private TextField tf_email;
 
     @FXML
     private TextField tf_password;
@@ -37,8 +36,8 @@ public class MainController implements Initializable {
         button_login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (!tf_username.getText().trim().isEmpty() && !tf_password.getText().trim().isEmpty() ) {
-                    DBUtils.loginUser(event,tf_username.getText(),tf_password.getText());
+                if (!tf_email.getText().trim().isEmpty() && !tf_password.getText().trim().isEmpty() ) {
+                    DBUtils.loginUser(event,tf_email.getText(),tf_password.getText());
                 } else {
                     System.out.println("Please fill in all information");
                     Alert alert = new Alert(Alert.AlertType.ERROR);
