@@ -26,6 +26,8 @@ import services.VoitureService;
 
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+
 import javafx.scene.control.Button;
 
 
@@ -69,12 +71,19 @@ public class AfficherVControllers {
     private TableColumn<Voiture, Integer> colNbrPlaces;
 
     private VoitureService voitureService;
+    private ObservableList<Voiture> voitureList;
 
     @FXML
     private Button deleteButton;
 
     @FXML
     private Button updateButton;
+
+    @FXML
+    private TextField searchTextField;
+
+    @FXML
+    private Button searchButton;
 
 
 
@@ -172,6 +181,7 @@ public class AfficherVControllers {
         }
     }
 
+
     @FXML
     public void handleRowSelection(MouseEvent event) {
         Voiture selectedVoiture = tableviewVoiture.getSelectionModel().getSelectedItem();
@@ -222,6 +232,29 @@ public class AfficherVControllers {
                 e.printStackTrace(); // Handle error loading FXML
             }
 
+        }
+    }
+
+    @FXML
+    private void searchVoitures() {
+        String searchString = searchTextField.getText().toLowerCase();
+
+        tableviewVoiture.getItems().clear(); // Clear previous items
+
+        try {
+            if (searchString.isEmpty()) {
+                // If search text is empty, reload all voitures
+                loadVoitures();
+            } else {
+                List<Voiture> filteredVoitures = voitureService.recuperer().stream()
+                        .filter(voiture -> voiture.getMarque().toLowerCase().contains(searchString))
+                        .collect(Collectors.toList());
+
+                tableviewVoiture.getItems().addAll(filteredVoitures);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the SQLException
+            // Optionally, display an error message to the user
         }
     }
 

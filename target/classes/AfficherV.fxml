@@ -23,5 +23,8 @@
     <TextField fx:id="txtId" layoutX="51.0" layoutY="63.0" />
     <Button fx:id="deleteButton" layoutX="369.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleDeleteButton" styleClass="myButton" text="Supprimer" />
     <Button fx:id="updateButton" layoutX="532.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleUpdateButton" styleClass="myButton" text="Modifier" />
+    <HBox spacing="5" />
+     <TextField fx:id="searchTextField" layoutX="244.0" layoutY="50.0" promptText="Enter marque to search" />
+     <Button fx:id="searchButton" layoutX="406.0" layoutY="42.0" styleClass="myButton" text="🔍" onAction="#searchVoitures"/>
 </children>
 </AnchorPane>
