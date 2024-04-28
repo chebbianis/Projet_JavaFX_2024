@@ -5,6 +5,8 @@ module com.example.pidevjava {
     requires javafx.web;
 
     requires org.apache.pdfbox;
+    requires com.gluonhq.maps;
+
     requires org.controlsfx.controls;
     requires net.synedra.validatorfx;
 

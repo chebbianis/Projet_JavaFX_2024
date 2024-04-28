@@ -41,6 +41,7 @@
                         <Font name="Ayuthaya" size="15.0" />
                     </font>
                 </Label>
+            <Button fx:id="btn_map" mnemonicParsing="false" text="Map" />
             </children>
         </VBox>
         <VBox fx:id="tr_prix" layoutX="126.0" layoutY="76.0" prefHeight="316.0" prefWidth="270.0" spacing="20.0">
@@ -57,7 +58,7 @@
                         <Font size="14.0" />
                     </font>
                 </TextField>
-            <Button fx:id="btn_map" mnemonicParsing="false" text="Map" />
+            <TextField fx:id="tf_des" />
 
             </children>
         </VBox>
