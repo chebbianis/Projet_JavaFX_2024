@@ -23,6 +23,9 @@ public class ServiceMaison implements IService <Maison> {
     */
    @Override
    public void ajouter(Maison maison) throws SQLException {
+       if (maisonExiste(maison.getNom())) {
+           throw new SQLException("Ce nom de maison existe déjà.");
+       }
        String req = "INSERT INTO maison (nom, adresse, nombre_chambre, prix, type, image) VALUES (?, ?, ?, ?, ?, ?)";
        PreparedStatement pre = connection.prepareStatement(req);
        pre.setString(1, maison.getNom());
@@ -33,6 +36,17 @@ public class ServiceMaison implements IService <Maison> {
        pre.setString(6, maison.getImage());
        pre.executeUpdate();
    }
+    public boolean maisonExiste(String nom) throws SQLException {
+        String req = "SELECT COUNT(*) FROM maison WHERE nom = ?";
+        PreparedStatement pre = connection.prepareStatement(req);
+        pre.setString(1, nom);
+        ResultSet resultSet = pre.executeQuery();
+        if (resultSet.next()) {
+            int count = resultSet.getInt(1);
+            return count > 0;
+        }
+        return false;
+    }
 
     @Override
     public void modifier(Maison maison) throws SQLException {
@@ -105,5 +119,6 @@ public class ServiceMaison implements IService <Maison> {
         }
         return maisons;
     }
+
 
 }

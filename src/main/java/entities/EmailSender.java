@@ -35,13 +35,13 @@ public class EmailSender {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(EMAIL_USERNAME));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-            message.setSubject("Confirmation demande");
+            message.setSubject("Confirmation Demande de Visite");
             Multipart multipart = new MimeMultipart();
             String emailContentWithSignature = "<html>" +
                     "<body>" +
                     "<p>Cher " + nom + ",</p>" +
-                    "<p><strong>Merci de vous être inscrit à notre plateforme.</strong></p>" +
-                    "<p>Cordialement,<br>StudyLand</p>" +
+                    "<p><strong>Votre demande de visite a été enregistrée avec succés.</strong></p>" +
+                    "<p>Cordialement,<br></p>" +
                     "</body>" +
                     "</html>";
             MimeBodyPart textPart = new MimeBodyPart();

@@ -160,6 +160,21 @@ public class AjouterMaison {
             errorAlert.showAndWait();
             return; // Arrêter l'exécution de la méthode
         }
+        // Vérifier si le nom de maison existe déjà
+        String nomMaison = nom.getText();
+        ServiceMaison serviceMaison = new ServiceMaison();
+        try {
+            if (serviceMaison.maisonExiste(nomMaison)) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Entrée invalide");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("le nom existe déja");
+                errorAlert.showAndWait();
+                return;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         String prixValue = prix.getText();
         if (!prixValue.matches("\\d+") || Integer.parseInt(prixValue) <= 0 ) {
             // Afficher un message d'erreur à l'utilisateur
@@ -171,6 +186,7 @@ public class AjouterMaison {
             return; // Arrêter l'exécution de la méthode
         }
 
+
         // Convertir les valeurs des champs en entiers
         int nombreChambre = Integer.parseInt(nombreChambreValue);
         int Prix = Integer.parseInt(prixValue);
@@ -180,7 +196,7 @@ public class AjouterMaison {
         Maison maison = new Maison(nom.getText(), adresse.getText(), nombreChambre, Prix, typeValue, image);
 
         // Appeler la méthode d'ajout de ServiceMaison
-        ServiceMaison serviceMaison = new ServiceMaison();
+      //  ServiceMaison serviceMaison = new ServiceMaison();
         try {
             serviceMaison.ajouter(maison);
             clear();
@@ -197,6 +213,7 @@ public class AjouterMaison {
             //  throw new RuntimeException(e);
         }
     }
+
     private String image;
     void clear (){
         nom.setText(null);

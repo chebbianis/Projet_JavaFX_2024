@@ -11,12 +11,12 @@
 
 <AnchorPane prefHeight="487.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterVisit">
    <children>
-      <TextField fx:id="numV" layoutX="298.0" layoutY="129.0" promptText="Numero" />
-      <TextField fx:id="nomV" layoutX="298.0" layoutY="181.0" promptText="Nom" />
-      <TextField fx:id="emailV" layoutX="298.0" layoutY="232.0" promptText="Email" />
-      <DatePicker fx:id="dateV" layoutX="297.0" layoutY="278.0" prefHeight="26.0" prefWidth="150.0" promptText="JJ/MM/AAAA" />
-      <ComboBox fx:id="comboV" layoutX="297.0" layoutY="324.0" prefHeight="26.0" prefWidth="150.0" />
-      <Button layoutX="322.0" layoutY="386.0" mnemonicParsing="false" onAction="#ajouterVisit" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: #65c13e;" text="Valider">
+      <TextField fx:id="numV" layoutX="198.0" layoutY="296.0" prefHeight="26.0" prefWidth="150.0" promptText="Numero" />
+      <TextField fx:id="nomV" layoutX="546.0" layoutY="231.0" promptText="Nom" />
+      <TextField fx:id="emailV" layoutX="546.0" layoutY="185.0" promptText="Email" />
+      <DatePicker fx:id="dateV" layoutX="198.0" layoutY="243.0" prefHeight="26.0" prefWidth="150.0" promptText="JJ/MM/AAAA" />
+      <ComboBox fx:id="comboV" layoutX="546.0" layoutY="270.0" prefHeight="26.0" prefWidth="150.0" />
+      <Button layoutX="224.0" layoutY="394.0" mnemonicParsing="false" onAction="#ajouterVisit" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #65c13e;" text="Valider">
          <font>
             <Font name="Bell MT" size="16.0" />
          </font></Button>
@@ -24,6 +24,35 @@
       <Label layoutX="269.0" layoutY="14.0" prefHeight="42.0" prefWidth="190.0" style="-fx-background-color: #65c13e;" text="   Demander une Visite" textFill="#080303">
          <font>
             <Font name="Bell MT" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="disponibiliteLabel" layoutX="198.0" layoutY="344.0" prefHeight="34.0" prefWidth="502.0" textFill="RED">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Label layoutX="192.0" layoutY="93.0" prefHeight="34.0" prefWidth="83.0" text="Bonjour ">
+         <font>
+            <Font name="Bell MT" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="nomVLabel" layoutX="272.0" layoutY="99.0" prefHeight="22.0" prefWidth="90.0">
+         <font>
+            <Font name="Bell MT" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="192.0" layoutY="141.0" prefHeight="26.0" prefWidth="190.0" text="Veuillez choir la date pour">
+         <font>
+            <Font name="Bell MT" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="comboVLabel" layoutX="382.0" layoutY="143.0" prefHeight="22.0" prefWidth="110.0">
+         <font>
+            <Font name="Bell MT" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="emailVLabel" layoutX="192.0" layoutY="184.0" prefHeight="26.0" prefWidth="211.0">
+         <font>
+            <Font size="16.0" />
          </font>
       </Label>
    </children>

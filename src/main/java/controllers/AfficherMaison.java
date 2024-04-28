@@ -6,7 +6,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,12 +17,28 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import services.ServiceMaison;
+import utils.MyDB;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.util.Map;
 
 public class AfficherMaison {
     @FXML
@@ -83,6 +102,14 @@ public class AfficherMaison {
     private Button convertirTNDenEUR;
 
     private double tauxChangeTND_EUR = 0.3;
+    @FXML
+    private Button bntExcel;
+    private Connection connection;
+    @FXML
+    private PieChart pieChart;
+
+    ServiceMaison serviceMaison = new ServiceMaison();
+
 
     @FXML
     void insertImage(ActionEvent event) {
@@ -112,6 +139,102 @@ public class AfficherMaison {
             throw new RuntimeException(e);
         }
 
+    }
+    @FXML
+    void bntExcel(ActionEvent event) throws SQLException, FileNotFoundException, IOException {
+        String sql = "SELECT * FROM maison";
+        this.connection = MyDB.getInstance().getConnection();
+        PreparedStatement preparedStatement = this.connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("Détails Maison");
+        HSSFRow header = sheet.createRow(0);
+        header.createCell(1).setCellValue("Nom ");
+        header.createCell(2).setCellValue("Adresse");
+        header.createCell(3).setCellValue("Nombre de chambre");
+        header.createCell(4).setCellValue("Prix");
+        header.createCell(5).setCellValue("Type");
+        header.createCell(6).setCellValue("Image ");
+
+        int index = 1;
+        while (resultSet.next()) {
+
+            HSSFRow row = sheet.createRow(index);
+            row.createCell(1).setCellValue(resultSet.getString("nom"));
+            row.createCell(2).setCellValue(resultSet.getString("adresse"));
+            row.createCell(3).setCellValue(resultSet.getString("nombre_chambre"));
+            row.createCell(4).setCellValue(resultSet.getString("prix"));
+            row.createCell(5).setCellValue(resultSet.getString("type"));
+            row.createCell(6).setCellValue(resultSet.getString("image"));
+
+
+            index++;
+        }
+
+        String filePath = "C:/Users/malek bdiri/IdeaProjects/Pidev/src/main/java/excel/Maison.xls";
+        FileOutputStream fileOut = new FileOutputStream(filePath);
+        wb.write(fileOut);
+        fileOut.close();
+        resultSet.close();
+
+        // Ouvrir le fichier Excel après l'avoir créé dans un thread séparé
+        new Thread(() -> {
+            try {
+                openExcelFile(filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+  /*  private void openExcelFile(String filePath) throws IOException {
+        File file = new File(filePath);
+        Desktop desktop = Desktop.getDesktop();
+        desktop.open(file);
+        JOptionPane.showMessageDialog(null, "Exportation 'EXCEL' effectuée avec succès");
+    }*/
+  private void openExcelFile(String filePath) throws IOException {
+      File file = new File(filePath);
+      if (file.exists()) {
+          Desktop desktop = Desktop.getDesktop();
+          desktop.open(file);
+          JOptionPane.showMessageDialog(null, "Exportation 'EXCEL' effectuée avec succès");
+      } else {
+          JOptionPane.showMessageDialog(null, "Le fichier Excel n'a pas été trouvé.");
+      }
+  }
+    @FXML
+    void stat(ActionEvent event) {
+        try {
+            generateAnimeStatistics(); 
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+    }
+    private void generateAnimeStatistics() throws SQLException {
+        Map<String, Integer> animeFrequency = new HashMap<>();
+
+        List<Maison> maisons = serviceMaison.afficher(); // Assuming a method to retrieve all debates
+
+        // Count frequency of each anime name
+        for (Maison maison : maisons) {
+            String type = maison.getType();
+            animeFrequency.put(type, animeFrequency.getOrDefault(type, 0) + 1);
+        }
+
+        // Prepare data for the PieChart
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for (Map.Entry<String, Integer> entry : animeFrequency.entrySet()) {
+            pieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+        }
+
+        // Initialize pieChart if null
+        if (pieChart == null) {
+            pieChart = new PieChart();
+            // Add pieChart to your layout if necessary
+        }
+
+        // Set the data to the PieChart
+        pieChart.setData(pieChartData);
     }
 
     @FXML

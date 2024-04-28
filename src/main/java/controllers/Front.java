@@ -38,6 +38,7 @@ public class Front implements Initializable {
     @FXML
     private ComboBox<String> typeFilterComboBox;
     private List<Maison> maisons;
+    private Maison selectedMaison;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,10 +62,8 @@ public class Front implements Initializable {
         System.out.println("Type sélectionné : " + selectedType); // Afficher le type sélectionné
 
         if ("Tous".equals(selectedType)) {
-            // Afficher toutes les maisons si "Tous" est sélectionné
             maisonsFiltrees = maisons;
         } else {
-            // Filtrer les maisons par type sélectionné
             for (Maison maison : maisons) {
                 if (maison.getType().equals(selectedType)) {
                     maisonsFiltrees.add(maison);
@@ -73,8 +72,6 @@ public class Front implements Initializable {
         }
 
         System.out.println("Maisons filtrées : " + maisonsFiltrees); // Afficher les maisons filtrées
-
-        // Afficher les maisons filtrées
         afficherMaisons(maisonsFiltrees);
     }
 
@@ -118,44 +115,66 @@ public class Front implements Initializable {
             System.out.println("Image path is null or empty.");
         }
 
-
         Label nameLabel = new Label(maison.getNom());
         Label prixLabel = new Label("Prix : " + maison.getPrix());
         Label typeLabel = new Label("Type : " + maison.getType());
         Label adresseLabel = new Label("Adresse : " + maison.getAdresse());
         Button addButton = new Button("Demander une visite ");
         addButton.getStyleClass().add("addbuttonevaluation");
-        maisonBox.getChildren().addAll(imageView, nameLabel, prixLabel, typeLabel, adresseLabel, addButton);
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
+        Button ratingButton = new Button("Rating");
+        ratingButton.getStyleClass().add("ratingButton");
+        HBox buttonBox = new HBox(addButton, ratingButton);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setSpacing(10);
 
+        maisonBox.getChildren().addAll(imageView, nameLabel, prixLabel, typeLabel, adresseLabel, addButton,ratingButton);
+
+        addButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
+                selectedMaison = maison;
+
                 try {
-                    // Charger la vue AjouterE.fxml
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterVisit.fxml"));
                     Parent root = loader.load();
-                    User user =new User(1,"syrine","fffff","syrine","Trablsi","syrinet6@gmail.com","role","s");
-                    AjouterVisit controller =loader.getController();
-                    controller.getNomV().setText(user.getUsername());
-                    controller.getEmailV().setText(user.getEmail());
 
+                    AjouterVisit controller = loader.getController();
 
-                    // Créer une nouvelle instance
+                    User user = new User(1, "Malek", "fffff", "Bdiri", "Malek", "malekbdiri05@gmail.com", "role", "s");
+                    controller.getNomVLabel().setText(user.getUsername());
+                    controller.getEmailVLabel().setText(user.getEmail());
+
+                    controller.getComboVLabel().setText(selectedMaison.getNom());
+
                     Stage stage = new Stage();
                     stage.setScene(new Scene(root));
-
-                    // Afficher la scène
                     stage.show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
+        ratingButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Rating.fxml"));
+                try {
+                    Parent root = loader.load();
+                    Rating ratingController = loader.getController();
+                    ratingController.setMaison(maison);
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
 
         maisonBox.setSpacing(20);
         maisonBox.setAlignment(Pos.CENTER);
 
-
         return maisonBox;
     }
+
 
 }
