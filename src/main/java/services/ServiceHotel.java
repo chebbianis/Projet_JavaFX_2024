@@ -69,23 +69,25 @@ public class ServiceHotel implements IServices<Hotel> {
 
 
     public List<Hotel> rechercher(String rechercheText) throws SQLException {
-        String sql = "SELECT * FROM bien WHERE nom_hotel LIKE ? OR adresse_hotel LIKE ? OR nbre_etoile = ? OR prix_nuit LIKE ?";
+        String sql = "SELECT * FROM hotel WHERE nom_hotel LIKE ? OR adresse_hotel LIKE ? OR nbre_etoile = ? OR prix_nuit LIKE ?";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, "%" + rechercheText + "%");
-        preparedStatement.setString(2, "%" + rechercheText + "%");
+        preparedStatement.setString(1, "%" + rechercheText + "%"); // nom_hotel LIKE ?
+        preparedStatement.setString(2, "%" + rechercheText + "%"); // adresse_hotel LIKE ?
         try {
             int nbreEtoile = Integer.parseInt(rechercheText);
-            preparedStatement.setInt(3, nbreEtoile);
+            preparedStatement.setInt(3, nbreEtoile); // nbre_etoile = ?
         } catch (NumberFormatException e) {
-            preparedStatement.setString(3, "0"); // Mettre une valeur par défaut si la conversion échoue
+            preparedStatement.setInt(3, -1); // Utiliser -1 pour indiquer une recherche sans filtre d'étoiles
         }
-        preparedStatement.setString(4, "%" + rechercheText + "%");
+
+        preparedStatement.setString(4, "%" + rechercheText + "%"); // prix_nuit LIKE ?
+
         ResultSet rs = preparedStatement.executeQuery();
 
         List<Hotel> hotels = new ArrayList<>();
         while (rs.next()) {
             Hotel hotel = new Hotel();
-            hotel.setIdH(rs.getInt("idH"));
+            hotel.setIdH(rs.getInt("id_h"));
             hotel.setNom_hotel(rs.getString("nom_hotel"));
             hotel.setNbre_etoile(rs.getInt("nbre_etoile"));
             hotel.setAdresse_hotel(rs.getString("adresse_hotel"));

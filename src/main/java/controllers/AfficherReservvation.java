@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.Hotel;
 import entities.Reservation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,10 +9,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import services.ServiceHotel;
 import services.ServiceReservation;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.util.List;
 
 public class AfficherReservvation {
@@ -103,7 +107,6 @@ public class AfficherReservvation {
             nbreAdulteCol.setCellValueFactory(new PropertyValueFactory<>("nbre_adulte"));
             nbreEnfantCol.setCellValueFactory(new PropertyValueFactory<>("nbre_enfant"));
             nomHotelCol.setCellValueFactory(new PropertyValueFactory<>("idH"));
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -215,6 +218,18 @@ public class AfficherReservvation {
             reservation.setNbre_adulte(nbreAdulte);
             reservation.setNbre_enfant(nbreEnfant);
 
+            float prix_nuit = 100; // Remplacez cette valeur par le prix unitaire réel
+
+            LocalDate dateArrivee = reservation.getDate_arrivee();
+            LocalDate dateDepart = reservation.getDate_depart();
+
+            int nbreNuits = (int) ChronoUnit.DAYS.between(dateArrivee, dateDepart); // Calcul du nombre de nuits
+
+            float prix_total = calculerPrixTotal(prix_nuit, nbreChambre, nbreNuits);
+            reservation.setPrix_total((int) prix_total);
+            // ... remaining code ...
+
+
             // Mettre à jour l'objet Reservation dans la base de données
             ServiceReservation serviceReservation = new ServiceReservation();
             try {
@@ -238,6 +253,24 @@ public class AfficherReservvation {
             alert.showAndWait();
         }
 
+    }
+    /*private void rechercherReservation(String rechercheText) {
+        ServiceReservation revService = new ServiceReservation();
+
+        try {
+            List<Reservation> rev = revService.rechercher(rechercheText); // Remplacez cette ligne avec votre méthode de recherche personnalisée
+
+            ObservableList<Hotel> observableList = FXCollections.observableList(rev);
+            tableRev.setItems(Reservation);
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }*/
+    private float calculerPrixTotal(float prix_nuit, int nbreChambre, int nbreNuits) {
+        return prix_nuit * nbreChambre * nbreNuits;
     }
 
 }

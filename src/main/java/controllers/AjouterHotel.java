@@ -119,7 +119,7 @@ public class AjouterHotel {
             }*/
         });
         spinnerNbreEtoile.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1));
-        spinnerPrixNuit.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, Double.MAX_VALUE, 0, 0.1));
+        spinnerPrixNuit.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, Double.MAX_VALUE, 0, 10));
 
     }
     private TextFormatter<String> createTextFormatter(String pattern) {

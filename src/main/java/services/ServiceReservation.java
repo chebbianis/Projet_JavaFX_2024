@@ -1,5 +1,6 @@
 package services;
 
+import entities.Hotel;
 import entities.Reservation;
 import utils.MySQLConnector;
 
@@ -87,5 +88,34 @@ public class ServiceReservation implements IServices<Reservation> {
         }
         return reservations;
     }
+   /* public List<Hotel> rechercher(String rechercheText) throws SQLException {
+        String sql = "SELECT * FROM reservation WHERE nom_hotel LIKE ? OR adresse_hotel LIKE ? OR nbre_etoile = ? OR prix_nuit LIKE ?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, "%" + rechercheText + "%"); // nom_hotel LIKE ?
+        preparedStatement.setString(2, "%" + rechercheText + "%"); // adresse_hotel LIKE ?
+        try {
+            int nbreEtoile = Integer.parseInt(rechercheText);
+            preparedStatement.setInt(3, nbreEtoile); // nbre_etoile = ?
+        } catch (NumberFormatException e) {
+            preparedStatement.setInt(3, -1); // Utiliser -1 pour indiquer une recherche sans filtre d'étoiles
+        }
+
+        preparedStatement.setString(4, "%" + rechercheText + "%"); // prix_nuit LIKE ?
+
+        ResultSet rs = preparedStatement.executeQuery();
+
+        List<Hotel> hotels = new ArrayList<>();
+        while (rs.next()) {
+            Hotel hotel = new Hotel();
+            hotel.setIdH(rs.getInt("id_h"));
+            hotel.setNom_hotel(rs.getString("nom_hotel"));
+            hotel.setNbre_etoile(rs.getInt("nbre_etoile"));
+            hotel.setAdresse_hotel(rs.getString("adresse_hotel"));
+            hotel.setPrix_nuit(rs.getFloat("prix_nuit"));
+            hotel.setImage(rs.getString("image"));
+            hotels.add(hotel);
+        }
+        return hotels;
+    }*/
 
 }

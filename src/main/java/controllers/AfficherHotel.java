@@ -1,22 +1,37 @@
 package controllers;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import entities.Hotel;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import services.ServiceHotel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import java.awt.*;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import javafx.scene.input.MouseEvent;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class AfficherHotel {
 
@@ -31,7 +46,8 @@ public class AfficherHotel {
 
     @FXML
     private Spinner<Integer> spinnerNbreEtoileModif;
-
+    @FXML
+    private ComboBox<String> hotelComboBox;
     @FXML
     private Spinner<Double> spinnerPrixnuitModif;
 
@@ -67,6 +83,9 @@ public class AfficherHotel {
     private String image;
     @FXML
     private ImageView imageHotel;
+    @FXML
+    private TextField rechercheField;
+    private List<Hotel> hotels;
 
    @FXML
    void update(ActionEvent event) {
@@ -203,11 +222,15 @@ public class AfficherHotel {
 
     @FXML
     void initialize() {
+        rechercheField.textProperty().addListener((observable, oldValue, newValue) -> {
+            rechercherHotel(newValue); // Appeler rechercherHotel avec le nouveau texte de recherche
+        });
         // Instanciation du service pour la gestion des hôtels
         ServiceHotel serviceHotel = new ServiceHotel();
         try {
             // Récupération de la liste des hôtels depuis la base de données
-            List<Hotel> hotels = serviceHotel.afficher();
+            //List<Hotel> hotels = serviceHotel.afficher();
+            hotels = serviceHotel.afficher();
 
             // Création d'une liste observable à partir de la liste des hôtels
             ObservableList<Hotel> observableList = FXCollections.observableList(hotels);
@@ -234,6 +257,223 @@ public class AfficherHotel {
             alert.showAndWait();
         }
     }
+    private void rechercherHotel(String rechercheText) {
+        ServiceHotel hotelService = new ServiceHotel();
 
+        try {
+            List<Hotel> hotel = hotelService.rechercher(rechercheText); // Remplacez cette ligne avec votre méthode de recherche personnalisée
+
+            ObservableList<Hotel> observableList = FXCollections.observableList(hotel);
+            tableHotel.setItems(observableList);
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+  /*  public void sortAsc(ActionEvent actionEvent) {
+        // Obtenez la liste des hôtels actuellement affichés dans la table
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+
+        // Triez la liste des hôtels par ordre croissant en fonction de plusieurs attributs
+        hotels.sort(
+                Comparator.comparing(Hotel::getNom_hotel)
+                        .thenComparing(Hotel::getNbre_etoile)
+                        .thenComparing(Hotel::getAdresse_hotel)
+                        .thenComparing(Hotel::getPrix_nuit)
+        );
+
+        // Mettez à jour la table avec la liste triée
+        tableHotel.setItems(hotels);
+    }
+
+    public void sortDesc(ActionEvent actionEvent) {
+        // Obtenez la liste des hôtels actuellement affichés dans la table
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+
+        // Triez la liste des hôtels par ordre décroissant en fonction du nom de l'hôtel
+        hotels.sort(Comparator.comparing(Hotel::getNom_hotel).reversed());
+
+        // Mettez à jour la table avec la liste triée
+        tableHotel.setItems(hotels);
+    }*/
+    public void sortByNameAsc(ActionEvent actionEvent) {
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+        hotels.sort(Comparator.comparing(Hotel::getNom_hotel));
+        tableHotel.setItems(hotels);
+    }
+
+    public void sortByAddressAsc(ActionEvent actionEvent) {
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+        hotels.sort(Comparator.comparing(Hotel::getAdresse_hotel));
+        tableHotel.setItems(hotels);
+    }
+
+    public void sortByPriceAsc(ActionEvent actionEvent) {
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+        hotels.sort(Comparator.comparing(Hotel::getPrix_nuit));
+        tableHotel.setItems(hotels);
+    }
+
+    public void sortByStarCountAsc(ActionEvent actionEvent) {
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+        hotels.sort(Comparator.comparing(Hotel::getNbre_etoile));
+        tableHotel.setItems(hotels);
+    }
+    public void sortByNameDesc(ActionEvent actionEvent) {
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+        hotels.sort(Comparator.comparing(Hotel::getNom_hotel).reversed());
+        tableHotel.setItems(hotels);
+    }
+
+    public void sortByAddressDesc(ActionEvent actionEvent) {
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+        hotels.sort(Comparator.comparing(Hotel::getAdresse_hotel).reversed());
+        tableHotel.setItems(hotels);
+    }
+
+    public void sortByPriceDesc(ActionEvent actionEvent) {
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+        hotels.sort(Comparator.comparing(Hotel::getPrix_nuit).reversed());
+        tableHotel.setItems(hotels);
+    }
+
+    public void sortByStarCountDesc(ActionEvent actionEvent) {
+        ObservableList<Hotel> hotels = tableHotel.getItems();
+        hotels.sort(Comparator.comparing(Hotel::getNbre_etoile).reversed());
+        tableHotel.setItems(hotels);
+    }
+
+   /* public void generateAndOpenPDF(ActionEvent event) {
+            Document document = new Document();
+
+            try {
+                // Spécification du chemin et du nom du fichier PDF
+                File file = new File("Téléchargements.pdf");
+                PdfWriter.getInstance(document, new FileOutputStream(file));
+
+                // Ouverture du document
+                document.open();
+
+                // Ajout du contenu au document en utilisant la liste hotels déclarée en tant que variable membre
+                for (Hotel hotel : hotels) {
+                    document.add(new Paragraph("Nom de l'hôtel: " + hotel.getNom_hotel()));
+                    document.add(new Paragraph("Adresse: " + hotel.getAdresse_hotel()));
+                    document.add(new Paragraph("Étoiles: " + hotel.getNbre_etoile()));
+                    document.add(new Paragraph("")); // Ajout d'une ligne vide entre chaque hôtel
+                }
+
+                // Fermeture du document
+                document.close();
+
+                // Ouverture du fichier PDF avec le programme par défaut
+                if (Desktop.isDesktopSupported()) {
+                    Desktop desktop = Desktop.getDesktop();
+                    if (desktop.isSupported(Desktop.Action.OPEN)) {
+                        desktop.open(file);
+                    } else {
+                        // Gestion alternative si l'ouverture n'est pas prise en charge
+                    }
+                } else {
+                    // Gestion alternative si Desktop n'est pas pris en charge
+                }
+            } catch (DocumentException | IOException e) {
+                e.printStackTrace();
+            }
+        }*/
+   public void generateAndOpenPDF(ActionEvent event) {
+       Document document = new Document();
+
+       try {
+           // Spécification du chemin et du nom du fichier PDF
+           File file = new File("Téléchargements.pdf");
+           PdfWriter.getInstance(document, new FileOutputStream(file));
+
+           // Ouverture du document
+           document.open();
+
+           // Ajouter un titre
+           Font titleFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD, BaseColor.DARK_GRAY);
+           Paragraph title = new Paragraph("La liste d'hôtel Tuinvista", titleFont);
+           title.setAlignment(Element.ALIGN_CENTER);
+           title.setSpacingAfter(20); // Espacement après le titre
+           document.add(title);
+
+           // Create a PdfPTable with 3 columns
+           PdfPTable table = new PdfPTable(3);
+
+           // Set table width percentage to 100%
+           table.setWidthPercentage(100);
+
+           // Set table border color and width
+           table.getDefaultCell().setBorderColor(BaseColor.LIGHT_GRAY);
+           table.getDefaultCell().setBorderWidth(1f);
+
+           // Set table header properties
+           Font headerFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD, BaseColor.WHITE);
+           PdfPCell headerCell1 = new PdfPCell(new Phrase("Nom de l'hôtel", headerFont));
+           PdfPCell headerCell2 = new PdfPCell(new Phrase("Adresse", headerFont));
+           PdfPCell headerCell3 = new PdfPCell(new Phrase("Étoiles", headerFont));
+
+           // Set header cell background color
+           headerCell1.setBackgroundColor(new BaseColor(51, 122, 183)); // Blue
+           headerCell2.setBackgroundColor(new BaseColor(51, 122, 183)); // Blue
+           headerCell3.setBackgroundColor(new BaseColor(51, 122, 183)); // Blue
+
+           // Set header cell text color
+           headerCell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+           headerCell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+           headerCell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+           // Add header cells to the table
+           table.addCell(headerCell1);
+           table.addCell(headerCell2);
+           table.addCell(headerCell3);
+
+           // Set table body properties
+           Font bodyFont = new Font(Font.FontFamily.HELVETICA, 10);
+           PdfPCell bodyCell;
+
+           // Add hotel details to the table
+           for (Hotel hotel : hotels) {
+               // Cell 1: Hotel Name
+               bodyCell = new PdfPCell(new Phrase(hotel.getNom_hotel(), bodyFont));
+               bodyCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+               table.addCell(bodyCell);
+
+               // Cell 2: Hotel Address
+               bodyCell = new PdfPCell(new Phrase(hotel.getAdresse_hotel(), bodyFont));
+               bodyCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+               table.addCell(bodyCell);
+
+               // Cell 3: Hotel Stars
+               bodyCell = new PdfPCell(new Phrase(String.valueOf(hotel.getNbre_etoile()), bodyFont));
+               bodyCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+               table.addCell(bodyCell);
+           }
+
+           // Add the table to the document
+           document.add(table);
+
+           // Fermeture du document
+           document.close();
+
+           // Ouverture du fichier PDF avec le programme par défaut
+           if (Desktop.isDesktopSupported()) {
+               Desktop desktop = Desktop.getDesktop();
+               if (desktop.isSupported(Desktop.Action.OPEN)) {
+                   desktop.open(file);
+               } else {
+                   // Gestion alternative si l'ouverture n'est pas prise en charge
+               }
+           } else {
+               // Gestion alternative si Desktop n'est pas pris en charge
+           }
+       } catch (DocumentException | IOException e) {
+           e.printStackTrace();
+       }
+   }
 
 }
