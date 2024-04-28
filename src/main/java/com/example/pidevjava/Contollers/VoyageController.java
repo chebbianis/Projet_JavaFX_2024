@@ -2,6 +2,7 @@ package com.example.pidevjava.Contollers;
 
 import com.example.pidevjava.Entities.Voyage;
 import com.example.pidevjava.service.serviceVoyage;
+import com.example.pidevjava.Contollers.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,17 +16,25 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.ResourceBundle;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
 public class VoyageController {
     @FXML
     private TableColumn<?, ?> col_prix;
+
+
+
 
     @FXML
     private TableColumn<?, ?> col_programme;
@@ -73,6 +82,11 @@ public class VoyageController {
     private Button btn_ret;
 
     @FXML
+    private WebView WebView;
+    @FXML
+    private Button btn_map;
+
+    @FXML
 
     private final serviceVoyage serviceVoyage = new serviceVoyage();
 
@@ -93,6 +107,28 @@ public class VoyageController {
         btn_delete.setOnAction(event -> supprimerVoyage());
         btn_update.setOnAction(event -> modifierVoyage(event));
         btn_insert.setOnAction(event -> ajouterVoyage(event));
+
+        btn_map.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/pidevjava/Map.fxml"));
+                    Parent root = fxmlLoader.load();
+
+                    // Create a new scene
+                    Scene scene = new Scene(root);
+
+                    // Get the stage from the button's scene
+                    Stage stage = (Stage) btn_map.getScene().getWindow();
+
+                    // Set the new scene
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         btn_ret.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -116,7 +152,12 @@ public class VoyageController {
             }
         });
 
+
     }
+
+
+
+
 
     private void selectVoyage(MouseEvent event) {
         if (event.getClickCount() == 1) { // Vérifie si un clic simple a été effectué

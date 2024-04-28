@@ -2,7 +2,9 @@ module com.example.pidevjava {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires javafx.web;
 
+    requires org.apache.pdfbox;
     requires org.controlsfx.controls;
     requires net.synedra.validatorfx;
 

@@ -1,4 +1,8 @@
 package com.example.pidevjava.Contollers;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import com.example.pidevjava.Entities.Voyageur;
 import com.example.pidevjava.service.serviceVoyageur;
@@ -112,6 +116,22 @@ public class VoyageurController {
         String rechercheText = rechercheField.getText().trim();
         rechercherVoyageur(rechercheText);
     }
+   /* @FXML
+    void handleGeneratePDF(ActionEvent event) {
+        // Récupérer la liste des voyageurs (supposons qu'elle soit déjà remplie)
+        List<Voyageur> voyageurs = null;
+
+        // Définir le chemin de sortie du fichier PDF
+        String outputPath = "liste_voyageurs.pdf";
+
+        // Générer le PDF en utilisant PDFGenerator
+        try {
+            VoyageurController.generatePDF(voyageurs, outputPath);
+            System.out.println("PDF généré avec succès !");
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la génération du PDF : " + e.getMessage());
+        }
+    }*/
 
     private serviceVoyageur service = new serviceVoyageur();
 
@@ -330,6 +350,46 @@ public class VoyageurController {
     }
 
 
+  /*  public static void generatePDF(List<Voyageur> voyageurs, String outputPath) {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
 
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, 700);
+                contentStream.showText("Liste des voyageurs");
 
+                contentStream.setFont(PDType1Font.HELVETICA, 10);
+                contentStream.newLineAtOffset(0, -20);
+
+                for (Voyageur voyageur : voyageurs) {
+                    contentStream.showText("ID: " + voyageur.getId());
+                    contentStream.newLine();
+                    contentStream.showText("Numéro de passeport: " + voyageur.getNum_pass());
+                    contentStream.newLine();
+                    contentStream.showText("Nom: " + voyageur.getNom());
+                    contentStream.newLine();
+                    contentStream.showText("Prénom: " + voyageur.getPrenom());
+                    contentStream.newLine();
+                    contentStream.showText("Âge: " + voyageur.getAge());
+                    contentStream.newLine();
+                    contentStream.showText("État civil: " + voyageur.getEtat_civil());
+                    contentStream.newLine();
+                    contentStream.showText("Email: " + voyageur.getEmail());
+                    contentStream.newLine();
+                    contentStream.newLine();
+                }
+
+                contentStream.endText();
+            }
+
+            document.save(outputPath);
+            System.out.println("Le fichier PDF a été généré avec succès : " + outputPath);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la génération du fichier PDF : " + e.getMessage());
+        }
+    }
+*/
 }
