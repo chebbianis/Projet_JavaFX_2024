@@ -17,7 +17,7 @@ public class Map implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (webView != null) {
             WebEngine webEngine = webView.getEngine();
-            String apiKey = "AIzaSyAvaCuPbQVE6KG0oYMykLBeMClOgtX7XoY";
+            String apiKey = "UR apiKey";
             String googleMapsUrl = "https://www.google.com/maps/embed/v1/view?key=" + apiKey;
             webEngine.load(googleMapsUrl);
         } else {
