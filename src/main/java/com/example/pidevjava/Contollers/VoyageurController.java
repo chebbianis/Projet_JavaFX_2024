@@ -2,8 +2,17 @@ package com.example.pidevjava.Contollers;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import com.example.pidevjava.Entities.Voyageur;
+import java.io.IOException;
+import java.awt.Color;
+import java.util.List;
 import com.example.pidevjava.Entities.Voyageur;
 import com.example.pidevjava.service.serviceVoyageur;
 import javafx.beans.binding.Bindings;
@@ -154,6 +163,11 @@ public class VoyageurController {
         btn_delete.setOnAction(event -> supprimerVoyageur());
         btn_update.setOnAction(event -> modifierVoyageur());
         btn_insert.setOnAction(event -> ajouterVoyageur());
+        bn_pdf.setOnAction(event -> {
+            List<Voyageur> voyageurs = getVoyageurList();
+            String fileName = "C:\\Users\\iheba\\Downloads\\Voyageur.pdf";
+            generatePDF(voyageurs, fileName);
+        });
 
         btn_stat.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -350,46 +364,75 @@ public class VoyageurController {
     }
 
 
-  /*  public static void generatePDF(List<Voyageur> voyageurs, String outputPath) {
+    public static void generatePDF(List<Voyageur> voyageurs, String outputPath) {
         try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage();
+            PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
 
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                contentStream.setNonStrokingColor(Color.RED);
                 contentStream.beginText();
-                contentStream.newLineAtOffset(50, 700);
-                contentStream.showText("Liste des voyageurs");
-
-                contentStream.setFont(PDType1Font.HELVETICA, 10);
-                contentStream.newLineAtOffset(0, -20);
-
-                for (Voyageur voyageur : voyageurs) {
-                    contentStream.showText("ID: " + voyageur.getId());
-                    contentStream.newLine();
-                    contentStream.showText("Numéro de passeport: " + voyageur.getNum_pass());
-                    contentStream.newLine();
-                    contentStream.showText("Nom: " + voyageur.getNom());
-                    contentStream.newLine();
-                    contentStream.showText("Prénom: " + voyageur.getPrenom());
-                    contentStream.newLine();
-                    contentStream.showText("Âge: " + voyageur.getAge());
-                    contentStream.newLine();
-                    contentStream.showText("État civil: " + voyageur.getEtat_civil());
-                    contentStream.newLine();
-                    contentStream.showText("Email: " + voyageur.getEmail());
-                    contentStream.newLine();
-                    contentStream.newLine();
-                }
-
+                float titleWidth = PDType1Font.HELVETICA_BOLD.getStringWidth("LISTES DES VOYAGEURS ") / 1000f * 16;
+                float titleHeight = PDType1Font.HELVETICA_BOLD.getFontDescriptor().getFontBoundingBox().getHeight() / 1000f * 16;
+                contentStream.newLineAtOffset((page.getMediaBox().getWidth() - titleWidth) / 2, page.getMediaBox().getHeight() - 30 - titleHeight);
+                contentStream.showText("LISTES DES VOYAGEURS");
                 contentStream.endText();
+
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.setNonStrokingColor(Color.BLACK);
+
+                float margin = 50;
+                float yStart = page.getMediaBox().getHeight() - margin - 30 - titleHeight;
+                float tableWidth = page.getMediaBox().getWidth() - 2 * margin;
+                float yPosition = yStart;
+                float rowHeight = 20;
+
+                // Define column widths and headers
+                String[] headers = {"ID", "Nom", "Prenom", "Numéro Passeport", "Age", "Email", "Etat Civil"};
+                float[] columnWidths = {50, 150, 100, 100, 50, 100, 100}; // Adjust these values as needed
+
+                // Draw table headers
+                drawTableRow(contentStream, yPosition, margin, tableWidth, headers, columnWidths);
+                yPosition -= rowHeight;
+
+                // Draw table data
+                for (Voyageur voyageur : voyageurs) {
+                    String[] rowData = {
+                            Integer.toString(voyageur.getId()),
+                            voyageur.getNom(),
+                            voyageur.getPrenom(),
+                            Integer.toString(voyageur.getNum_pass()),
+                            Integer.toString(voyageur.getAge()),
+                            voyageur.getEmail(),
+                            voyageur.getEtat_civil()
+                    };
+                    drawTableRow(contentStream, yPosition, margin, tableWidth, rowData, columnWidths);
+                    yPosition -= rowHeight;
+                }
             }
 
+            // Save the PDF document
             document.save(outputPath);
-            System.out.println("Le fichier PDF a été généré avec succès : " + outputPath);
         } catch (IOException e) {
-            System.err.println("Erreur lors de la génération du fichier PDF : " + e.getMessage());
+            e.printStackTrace();
         }
     }
-*/
+
+    private static void drawTableRow(PDPageContentStream contentStream, float yPosition, float margin, float tableWidth, String[] rowData, float[] columnWidths) throws IOException {
+        float xPosition = margin;
+        for (int i = 0; i < rowData.length; i++) {
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            contentStream.newLineAtOffset(xPosition, yPosition);
+            contentStream.showText(rowData[i]);
+            contentStream.endText();
+            xPosition += columnWidths[i];
+        }
+    }
 }
+
+
+
+
+
