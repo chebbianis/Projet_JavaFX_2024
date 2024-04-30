@@ -3,14 +3,18 @@ package controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
 
 import javafx.event.ActionEvent;
 //import java.awt.event.MouseEvent;
 import javafx.scene.input.MouseEvent;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -20,15 +24,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.Voiture;
 import services.VoitureService;
 
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import javafx.scene.control.Button;
+
+import javafx.scene.control.Alert;
+/*import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;*/
 
 
 public class AfficherVControllers {
@@ -257,6 +268,102 @@ public class AfficherVControllers {
             // Optionally, display an error message to the user
         }
     }
+
+    @FXML
+    private void handleSortButtonClick() {
+        // Call a method to sort the table
+        sortTable();
+    }
+
+    private void sortTable() {
+        // Perform sorting logic here
+        // For example, to sort by the Marque column in ascending order
+        colMarque.setSortType(TableColumn.SortType.ASCENDING);
+        tableviewVoiture.getSortOrder().clear();
+        tableviewVoiture.getSortOrder().add(colMarque);
+        tableviewVoiture.sort();
+    }
+
+    @FXML
+    private void showStatistics() {
+        ObservableList<Voiture> voitures = tableviewVoiture.getItems();
+        if (!voitures.isEmpty()) {
+            // Calculate statistics
+            DoubleSummaryStatistics stats = voitures.stream()
+                    .mapToDouble(Voiture::getPrix_j)
+                    .summaryStatistics();
+
+            // Display statistics in a bar chart
+            CategoryAxis xAxis = new CategoryAxis();
+            NumberAxis yAxis = new NumberAxis();
+            BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.getData().add(new XYChart.Data<>("Min", stats.getMin()));
+            series.getData().add(new XYChart.Data<>("Max", stats.getMax()));
+            series.getData().add(new XYChart.Data<>("Average", stats.getAverage()));
+            barChart.getData().add(series);
+
+            // Create and show an alert dialog containing the bar chart
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Statistics");
+            alert.setHeaderText(null);
+            alert.getDialogPane().setContent(barChart);
+            alert.showAndWait();
+        } else {
+            // No data to calculate statistics
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Data");
+            alert.setHeaderText(null);
+            alert.setContentText("No voiture data available.");
+            alert.showAndWait();
+        }
+    }
+
+
+
+    /*@FXML
+    private void generatePDF() {
+        // Créer un sélecteur de fichier pour choisir l'emplacement de sauvegarde du PDF
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try {
+                // Créer un nouveau document PDF
+                PDDocument document = new PDDocument();
+                PDPage page = new PDPage();
+                document.addPage(page);
+
+                // Ajouter du texte au document
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.newLineAtOffset(100, 700);
+                contentStream.showText("Contenu de votre PDF ici...");
+                contentStream.endText();
+                contentStream.close();
+
+                // Sauvegarder le document PDF
+                document.save(file);
+                document.close();
+
+                // Afficher une notification de succès
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("PDF Généré");
+                alert.setHeaderText(null);
+                alert.setContentText("Le PDF a été généré avec succès !");
+                alert.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Afficher une notification d'erreur en cas d'échec
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText(null);
+                alert.setContentText("Une erreur s'est produite lors de la génération du PDF.");
+                alert.showAndWait();
+            }
+        }
+    }*/
 
 
 }

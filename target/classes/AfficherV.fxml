@@ -25,6 +25,10 @@
     <Button fx:id="updateButton" layoutX="532.0" layoutY="410.0" mnemonicParsing="false" onAction="#handleUpdateButton" styleClass="myButton" text="Modifier" />
     <HBox spacing="5" />
      <TextField fx:id="searchTextField" layoutX="244.0" layoutY="50.0" promptText="Enter marque to search" />
-     <Button fx:id="searchButton" layoutX="406.0" layoutY="42.0" styleClass="myButton" text="🔍" onAction="#searchVoitures"/>
+     <Button fx:id="searchButton" layoutX="406.0" layoutY="42.0" onAction="#searchVoitures" styleClass="myButton" text="🔍" />
+    <Button fx:id="sortButton" layoutX="687.0" layoutY="409.0" onAction="#handleSortButtonClick" styleClass="myButton" text="Trier par marque" />
+    <Button fx:id="statistiqueButton" layoutX="36.0" layoutY="525.0" mnemonicParsing="false" onAction="#showStatistics" text="Statistique par prix" styleClass="myButton"/>
+    <!-- PDF Button -->
+    
 </children>
 </AnchorPane>

@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Location;
 import services.LocationService;
@@ -102,6 +103,22 @@ public class AfficherLControllers {
             txtDate_fin.getScene().setRoot(root);
         } catch (IOException e) {
             // Instead of just printing, handle the IOException
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void openMapDisplayWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MapDisplay.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Map Display");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
