@@ -14,7 +14,7 @@ public class ChatGPTService {
 
     public static String chatGPT(String message) {
         String url = "https://api.openai.com/v1/chat/completions";
-        String apiKey = "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";
+        String apiKey = "";
         String model = "gpt-3.5-turbo";
 
         int retries = 0;

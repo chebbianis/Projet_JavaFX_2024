@@ -1,7 +1,4 @@
 package com.example.pi.Controllers;
-import com.example.pi.Services.ChatGPTService;
-import com.example.pi.Services.GMailer;
-import com.example.pi.Services.GmailService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
