@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pi.Controllers.UserController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #E5F1EB;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pi.Controllers.UserController">
    <children>
       <Button fx:id="button_logout" layoutX="14.0" layoutY="549.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="83.0" style="-fx-background-color: #000000;" text="Logout" textFill="WHITE">
          <font>
@@ -129,13 +129,13 @@
       <TableView fx:id="table_user" layoutX="307.0" layoutY="27.0" prefHeight="415.0" prefWidth="579.0">
          <columns>
             <TableColumn fx:id="col_id" prefWidth="35.0" text="ID" />
-            <TableColumn fx:id="col_email" prefWidth="98.0" text="Email" />
-            <TableColumn fx:id="col_firstname" prefWidth="118.0" text="First Name" />
-            <TableColumn fx:id="col_lastname" prefWidth="96.0" text="Last Name" />
-            <TableColumn fx:id="col_adresse" prefWidth="76.0" text="Address" />
-            <TableColumn fx:id="col_ville" prefWidth="47.0" text="City" />
-            <TableColumn fx:id="col_role" prefWidth="37.0" text="Roles" />
-            <TableColumn fx:id="col_region" prefWidth="71.0" text="Region" />
+            <TableColumn fx:id="col_email" prefWidth="115.0" text="Email" />
+            <TableColumn fx:id="col_firstname" prefWidth="82.0" text="First Name" />
+            <TableColumn fx:id="col_lastname" prefWidth="77.0" text="Last Name" />
+            <TableColumn fx:id="col_adresse" prefWidth="92.0" text="Address" />
+            <TableColumn fx:id="col_ville" prefWidth="52.0" text="City" />
+            <TableColumn fx:id="col_role" prefWidth="50.0" text="Roles" />
+            <TableColumn fx:id="col_region" prefWidth="75.0" text="Region" />
             <!-- Ajoutez d'autres colonnes au besoin -->
          </columns>
       </TableView>
@@ -143,5 +143,6 @@
       <Button fx:id="btn_update" layoutX="778.0" layoutY="549.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="Update" />
       <Button fx:id="btn_delete" layoutX="778.0" layoutY="469.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="Delete" />
       <Button fx:id="btn_clear" layoutX="582.0" layoutY="549.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="Clear" />
+      <Button fx:id="btn_send" layoutX="407.0" layoutY="469.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Send Email" textFill="#0379da" />
    </children>
 </AnchorPane>

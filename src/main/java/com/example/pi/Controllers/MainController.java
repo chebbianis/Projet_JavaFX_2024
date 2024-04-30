@@ -1,4 +1,7 @@
 package com.example.pi.Controllers;
+import com.example.pi.Services.ChatGPTService;
+import com.example.pi.Services.GMailer;
+import com.example.pi.Services.GmailService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,8 +34,20 @@ public class MainController implements Initializable {
     @FXML
     private TextField tf_password;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
+
+//        System.out.println(ChatGPTService.chatGPT("who are you ?"));
+
+//        try {
+//            new GMailer().sendMail("new message","hello world !");
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+
         button_login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

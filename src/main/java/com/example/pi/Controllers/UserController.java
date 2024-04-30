@@ -13,13 +13,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.net.URL;
 import java.sql.*;
@@ -30,6 +33,8 @@ import java.util.regex.Pattern;
 
 public class UserController implements Initializable {
 
+    @FXML
+    private Button btn_send;
     @FXML
     private TableColumn<User, String> col_regionId;
     @FXML
@@ -95,6 +100,7 @@ public class UserController implements Initializable {
         addCharCountListener(tf_lastname,10);
         addCharCountListener(tf_adresse,10);
         addCharCountListener(tf_ville,10);
+        addCharCountListenerPassword(tf_password,-220);
 
         String userEmail = UserSession.getInstance().getEmail();
 
@@ -106,6 +112,21 @@ public class UserController implements Initializable {
         addSearchListener();
 
 
+
+        btn_send.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String email = tf_email.getText();
+
+                // Vérifie si tf_email est vide, sinon utilise la valeur saisie
+                if (tf_email.getText().isEmpty()) {
+                    email = "";
+                }
+//                System.out.println("adresse mail dans userController est : "+email);
+
+                DBUtils.changeSceneWithObject(event, "/com/example/pi/email.fxml", "Login", email);
+            }
+        });
 
 
 
@@ -156,7 +177,6 @@ public class UserController implements Initializable {
             if (newSelection != null) {
                 // Remplir les champs du formulaire avec les données de l'utilisateur sélectionné
                 tf_ville.setText(newSelection.getVille());
-                tf_password.setText(newSelection.getPassword());
                 tf_firstname.setText(newSelection.getFirstName());
                 tf_lastname.setText(newSelection.getLastName());
                 tf_email.setText(newSelection.getEmail());
@@ -459,7 +479,7 @@ public class UserController implements Initializable {
                 tf_adresse.getText() == null || tf_adresse.getText().isEmpty() ||
                 tf_ville.getText() == null || tf_ville.getText().isEmpty() ||
                 cb_region.getValue() == null || cb_region.getValue().isEmpty() ||
-                cb_role.getValue() == null || cb_role.getValue().isEmpty()) {
+                (!ch_user.isSelected() && !ch_admin.isSelected())) {
             // Afficher un message d'erreur si l'un des champs est null ou vide
             System.out.println("Erreur : Veuillez remplir tous les champs.");
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -491,20 +511,33 @@ public class UserController implements Initializable {
         // Récupérer l'ID de la région sélectionnée dans le ComboBox
         int regionId = getRegionIdByName(cb_region.getValue());
 
+        // Crypter le mot de passe
+        String hashedPassword = BCrypt.hashpw(tf_password.getText(), BCrypt.gensalt());
+
+        // Construire le rôle à insérer dans la base de données en fonction des cases à cocher
+        String role;
+        if (ch_user.isSelected() && ch_admin.isSelected()) {
+            role = "[\"ROLE_USER\", \"ROLE_ADMIN\"]";
+        } else if (ch_user.isSelected()) {
+            role = "[\"ROLE_USER\"]";
+        } else {
+            role = "[\"ROLE_ADMIN\"]";
+        }
+
         // Le nom d'utilisateur n'existe pas encore et les champs sont valides, procéder à l'insertion
-        String query = "INSERT INTO user (email, password, first_name, last_name, adresse, ville, region_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO user (email, password, first_name, last_name, adresse, ville, region_id, roles) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setString(1, tf_email.getText());
-            statement.setString(2, tf_password.getText());
+            statement.setString(2, hashedPassword);
             statement.setString(3, tf_firstname.getText());
             statement.setString(4, tf_lastname.getText());
             statement.setString(5, tf_adresse.getText());
             statement.setString(6, tf_ville.getText());
             statement.setInt(7, regionId);
-           // statement.setString(8, cb_role.getValue());
+            statement.setString(8, role);
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -515,7 +548,6 @@ public class UserController implements Initializable {
             throw new RuntimeException("Erreur lors de l'insertion de l'utilisateur", e);
         }
     }
-
     private int getRegionIdByName(String regionName) {
         int regionId = 0;
         String query = "SELECT id FROM region WHERE nom = ?";
@@ -566,28 +598,12 @@ public class UserController implements Initializable {
                 query += (needComma ? ", " : "") + "ville = ?";
                 needComma = true;
             }
-            if (ch_admin.isSelected()) {
-                query += (needComma ? ", " : "") + "roles = ?";
-                roleUpdated = true;
-                needComma = true;
-            }
-            if (ch_admin.isSelected() && !ch_user.isSelected()) {
-                query += "roles = ?";
-                roleUpdated = true;
-                needComma = true;
-            } else if (ch_user.isSelected() && !ch_admin.isSelected()) {
-                query += "roles = ?";
-                roleUpdated = true;
-                needComma = true;
-            } else if (ch_admin.isSelected() && ch_user.isSelected()) {
-                query += "roles = ?";
-                roleUpdated = true;
-                needComma = true;
-            } else if (!ch_admin.isSelected() && !ch_user.isSelected()) {
-                query += "roles = ?";
-                roleUpdated = true;
-                needComma = true;
-            }
+//            if (ch_admin.isSelected() || ch_user.isSelected()) {
+//                query += (needComma ? ", " : "") + "roles = ?";
+//                roleUpdated = true;
+//                needComma = true;
+//            }
+
 
             if (cb_region.getValue() != null && !cb_region.getValue().isEmpty() && !cb_region.getValue().equals(selectedUser.getRegion().getName())) {
                 query += (needComma ? ", " : "") + "region_id = ?";
@@ -600,16 +616,9 @@ public class UserController implements Initializable {
                 try (Connection conn = getConnection();
                      PreparedStatement statement = conn.prepareStatement(query)) {
                     int parameterIndex = 1;
-                    if (ch_admin.isSelected() && !ch_user.isSelected()) {
-                        statement.setString(parameterIndex++, "[\"ROLE_ADMIN\"]");
-                    } else if (ch_user.isSelected() && !ch_admin.isSelected()) {
-                        statement.setString(parameterIndex++, "[\"ROLE_USER\"]");
-                    } else if (ch_admin.isSelected() && ch_user.isSelected()) {
-                        statement.setString(parameterIndex++, "[\"ROLE_USER\", \"ROLE_ADMIN\"]");
-                    } else if (!ch_admin.isSelected() && !ch_user.isSelected()) {
-                        statement.setString(parameterIndex++, "[]");
-                    }
-
+//                    if (roleUpdated) {
+//                        statement.setString(parameterIndex++, (ch_admin.isSelected() && ch_user.isSelected()) ? "[\"ROLE_USER\", \"ROLE_ADMIN\"]" : (ch_admin.isSelected() ? "[\"ROLE_ADMIN\"]" : "[\"ROLE_USER\"]"));
+//                    }
                     if (tf_password.getText() != null && !tf_password.getText().isEmpty() && !tf_password.getText().equals(selectedUser.getPassword())) {
                         statement.setString(parameterIndex++, tf_password.getText());
                     }
@@ -689,5 +698,76 @@ public class UserController implements Initializable {
             alert.show();
         }
     }
+
+    private void addCharCountListenerPassword(TextField textField, int place) {
+        Label charCountLabel = new Label();
+        ImageView validationIcon = new ImageView();
+
+        // Définir la taille de l'icône
+        validationIcon.setFitWidth(16); // Largeur de l'icône
+        validationIcon.setFitHeight(16); // Hauteur de l'icône
+
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                // Si newValue est null, le champ de texte est vide, donc pas d'icône ni de texte de compteur de caractères
+                validationIcon.setImage(null);
+                charCountLabel.setText("");
+            } else {
+                int length = newValue.length();
+                if (length == 0) {
+                    validationIcon.setImage(null);
+                    charCountLabel.setText("");
+                } else if (length <= 2 ) {
+                    // Afficher une icône de croix rouge pour indiquer une erreur de saisie
+                    validationIcon.setImage(iconInvalid);
+                    charCountLabel.setText("Password too short");
+                } else {
+                    // Vérifier la complexité du mot de passe
+                    boolean containsLowercase = newValue.matches(".*[a-z].*");
+                    boolean containsUppercase = newValue.matches(".*[A-Z].*");
+                    boolean containsDigit = newValue.matches(".*\\d.*");
+                    boolean containsSpecial = newValue.matches(".*[!@#$%^&*()-_=+].*");
+
+                    if (containsLowercase && containsUppercase && containsDigit && containsSpecial) {
+                        // Mot de passe fort
+                        validationIcon.setImage(iconValid);
+                        charCountLabel.setText("Strong Password");
+                    } else if (containsLowercase && containsUppercase && containsDigit) {
+                        // Mot de passe moyen
+                        validationIcon.setImage(iconValid);
+                        charCountLabel.setText("(Medium Password");
+                    } else if (containsLowercase && containsUppercase) {
+                        // Mot de passe faible
+                        validationIcon.setImage(iconInvalid);
+                        charCountLabel.setText("Weak Password");
+                    } else {
+                        // Mot de passe très faible
+                        validationIcon.setImage(iconInvalid);
+                        charCountLabel.setText("Very Weak Password");
+                    }
+                }
+            }
+            // Mettre à jour le texte du label avec le nombre de caractères saisis
+        });
+        HBox container = new HBox(charCountLabel, validationIcon);
+        container.setSpacing(10); // Ajoutez un espace entre le label et l'icône
+
+        // Récupérer le parent du TextField
+        Parent parent = textField.getParent();
+        if (parent instanceof AnchorPane) {
+            AnchorPane parentContainer = (AnchorPane) parent;
+            // Ajouter le conteneur HBox à l'AnchorPane parent du champ TextField
+            parentContainer.getChildren().add(container);
+            // Réglez le positionnement du conteneur au-dessus du champ TextField
+            AnchorPane.setTopAnchor(container, (double) place); // Ajustez la position en haut du conteneur au besoin
+        } else if (parent instanceof VBox) {
+            // Si le parent est un VBox, ajoutez le conteneur HBox directement au VBox
+            VBox vBoxParent = (VBox) parent;
+            vBoxParent.getChildren().add(container);
+            VBox.setMargin(container, new Insets(place, 0, 0, 0)); // Ajustez les marges au besoin
+
+        }
+    }
+
 
 }

@@ -123,45 +123,45 @@ public class SignUpController implements Initializable {
 
 
 
-        // Ajouter un événement de modification de texte pour le champ de mot de passe
-        pf_password.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (pf_password.isVisible()) {
-                // Si c'est le champ de mot de passe qui a changé, supprimer tout auditeur précédent
-                removeCharCountListener();
-                // Ajouter le nouvel auditeur pour le champ de mot de passe
-                addCharCountListener(pf_password, 125);
-            }
-        });
-
-// Ajouter un événement de modification de texte pour le champ de texte visible
-        tf_visiblePassword.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (tf_visiblePassword.isVisible()) {
-                // Si c'est le champ de texte visible qui a changé, supprimer tout auditeur précédent
-                removeCharCountListener();
-                // Ajouter le nouvel auditeur pour le champ de texte visible
-                addCharCountListener(tf_visiblePassword, 125);
-            }
-        });
+//        // Ajouter un événement de modification de texte pour le champ de mot de passe
+//        pf_password.textProperty().addListener((observable, oldValue, newValue) -> {
+//            if (pf_password.isVisible()) {
+//                // Si c'est le champ de mot de passe qui a changé, supprimer tout auditeur précédent
+//                removeCharCountListener();
+//                // Ajouter le nouvel auditeur pour le champ de mot de passe
+//                addCharCountListener(pf_password, 125);
+//            }
+//        });
+//
+//// Ajouter un événement de modification de texte pour le champ de texte visible
+//        tf_visiblePassword.textProperty().addListener((observable, oldValue, newValue) -> {
+//            if (tf_visiblePassword.isVisible()) {
+//                // Si c'est le champ de texte visible qui a changé, supprimer tout auditeur précédent
+//                removeCharCountListener();
+//                // Ajouter le nouvel auditeur pour le champ de texte visible
+//                addCharCountListener(tf_visiblePassword, 125);
+//            }
+//        });
 
 // Définir le listener pour la visibilité du mot de passe
-        ChangeListener<Boolean> passwordVisibilityListener = (observable, oldValue, newValue) -> {
-            // Si c'est le champ de mot de passe qui est visible, ajouter un auditeur pour le champ de mot de passe
-            if (pf_password.isVisible()) {
-                removeCharCountListener();
-                addCharCountListener(pf_password, 125);
-            }
-            // Sinon, si c'est le champ de texte visible qui est visible, ajouter un auditeur pour le champ de texte visible
-            else if (tf_visiblePassword.isVisible()) {
-                removeCharCountListener();
-                addCharCountListener(tf_visiblePassword, 125);
-            }
-        };
+//        ChangeListener<Boolean> passwordVisibilityListener = (observable, oldValue, newValue) -> {
+//            // Si c'est le champ de mot de passe qui est visible, ajouter un auditeur pour le champ de mot de passe
+//            if (pf_password.isVisible()) {
+//                removeCharCountListener();
+//                addCharCountListener(pf_password, 125);
+//            }
+//            // Sinon, si c'est le champ de texte visible qui est visible, ajouter un auditeur pour le champ de texte visible
+//            else if (tf_visiblePassword.isVisible()) {
+//                removeCharCountListener();
+//                addCharCountListener(tf_visiblePassword, 125);
+//            }
+//        };
 
 // Ajouter l'écouteur à la propriété visibleProperty de chaque champ de texte
-        pf_password.visibleProperty().addListener(passwordVisibilityListener);
-        tf_visiblePassword.visibleProperty().addListener(passwordVisibilityListener);
-
-
+//        pf_password.visibleProperty().addListener(passwordVisibilityListener);
+//        tf_visiblePassword.visibleProperty().addListener(passwordVisibilityListener);
+//
+//
 
 
 
@@ -336,68 +336,6 @@ public class SignUpController implements Initializable {
 
         return password.toString();
     }
-
-    private void addCharCountListener(TextField textField, int place) {
-        Label charCountLabel = new Label();
-        ImageView validationIcon = new ImageView();
-
-        // Définir la taille de l'icône
-        validationIcon.setFitWidth(16); // Largeur de l'icône
-        validationIcon.setFitHeight(16); // Hauteur de l'icône
-
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                // Si newValue est null, le champ de texte est vide, donc pas d'icône ni de texte de compteur de caractères
-                validationIcon.setImage(null);
-                charCountLabel.setText("");
-            } else {
-                int length = newValue.length();
-                if (length == 0) {
-                    validationIcon.setImage(null);
-                    charCountLabel.setText("");
-                } else if (length <= 2 || length > 50) {
-                    // Afficher une icône de croix rouge pour indiquer une erreur de saisie
-                    validationIcon.setImage(iconInvalid);
-                    charCountLabel.setText(length + "/50 (Password too short or too long)");
-                } else {
-                    // Vérifier la complexité du mot de passe
-                    boolean containsLowercase = newValue.matches(".*[a-z].*");
-                    boolean containsUppercase = newValue.matches(".*[A-Z].*");
-                    boolean containsDigit = newValue.matches(".*\\d.*");
-                    boolean containsSpecial = newValue.matches(".*[!@#$%^&*()-_=+].*");
-
-                    if (containsLowercase && containsUppercase && containsDigit && containsSpecial) {
-                        // Mot de passe fort
-                        validationIcon.setImage(iconValid);
-                        charCountLabel.setText(length + "/50 (Strong Password)");
-                    } else if (containsLowercase && containsUppercase && containsDigit) {
-                        // Mot de passe moyen
-                        validationIcon.setImage(iconValid);
-                        charCountLabel.setText(length + "/50 (Medium Password)");
-                    } else if (containsLowercase && containsUppercase) {
-                        // Mot de passe faible
-                        validationIcon.setImage(iconValid);
-                        charCountLabel.setText(length + "/50 (Weak Password)");
-                    } else {
-                        // Mot de passe très faible
-                        validationIcon.setImage(iconInvalid);
-                        charCountLabel.setText(length + "/50 (Very Weak Password)");
-                    }
-                }
-            }
-            // Mettre à jour le texte du label avec le nombre de caractères saisis
-        });
-        HBox container = new HBox(charCountLabel, validationIcon);
-        container.setSpacing(150); // Ajoutez un espace entre le label et l'icône
-
-        // Ajoutez le conteneur HBox à l'AnchorPane parent du champ TextField
-        AnchorPane parentContainer = (AnchorPane) textField.getParent(); // Assurez-vous d'avoir le bon conteneur parent
-        parentContainer.getChildren().add(container);
-
-        // Réglez le positionnement du conteneur au-dessus du champ TextField
-        AnchorPane.setTopAnchor(container, (double) place); // Ajustez la position en haut du conteneur au besoin
-    }
-
 
 
     public String getRegionNameById(int regionId) {

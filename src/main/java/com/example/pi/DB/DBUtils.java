@@ -1,5 +1,6 @@
 package com.example.pi.DB;
 
+import com.example.pi.Controllers.EmailController;
 import com.example.pi.Entities.User;
 import com.example.pi.Services.UserSession;
 import javafx.event.ActionEvent;
@@ -21,8 +22,10 @@ public class DBUtils {
     private static String fxmlFile;
     private static String title;
     private static String username;
+    private static Object sceneData;
 
-    public static void changeScene(ActionEvent event, String fxmlPath, String title, String username) {
+
+    public static void changeScene(ActionEvent event, String fxmlPath, String title, Object data) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(DBUtils.class.getResource(fxmlPath));
             Parent root = fxmlLoader.load();
@@ -31,9 +34,35 @@ public class DBUtils {
             stage.setTitle(title);
             stage.setScene(scene);
             stage.show();
+            sceneData = data;
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void changeSceneWithObject(ActionEvent event, String fxmlPath, String title, Object data) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(DBUtils.class.getResource(fxmlPath));
+            Parent root = fxmlLoader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setTitle(title);
+            stage.setScene(scene);
+
+            // Pass data to the controller of the new scene if needed
+            if (fxmlLoader.getController() instanceof EmailController) {
+                EmailController controller = fxmlLoader.getController();
+                controller.setData(data);
+            }
+
+            stage.show();
+            sceneData = data;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static Object getSceneData() {
+        return sceneData;
     }
 
     public static void signUpUser(ActionEvent event, String email, String password, String firstName, String lastName, String address, String city, int regionId) {

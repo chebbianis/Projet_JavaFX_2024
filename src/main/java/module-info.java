@@ -13,6 +13,7 @@ module com.example.pi {
     requires com.google.api.services.gmail;
     requires org.apache.commons.codec;
     requires jbcrypt;
+    requires java.mail;
 
     opens com.example.pi to javafx.fxml;
     exports com.example.pi;
