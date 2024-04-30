@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="modifier_btn" prefHeight="576.0" prefWidth="821.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherVControllers">
+   <children>
+      <Label layoutX="162.0" layoutY="165.0" text="Marque Voiture" />
+      <Label layoutX="165.0" layoutY="221.0" prefHeight="21.0" prefWidth="97.0" text="Annee" />
+      <Label layoutX="168.0" layoutY="275.0" prefHeight="21.0" prefWidth="104.0" text="Prix par jour" />
+      <TextField fx:id="txtVoiture_Marque" editable="false" layoutX="312.0" layoutY="160.0" />
+      <TextField fx:id="txtAnnee" editable="false" layoutX="312.0" layoutY="216.0" />
+      <TextField fx:id="txtPrix_j" editable="false" layoutX="312.0" layoutY="270.0" />
+      <Label layoutX="299.0" layoutY="33.0" text="Afficher Voiture">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="Modifier_btn" layoutX="338.0" layoutY="345.0" mnemonicParsing="false" onAction="#goToModification" text="modify Voiture" />
+      <TextField fx:id="txtId" editable="false" layoutX="312.0" layoutY="104.0" />
+      <Label layoutX="168.0" layoutY="109.0" prefHeight="21.0" prefWidth="104.0" text="ID Voiture" />
+   </children>
+</AnchorPane>
