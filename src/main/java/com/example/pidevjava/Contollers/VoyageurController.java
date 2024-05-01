@@ -55,7 +55,8 @@ public class VoyageurController {
     @FXML
     private Button bn_pdf;
 
-
+    @FXML
+    private Button btn_chat;
 
     @FXML
     private TableColumn<Voyageur, Integer> col_age;
@@ -146,7 +147,11 @@ public class VoyageurController {
     /*ObservableList<String> items = FXCollections.observableArrayList(
             "Single", "Married", "Divorced", "Widowed");
     ListView<String> listViewEtat = new ListView<>(items);*/
-
+    @FXML
+    private void openChatBotDialog() {
+        ChatBotDialog chatBotDialog = new ChatBotDialog();
+        chatBotDialog.setVisible(true);
+    }
     public void initialize() {
         // Initialisation des colonnes
         col_idv.setCellValueFactory(new PropertyValueFactory<>("id"));

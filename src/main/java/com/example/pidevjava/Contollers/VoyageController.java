@@ -141,7 +141,9 @@ public class VoyageController implements Initializable {
         destinationCoordinates.put("Prague", new MapPoint(50.0755, 14.4378));
         destinationCoordinates.put("Copenhagen", new MapPoint(55.6761, 12.5683));
         destinationCoordinates.put("Dublin", new MapPoint(53.3498, -6.2603));
-        destinationCoordinates.put("Helsinki", new MapPoint(60.1695, 24.9354));    }
+        destinationCoordinates.put("Helsinki", new MapPoint(60.1695, 24.9354));
+        destinationCoordinates.put("Tunis", new MapPoint(36.8065, 10.1815));
+    }
 
     private void openMap(ActionEvent event) {
         try {
@@ -240,7 +242,6 @@ public class VoyageController implements Initializable {
         LocalDate dateArriveValue = tf_dateA.getValue();
         String prixValue = tf_prix.getText();
         String destinationValue = tf_des.getText();
-        map.updateMapPosition(destinationValue);
 
         // Vérification des valeurs saisies
         if (programmeValue.isEmpty() || dateDepartValue == null || dateArriveValue == null || prixValue.isEmpty() || destinationValue.isEmpty()) {
@@ -270,9 +271,8 @@ public class VoyageController implements Initializable {
         try {
 
             serviceVoyage.ajouter(voyage);
-
+            map.updateMapPosition(destinationValue);
             showAlert(Alert.AlertType.CONFIRMATION, "Succès", "Voyage ajouté avec succès.");
-
             loadVoyageData();
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors de l'ajout du voyage : " + e.getMessage());
