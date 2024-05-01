@@ -291,6 +291,8 @@ public class VoyageController {
         return price.matches("\\d+");
     }
 
+
+
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

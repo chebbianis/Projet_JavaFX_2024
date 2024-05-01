@@ -42,6 +42,7 @@
                     </font>
                 </Label>
             <Button fx:id="btn_map" mnemonicParsing="false" text="Map" />
+
             </children>
         </VBox>
         <VBox fx:id="tr_prix" layoutX="126.0" layoutY="76.0" prefHeight="316.0" prefWidth="270.0" spacing="20.0">
@@ -76,5 +77,6 @@
         <Button fx:id="btn_update" layoutX="119.0" layoutY="416.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #FFA17A;" text="Update" />
         <Button fx:id="btn_delete" layoutX="224.0" layoutY="415.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9C0054;" text="Delete" textFill="WHITE" />
       <Button fx:id="btn_ret" layoutX="15.0" layoutY="522.0" mnemonicParsing="false" style="-fx-background-color: #95d3f2;" text="Retour" />
+
     </children>
 </AnchorPane>

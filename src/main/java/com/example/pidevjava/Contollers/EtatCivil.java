@@ -140,7 +140,4 @@ public class EtatCivil implements Initializable {
     private static double calculatePercentage(int count, int total) {
         return count > 0 ? ((double) count / total) * 100 : 0;
     }
-    }
-
-
-
+}

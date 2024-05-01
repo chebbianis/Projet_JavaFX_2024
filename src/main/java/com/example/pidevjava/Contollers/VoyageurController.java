@@ -12,7 +12,8 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import com.example.pidevjava.Entities.Voyageur;
 import java.io.IOException;
 import java.awt.Color;
-import java.util.List;
+import java.util.*;
+
 import com.example.pidevjava.Entities.Voyageur;
 import com.example.pidevjava.service.serviceVoyageur;
 import javafx.beans.binding.Bindings;
@@ -35,8 +36,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class VoyageurController {
 
@@ -143,6 +143,9 @@ public class VoyageurController {
     }*/
 
     private serviceVoyageur service = new serviceVoyageur();
+    /*ObservableList<String> items = FXCollections.observableArrayList(
+            "Single", "Married", "Divorced", "Widowed");
+    ListView<String> listViewEtat = new ListView<>(items);*/
 
     public void initialize() {
         // Initialisation des colonnes
@@ -153,6 +156,9 @@ public class VoyageurController {
         col_age.setCellValueFactory(new PropertyValueFactory<>("age"));
         col_etat.setCellValueFactory(new PropertyValueFactory<>("etat_civil"));
         col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        List<String> etat = getAdressesGouvernorats();
+
+
 
 
         loadVoyageurData(); // Chargement des données dans la TableView
@@ -253,7 +259,8 @@ public class VoyageurController {
                 tf_prenom.getText(),
                 Integer.parseInt(tf_age.getText()),
                 tf_etat.getText(),
-                tf_email.getText()
+
+        tf_email.getText()
         );
 
         try {
@@ -348,6 +355,7 @@ public class VoyageurController {
             }
         }
     }
+
     private void rechercherVoyageur(String rechercheText) {
         serviceVoyageur voyageurService = new serviceVoyageur();
         try {
@@ -430,8 +438,23 @@ public class VoyageurController {
             xPosition += columnWidths[i];
         }
     }
-}
+   /* void onAddressSelected() {
+        String selectedAddress = listViewEtat.getSelectionModel().getSelectedItem();
+        if (selectedAddress != null) {
+            tf_etat.setText(selectedAddress);
+            listViewEtat.setVisible(false);
+        }*/
 
+
+    public List<String> getAdressesGouvernorats() {
+        List<String> adressesGouvernorats = new ArrayList<>();
+        adressesGouvernorats.add("Single");
+        adressesGouvernorats.add("Married");
+        adressesGouvernorats.add("Divorced");
+        adressesGouvernorats.add("Widowed");
+        return adressesGouvernorats;
+    }
+}
 
 
 
