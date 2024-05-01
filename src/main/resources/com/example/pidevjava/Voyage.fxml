@@ -45,21 +45,22 @@
 
             </children>
         </VBox>
-        <VBox fx:id="tr_prix" layoutX="126.0" layoutY="76.0" prefHeight="316.0" prefWidth="270.0" spacing="20.0">
+        <VBox fx:id="tr_prix" layoutX="126.0" layoutY="76.0" prefHeight="391.0" prefWidth="338.0" spacing="20.0">
             <children>
                 <TextField fx:id="tf_prog" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="161.0">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </TextField>
-            <DatePicker fx:id="tf_dated" prefHeight="25.0" prefWidth="272.0" />
-            <DatePicker fx:id="tf_dateA" prefHeight="25.0" prefWidth="274.0" />
+            <DatePicker fx:id="tf_dated" prefHeight="25.0" prefWidth="343.0" />
+            <DatePicker fx:id="tf_dateA" prefHeight="25.0" prefWidth="338.0" />
                 <TextField fx:id="tf_prix" layoutX="10.0" layoutY="62.0">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </TextField>
             <TextField fx:id="tf_des" />
+            <VBox fx:id="adresse" prefHeight="156.0" prefWidth="338.0" />
 
             </children>
         </VBox>
@@ -73,9 +74,9 @@
                 <TableColumn fx:id="col_destination" minWidth="0.0" prefWidth="125.0" text="Destination" />
             </columns>
         </TableView>
-        <Button fx:id="btn_insert" layoutX="14.0" layoutY="416.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9CE794;" text="Insert" />
-        <Button fx:id="btn_update" layoutX="119.0" layoutY="416.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #FFA17A;" text="Update" />
-        <Button fx:id="btn_delete" layoutX="224.0" layoutY="415.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9C0054;" text="Delete" textFill="WHITE" />
+        <Button fx:id="btn_insert" layoutX="5.0" layoutY="478.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9CE794;" text="Insert" />
+        <Button fx:id="btn_update" layoutX="117.0" layoutY="478.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #FFA17A;" text="Update" />
+        <Button fx:id="btn_delete" layoutX="225.0" layoutY="478.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9C0054;" text="Delete" textFill="WHITE" />
       <Button fx:id="btn_ret" layoutX="15.0" layoutY="522.0" mnemonicParsing="false" style="-fx-background-color: #95d3f2;" text="Retour" />
 
     </children>
