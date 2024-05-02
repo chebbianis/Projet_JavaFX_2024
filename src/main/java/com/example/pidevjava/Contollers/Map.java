@@ -85,7 +85,6 @@ public class Map implements Initializable {
         }
     }
     public Map() {
-        // Pré-remplir la liste des coordonnées pour quelques destinations
         destinationCoordinates.put("Paris", new MapPoint(48.8588443, 2.2943506));
         destinationCoordinates.put("New York", new MapPoint(40.712776, -74.005974));
         destinationCoordinates.put("London", new MapPoint(51.5074, -0.1278));

@@ -35,6 +35,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -78,7 +79,8 @@ public class VoyageController implements Initializable {
     private Button btn_map;
     @FXML
     private VBox adresse;
-
+    @FXML
+    private ComboBox<String> cb_destination;
     private final serviceVoyage serviceVoyage = new serviceVoyage();
     private MapView mapView;
     private final java.util.Map<String, MapPoint> destinationCoordinates = new HashMap<>();
@@ -111,6 +113,7 @@ public class VoyageController implements Initializable {
     }
 
     private void initializeDestinationCoordinates() {
+
         destinationCoordinates.put("Paris", new MapPoint(48.8588443, 2.2943506));
         destinationCoordinates.put("New York", new MapPoint(40.712776, -74.005974));
         destinationCoordinates.put("London", new MapPoint(51.5074, -0.1278));
@@ -143,6 +146,44 @@ public class VoyageController implements Initializable {
         destinationCoordinates.put("Dublin", new MapPoint(53.3498, -6.2603));
         destinationCoordinates.put("Helsinki", new MapPoint(60.1695, 24.9354));
         destinationCoordinates.put("Tunis", new MapPoint(36.8065, 10.1815));
+        List<String> destinations = new ArrayList<>();
+        destinations.add("Paris");
+        destinations.add("New York");
+        destinations.add("London");
+        destinations.add("Tokyo");
+        destinations.add("Sydney");
+        destinations.add("Rome");
+        destinations.add("Berlin");
+        destinations.add("Moscow");
+        destinations.add("Beijing");
+        destinations.add("Cairo");
+        destinations.add("Rio de Janeiro");
+        destinations.add("Los Angeles");
+        destinations.add("Toronto");
+        destinations.add("Dubai");
+        destinations.add("Hong Kong");
+        destinations.add("Bangkok");
+        destinations.add("Mexico City");
+        destinations.add("Madrid");
+        destinations.add("Amsterdam");
+        destinations.add("Seoul");
+        destinations.add("Singapore");
+        destinations.add("Istanbul");
+        destinations.add("Mumbai");
+        destinations.add("Lisbon");
+        destinations.add("Athens");
+        destinations.add("Stockholm");
+        destinations.add("Vienna");
+        destinations.add("Prague");
+        destinations.add("Copenhagen");
+        destinations.add("Dublin");
+        destinations.add("Helsinki");
+        destinations.add("Tunis");
+
+
+        for (String destination : destinations) {
+            cb_destination.getItems().add(destination);
+        }
     }
 
     private void openMap(ActionEvent event) {
@@ -204,7 +245,7 @@ public class VoyageController implements Initializable {
                 tf_dated.setValue(selectedVoyage.getDateDepart());
                 tf_dateA.setValue(selectedVoyage.getDateArrive());
                 tf_prix.setText(selectedVoyage.getPrix());
-                tf_des.setText(selectedVoyage.getDestination());
+                cb_destination.setValue(selectedVoyage.getDestination());
                 updateMapPosition(selectedVoyage.getDestination());
             }
         }
@@ -241,7 +282,7 @@ public class VoyageController implements Initializable {
         LocalDate dateDepartValue = tf_dated.getValue();
         LocalDate dateArriveValue = tf_dateA.getValue();
         String prixValue = tf_prix.getText();
-        String destinationValue = tf_des.getText();
+        String destinationValue = cb_destination.getValue();
 
         // Vérification des valeurs saisies
         if (programmeValue.isEmpty() || dateDepartValue == null || dateArriveValue == null || prixValue.isEmpty() || destinationValue.isEmpty()) {
@@ -287,7 +328,7 @@ public class VoyageController implements Initializable {
             LocalDate dateDepart = tf_dated.getValue();
             LocalDate dateArrive = tf_dateA.getValue();
             String prix = tf_prix.getText();
-            String destination = tf_des.getText();
+            String destination = cb_destination.getValue();
 
             voyage.setProgramme(programme);
             voyage.setDateDepart(dateDepart);

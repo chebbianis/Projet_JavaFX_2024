@@ -97,7 +97,8 @@ public class ChatBotDialog extends JFrame implements KeyListener {
 
     public void initializeChatBot() {
         chatBot.put("hi", new String[]{"Hi there!", "Hello!", "Hola!", "Hey!", "Howdy!"});
-        chatBot.put("comment ça va", new String[]{"I'm doing well, thank you!", "I'm great!"});
+        chatBot.put("cv ?", new String[]{"I'm doing well, thank you!", "I'm great!"});
+        chatBot.put("who are you ?", new String[]{"I'm chatbot how can i help you ?", "I am ChatBot, an AI language model developed by Eya"});
         chatBot.put("merci", new String[]{"No problem!", "Alright then.", "Sure."});
         chatBot.put("default", new String[]{"Repeter s'il te plait je ne comprends pas"});
         chatBot.put("shut up", new String[]{"on tolere pas ce genre de langage"});

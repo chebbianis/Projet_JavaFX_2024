@@ -120,6 +120,10 @@ public class VoyageurController {
     @FXML
     private Button btn_ret;
 
+    @FXML
+    private ComboBox<String> cb_etat;
+
+
 
     @FXML
     void onRechercheFieldTextChanged(KeyEvent event) {
@@ -161,10 +165,11 @@ public class VoyageurController {
         col_age.setCellValueFactory(new PropertyValueFactory<>("age"));
         col_etat.setCellValueFactory(new PropertyValueFactory<>("etat_civil"));
         col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
-        List<String> etat = getAdressesGouvernorats();
+        List<String> etat = getEtatCivil();
 
 
-
+        cb_etat.getItems().addAll("Single", "Married", "Divorced", "Widowed");
+        cb_etat.setValue("Single");
 
         loadVoyageurData(); // Chargement des données dans la TableView
 
@@ -241,31 +246,33 @@ public class VoyageurController {
                 !tf_nom.getText().isEmpty() && tf_nom.getText().length() <= 50 &&
                 !tf_prenom.getText().isEmpty() && tf_prenom.getText().length() <= 50 &&
                 !tf_age.getText().isEmpty() && isValidAge(tf_age.getText()) &&
-                !tf_etat.getText().isEmpty() && tf_etat.getText().length() <= 20 &&
+                cb_etat.getValue() != null &&
                 !tf_email.getText().isEmpty() && isValidEmail(tf_email.getText());
     }
 
     private void ajouterVoyageur() {
-
         if (!validateFields()) {
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
             alert.setHeaderText(null);
-            alert.setContentText("Veuillez remplir tous les champs correctement.");
+
+            if (tf_num.getText().length() == 7) {
+                alert.setContentText("Veuillez taper un numéro de passeport valide.");
+            } else {
+                alert.setContentText("Veuillez remplir tous les champs correctement.");
+            }
+
             alert.showAndWait();
             return;
         }
-
 
         Voyageur newVoyageur = new Voyageur(
                 Integer.parseInt(tf_num.getText()),
                 tf_nom.getText(),
                 tf_prenom.getText(),
                 Integer.parseInt(tf_age.getText()),
-                tf_etat.getText(),
-
-        tf_email.getText()
+                cb_etat.getValue(),
+                tf_email.getText()
         );
 
         try {
@@ -275,7 +282,6 @@ public class VoyageurController {
             e.printStackTrace();
         }
     }
-
     private void modifierVoyageur() {
         Voyageur selectedVoyageur = table_voyageur.getSelectionModel().getSelectedItem();
         if (selectedVoyageur != null) {
@@ -284,7 +290,7 @@ public class VoyageurController {
             selectedVoyageur.setNom(tf_nom.getText());
             selectedVoyageur.setPrenom(tf_prenom.getText());
             selectedVoyageur.setAge(Integer.parseInt(tf_age.getText()));
-            selectedVoyageur.setEtat_civil(tf_etat.getText());
+            selectedVoyageur.setEtat_civil(cb_etat.getValue());
             selectedVoyageur.setEmail(tf_email.getText());
 
             try {
@@ -355,7 +361,7 @@ public class VoyageurController {
                 tf_nom.setText(selectedVoyageur.getNom());
                 tf_prenom.setText(selectedVoyageur.getPrenom());
                 tf_age.setText(String.valueOf(selectedVoyageur.getAge()));
-                tf_etat.setText(selectedVoyageur.getEtat_civil());
+                cb_etat.setValue(selectedVoyageur.getEtat_civil());
                 tf_email.setText(selectedVoyageur.getEmail());
             }
         }
@@ -451,13 +457,13 @@ public class VoyageurController {
         }*/
 
 
-    public List<String> getAdressesGouvernorats() {
-        List<String> adressesGouvernorats = new ArrayList<>();
-        adressesGouvernorats.add("Single");
-        adressesGouvernorats.add("Married");
-        adressesGouvernorats.add("Divorced");
-        adressesGouvernorats.add("Widowed");
-        return adressesGouvernorats;
+    public List<String> getEtatCivil() {
+        List<String> etatcivil = new ArrayList<>();
+        etatcivil.add("Single");
+        etatcivil.add("Married");
+        etatcivil.add("Divorced");
+        etatcivil.add("Widowed");
+        return etatcivil;
     }
 }
 
