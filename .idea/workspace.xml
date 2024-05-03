@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="405fefa5-8a44-4ca5-81f4-1295039e0022" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pi/Services/SendSmsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Services/SendSmsService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +51,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "user",
+    "git-widget-placeholder": "test",
     "last_opened_file_path": "/Users/anischebbi/Downloads/PI/src/main/resources",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
@@ -143,7 +141,7 @@
       <workItem from="1714591735395" duration="7844000" />
       <workItem from="1714604978293" duration="7523000" />
       <workItem from="1714683704420" duration="598000" />
-      <workItem from="1714738748589" duration="2372000" />
+      <workItem from="1714738748589" duration="2995000" />
     </task>
     <servers />
   </component>
