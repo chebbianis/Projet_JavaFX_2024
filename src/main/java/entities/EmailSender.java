@@ -8,6 +8,7 @@ import javax.mail.util.ByteArrayDataSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.Properties;
 import java.util.Random;
 
@@ -35,12 +36,12 @@ public class EmailSender {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(EMAIL_USERNAME));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-            message.setSubject("Confirmation Demande de Visite");
+            message.setSubject("Rappel Visite");
             Multipart multipart = new MimeMultipart();
             String emailContentWithSignature = "<html>" +
                     "<body>" +
                     "<p>Cher " + nom + ",</p>" +
-                    "<p><strong>Votre demande de visite a été enregistrée avec succés.</strong></p>" +
+                    "<p>Ceci est un email de rappel pour vous informer que votre rendez-vous de visite est prévu pour demain</p>" +
                     "<p>Cordialement,<br></p>" +
                     "</body>" +
                     "</html>";

@@ -112,4 +112,26 @@ public class ServiceVisit implements IService <Visit> {
         }
         return visits;
     }
+    public List<Visit> getAllVisites() throws SQLException {
+        String sql = "SELECT * FROM visit";
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+
+        List<Visit> visits = new ArrayList<>();
+        while (resultSet.next()) {
+            Visit visit = new Visit();
+            visit.setId(resultSet.getInt("id"));
+            visit.setNumero(resultSet.getInt("numero"));
+            visit.setNom(resultSet.getString("nom"));
+            visit.setEmail(resultSet.getString("email"));
+            visit.setRefB(resultSet.getInt("refB"));
+            visit.setDateVisit(resultSet.getDate("date_visit").toLocalDate());
+            visits.add(visit);
+        }
+
+        resultSet.close();
+        statement.close();
+
+        return visits;
+    }
 }

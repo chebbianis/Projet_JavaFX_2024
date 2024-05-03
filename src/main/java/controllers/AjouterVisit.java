@@ -14,6 +14,8 @@ import utils.MyDB;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.List;
+
 
 public class AjouterVisit {
 
@@ -77,6 +79,28 @@ public class AjouterVisit {
 
     private Connection connection;
     private Visit visit;
+
+    LocalDate today = LocalDate.now();
+    public static void init() {
+        LocalDate today = LocalDate.now();
+        rappel(today);
+    }
+
+    public static void rappel(LocalDate today)
+    {     ServiceVisit serviceVisit =new ServiceVisit();
+
+        try {
+            List<Visit> visits= serviceVisit.afficher();
+            for ( Visit v :visits) {
+                if (v.getDateVisit().equals(today.plusDays(1))) {
+                    EmailSender.sendWelcomeEmailWithSignature(v.getEmail(), v.getNom());
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @FXML
     private void initialize() {
@@ -168,12 +192,14 @@ public class AjouterVisit {
                     clear();
 
                     if (rowsAffected > 0) {
-                        EmailSender.sendWelcomeEmailWithSignature(visit.getEmail(), visit.getNom());
-                        /*  Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                      /*  if (visit.getDateVisit().equals(today.plusDays(1))) {
+                            EmailSender.sendWelcomeEmailWithSignature(visit.getEmail(), visit.getNom());
+                        }*/
+                          Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                            successAlert.setTitle("Succès");
                            successAlert.setHeaderText(null);
                            successAlert.setContentText("La demande a été ajoutée avec succès.");
-                           successAlert.showAndWait();*/
+                           successAlert.showAndWait();
                     }
                 }
             }

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -28,14 +29,17 @@
       </HBox>
    </top>
    <left>
-      <VBox prefHeight="683.0" prefWidth="131.0" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="628.0" prefWidth="146.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="qrcodeMaison" fitHeight="123.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true" />
+         </children></VBox>
    </left>
    <center>
       <VBox prefHeight="437.0" prefWidth="676.0" BorderPane.alignment="CENTER">
          <children>
             <ScrollPane prefHeight="646.0" prefWidth="945.0">
                <content>
-                  <VBox fx:id="homeContainer" prefHeight="613.0" prefWidth="952.0" />
+                  <VBox fx:id="homeContainer" prefHeight="614.0" prefWidth="941.0" />
                </content>
             </ScrollPane>
          </children>

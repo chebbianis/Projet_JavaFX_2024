@@ -177,7 +177,6 @@ public class AfficherMaison {
         fileOut.close();
         resultSet.close();
 
-        // Ouvrir le fichier Excel après l'avoir créé dans un thread séparé
         new Thread(() -> {
             try {
                 openExcelFile(filePath);

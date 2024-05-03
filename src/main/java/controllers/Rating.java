@@ -33,7 +33,7 @@ public class Rating {
 
     private RatingDAO ratingDAO = new RatingDAO();
     private Maison maison;
-    private int maisonId; // L'identifiant de la maison sélectionnée
+    private int maisonId;
 
     public void setMaison(Maison maison) {
         this.maison = maison;

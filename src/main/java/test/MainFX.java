@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import static controllers.AjouterVisit.init;
+
 
 public class MainFX extends Application {
 
@@ -14,13 +16,17 @@ public class MainFX extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterMaison.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        primaryStage.setTitle("CRUD");
+        primaryStage.setTitle("BIENVENUE");
         primaryStage.setScene(scene);
         primaryStage.show();
+        init();
+      //  Main.checkVisitsForReminder();
+
 
     }
 
     public static void main(String[] args) {
         launch(args);
+
     }
 }
