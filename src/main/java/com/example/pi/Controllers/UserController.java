@@ -3,6 +3,7 @@ package com.example.pi.Controllers;
 import com.example.pi.DB.DBUtils;
 import com.example.pi.Entities.Region;
 import com.example.pi.Entities.User;
+import com.example.pi.Services.GeminiAPI;
 import com.example.pi.Services.UserSession;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -24,6 +25,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
@@ -87,6 +89,8 @@ public class UserController implements Initializable {
     private TextField tf_adresse;
     @FXML
     private TextField tf_search;
+    @FXML
+    private Button btn_sms;
 
     private final Image iconValid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/check.png")));
     private final Image iconInvalid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/cross.png")));
@@ -113,6 +117,7 @@ public class UserController implements Initializable {
 
 
 
+
         btn_send.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -124,7 +129,7 @@ public class UserController implements Initializable {
                 }
 //                System.out.println("adresse mail dans userController est : "+email);
 
-                DBUtils.changeSceneWithObject(event, "/com/example/pi/email.fxml", "Login", email);
+                DBUtils.changeSceneWithObject(event, "/com/example/pi/email.fxml", "Email", email);
             }
         });
 
@@ -137,6 +142,13 @@ public class UserController implements Initializable {
             public void handle(ActionEvent event) {
                 UserSession.getInstance().clear();
                 DBUtils.changeScene(event,"/com/example/pi/hello-view.fxml","Login",null);
+            }
+        });
+
+        btn_sms.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DBUtils.changeScene(event,"/com/example/pi/send-sms.fxml","Send SMS",null);
             }
         });
 
@@ -209,6 +221,29 @@ public class UserController implements Initializable {
         });
 
         showUsers();
+
+//        try {
+//            testGetRequest();
+//            testPostRequest();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+
+    private static void testGetRequest() throws IOException {
+        System.out.println("Testing GET Request...");
+        GeminiAPI geminiAPI = new GeminiAPI();
+        String response = geminiAPI.getRequest("/exampleEndpoint");
+        System.out.println("GET Response: " + response);
+    }
+
+    private static void testPostRequest() throws IOException {
+        System.out.println("\nTesting POST Request...");
+        GeminiAPI geminiAPI = new GeminiAPI();
+        String requestBody = "{\"key\":\"value\"}";
+        String postResponse = geminiAPI.postRequest("/exampleEndpoint", requestBody);
+        System.out.println("POST Response: " + postResponse);
     }
 
     private void addSearchListener() {
@@ -542,6 +577,9 @@ public class UserController implements Initializable {
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Utilisateur inséré avec succès !");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Utilisateur inséré avec succès !");
+                alert.show();
                 showUsers();
             }
         } catch (SQLException e) {

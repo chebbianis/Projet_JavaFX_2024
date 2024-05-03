@@ -102,6 +102,7 @@ public class DBUtils {
                 psInsert.executeUpdate();
 
                 System.out.println("Sign up done!");
+                UserSession.getInstance().setEmail(email);
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setContentText("Sign up done!");
                 alert.show();

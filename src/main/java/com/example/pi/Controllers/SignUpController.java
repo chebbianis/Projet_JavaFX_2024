@@ -1,7 +1,8 @@
 package com.example.pi.Controllers;
 
 import com.example.pi.DB.DBUtils;
-import javafx.beans.value.ChangeListener;
+import com.example.pi.Services.SendSmsService;
+import com.github.sarxos.webcam.Webcam;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,28 +10,33 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.bytedeco.opencv.opencv_videoio.CvCapture;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.sql.*;
-import java.util.Objects;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.sql.DriverManager.getConnection;
+
 
 public class SignUpController implements Initializable {
     @FXML
@@ -68,10 +74,11 @@ public class SignUpController implements Initializable {
 
     private boolean isPasswordVisible = false;
 
-    private final Image iconValid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/check.png")));
-    private final Image iconInvalid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/cross.png")));
+    @FXML
+    private Button verifyButton;
 
-
+    @FXML
+    private ImageView webcamView;
 
     @FXML
     private void togglePasswordVisibility(ActionEvent event) {
@@ -108,6 +115,15 @@ public class SignUpController implements Initializable {
         }
     }
 
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -118,50 +134,6 @@ public class SignUpController implements Initializable {
         addCharCountListener(tf_lastname);
         addCharCountListener(tf_city);
         addCharCountListener(tf_adress);
-
-
-
-
-
-//        // Ajouter un événement de modification de texte pour le champ de mot de passe
-//        pf_password.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if (pf_password.isVisible()) {
-//                // Si c'est le champ de mot de passe qui a changé, supprimer tout auditeur précédent
-//                removeCharCountListener();
-//                // Ajouter le nouvel auditeur pour le champ de mot de passe
-//                addCharCountListener(pf_password, 125);
-//            }
-//        });
-//
-//// Ajouter un événement de modification de texte pour le champ de texte visible
-//        tf_visiblePassword.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if (tf_visiblePassword.isVisible()) {
-//                // Si c'est le champ de texte visible qui a changé, supprimer tout auditeur précédent
-//                removeCharCountListener();
-//                // Ajouter le nouvel auditeur pour le champ de texte visible
-//                addCharCountListener(tf_visiblePassword, 125);
-//            }
-//        });
-
-// Définir le listener pour la visibilité du mot de passe
-//        ChangeListener<Boolean> passwordVisibilityListener = (observable, oldValue, newValue) -> {
-//            // Si c'est le champ de mot de passe qui est visible, ajouter un auditeur pour le champ de mot de passe
-//            if (pf_password.isVisible()) {
-//                removeCharCountListener();
-//                addCharCountListener(pf_password, 125);
-//            }
-//            // Sinon, si c'est le champ de texte visible qui est visible, ajouter un auditeur pour le champ de texte visible
-//            else if (tf_visiblePassword.isVisible()) {
-//                removeCharCountListener();
-//                addCharCountListener(tf_visiblePassword, 125);
-//            }
-//        };
-
-// Ajouter l'écouteur à la propriété visibleProperty de chaque champ de texte
-//        pf_password.visibleProperty().addListener(passwordVisibilityListener);
-//        tf_visiblePassword.visibleProperty().addListener(passwordVisibilityListener);
-//
-//
 
 
 
@@ -202,13 +174,82 @@ public class SignUpController implements Initializable {
                         // Vérifiez la longueur des champs first name, last name, adress et city
                         if (isValidLength(tf_firstname.getText()) && isValidLength(tf_lastname.getText())
                                 && isValidLength(tf_adress.getText()) && isValidLength(tf_city.getText())) {
-                            // Récupérez l'identifiant de région à partir du nom de région sélectionné
-                            int regionId = getRegionIdByName(cb_region.getValue());
 
-                            // Si tout est valide, enregistrez l'utilisateur avec tous les champs
-                            DBUtils.signUpUser(event, tf_email.getText(), pf_password.getText(),
-                                    tf_firstname.getText(), tf_lastname.getText(),
-                                    tf_adress.getText(), tf_city.getText(), regionId);
+                            // Demander le numéro de téléphone
+                            TextInputDialog phoneDialog = new TextInputDialog();
+                            phoneDialog.setTitle("Phone Number");
+                            phoneDialog.setHeaderText(null);
+                            phoneDialog.setContentText("Please enter your phone number:");
+
+                            // Afficher la boîte de dialogue et attendre la réponse de l'utilisateur
+                            String phoneNumber = phoneDialog.showAndWait().orElse(null);
+
+                            // Vérifier si l'utilisateur a annulé l'opération
+                            if (phoneNumber == null || phoneNumber.trim().isEmpty()) {
+                                // L'utilisateur a annulé l'opération, ne faites rien
+                                return;
+                            }
+
+                            // Vérifier si le numéro de téléphone est valide (vous pouvez implémenter votre propre logique ici)
+                            if (!phoneNumber.matches("\\d{8}")) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setContentText("Invalid phone number format");
+                                alert.show();
+                                return;
+                            }
+
+                            // Générer un code de confirmation aléatoire
+                            Random random = new Random();
+                            int confirmationCode = random.nextInt(9000) + 1000; // Génère un nombre aléatoire entre 1000 et 9999
+
+                            System.out.println("le code de confirmation est : "+confirmationCode);
+
+
+
+
+
+
+
+
+                            //SendSmsService.sendSMS(phoneNumber,"salut, le code de confirmation est : "+confirmationCode);
+
+
+
+
+
+
+
+
+                            // Afficher une boîte de dialogue pour demander le code de confirmation
+                            TextInputDialog confirmationDialog = new TextInputDialog();
+                            confirmationDialog.setTitle("Confirmation Code");
+                            confirmationDialog.setHeaderText(null);
+                            confirmationDialog.setContentText("Please enter the confirmation code sent to your phone:");
+
+                            // Afficher la boîte de dialogue et attendre la réponse de l'utilisateur
+                            String userInput = confirmationDialog.showAndWait().orElse(null);
+
+                            // Vérifier si l'utilisateur a annulé ou si le champ est vide
+                            if (userInput == null || userInput.trim().isEmpty()) {
+                                // L'utilisateur a annulé l'opération, ne faites rien
+                                return;
+                            }
+
+                            // Vérifier si le code saisi correspond au code généré
+                            if (userInput.trim().equals(String.valueOf(confirmationCode))) {
+                                // Le code de confirmation est correct, continuer le processus d'inscription
+                                // Récupérez l'identifiant de région à partir du nom de région sélectionné
+                                int regionId = getRegionIdByName(cb_region.getValue());
+                                // Enregistrez l'utilisateur avec tous les champs
+                                DBUtils.signUpUser(event, tf_email.getText(), pf_password.getText(),
+                                        tf_firstname.getText(), tf_lastname.getText(),
+                                        tf_adress.getText(), tf_city.getText(), regionId);
+                            } else {
+                                // Le code de confirmation est incorrect, afficher un message d'erreur
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setContentText("Incorrect confirmation code. Please try again.");
+                                alert.show();
+                            }
                         } else {
                             // Affichez un message d'erreur si la longueur des champs est invalide
                             System.out.println("Invalid length for some fields");
@@ -232,7 +273,6 @@ public class SignUpController implements Initializable {
                 }
             }
         });
-
 
         button_login.setOnAction(new EventHandler<ActionEvent>() {
             @Override

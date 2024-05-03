@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #E5F1EB;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pi.Controllers.SmsController">
+
+    <Text fill="#349790" layoutX="191.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Send SMS :">
+        <font>
+            <Font name="Apple Braille" size="40.0" />
+        </font>
+    </Text>
+   <Text layoutX="209.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number " />
+   <TextField fx:id="tf_number" layoutX="271.0" layoutY="100.0" prefHeight="26.0" prefWidth="200.0" />
+   <TextArea fx:id="tf_message" layoutX="271.0" layoutY="140.0" prefHeight="110.0" prefWidth="200.0" />
+   <Text layoutX="205.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message " />
+   <Button fx:id="btn_back" layoutX="69.0" layoutY="289.0" mnemonicParsing="false" text="Back" />
+   <Button fx:id="btn_send" layoutX="425.0" layoutY="289.0" mnemonicParsing="false" text="Send" />
+
+</AnchorPane>

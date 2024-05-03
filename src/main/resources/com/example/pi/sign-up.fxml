@@ -87,6 +87,8 @@
             <Label layoutX="14.0" layoutY="272.0" text="City" />
             <Label layoutX="14.0" layoutY="311.0" text="Region" />
             <Button fx:id="button_generate" layoutX="275.0" layoutY="115.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Generate" textFill="#0011ff" underline="true" />
+            <!-- ImageView pour afficher la vue de la webcam -->
+            <ImageView fx:id="webcamView" fitHeight="400.0" fitWidth="369.0" layoutX="-5.0" />
          </children>
       </AnchorPane>
    </children>
