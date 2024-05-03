@@ -109,6 +109,8 @@ public class UserController implements Initializable {
         String userEmail = UserSession.getInstance().getEmail();
 
         System.out.println("email utilisateur est : "+userEmail);
+        System.out.println("System.getenv(\"GPTKey\") = "+ System.getenv("GPTKey"));
+        System.out.println("System.getenv(\"twilio\") = "+System.getenv("twilio"));
 
 //        addCharCountListenerEmail(tf_email,-175);
 
