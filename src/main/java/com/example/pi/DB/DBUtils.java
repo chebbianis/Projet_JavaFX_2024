@@ -73,7 +73,7 @@ public class DBUtils {
 
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tunvista",
+                    "jdbc:mysql://localhost:3306/tunvista_integration",
                     "root",
                     "mohamedomar"
             );
@@ -130,7 +130,7 @@ public class DBUtils {
 
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tunvista",
+                    "jdbc:mysql://localhost:3306/tunvista_integration",
                     "root",
                     "mohamedomar"
             );
@@ -187,5 +187,58 @@ public class DBUtils {
                 }
             }
         }
+    }
+
+    public static String getFullNameFromEmail(String email) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String fullName = ""; // Chaîne de caractères pour stocker le prénom et le nom de l'utilisateur
+
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tunvista_integration",
+                    "root",
+                    "mohamedomar"
+            );
+            preparedStatement = connection.prepareStatement("SELECT first_name, last_name FROM user WHERE email = ?");
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // Récupérer le prénom et le nom de l'utilisateur à partir du résultat de la requête
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                // Concaténer le prénom et le nom dans une seule chaîne de caractères
+                fullName = firstName + " " + lastName;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // Fermer les ressources JDBC
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return fullName;
     }
  }

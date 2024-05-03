@@ -145,5 +145,6 @@
       <Button fx:id="btn_clear" layoutX="582.0" layoutY="549.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="Clear" />
       <Button fx:id="btn_send" layoutX="407.0" layoutY="469.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Send Email" textFill="#0379da" />
       <Button fx:id="btn_sms" layoutX="407.0" layoutY="549.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="87.0" text="Send SMS" textFill="#d90404" />
+      <Button fx:id="btn_malek" layoutX="296.0" layoutY="554.0" mnemonicParsing="false" text="Malek" />
    </children>
 </AnchorPane>

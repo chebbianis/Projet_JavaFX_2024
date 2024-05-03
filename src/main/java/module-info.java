@@ -11,6 +11,10 @@ module com.example.pi {
     requires org.bytedeco.opencv;
     requires org.bytedeco.javacv;
     requires twilio;
+    requires org.apache.poi.poi;
+    requires activation;
+    requires com.google.zxing;
+    requires jfxtras.agenda;
 
     opens com.example.pi to javafx.fxml;
     exports com.example.pi;

@@ -399,7 +399,7 @@ public class SignUpController implements Initializable {
         Connection connection;
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tunvista",
+                    "jdbc:mysql://localhost:3306/tunvista_integration",
                     "root",
                     "mohamedomar"
             );

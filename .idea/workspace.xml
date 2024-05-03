@@ -4,7 +4,67 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="405fefa5-8a44-4ca5-81f4-1295039e0022" name="Changes" comment="" />
+    <list default="true" id="405fefa5-8a44-4ca5-81f4-1295039e0022" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/AfficherMaison.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/AfficherVisit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/AjouterMaison.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/AjouterVisit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/Calendrier.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/Front.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/Rating.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/RatingDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Entities/EmailSender.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Entities/Maison.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Entities/Visit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Services/IService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Services/ServiceMaison.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Services/ServiceVisit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/utils/MyDB.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/AfficherMaison.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/AfficherVisit.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/AjouterMaison.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/AjouterVisit.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/Calendrier.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/Front.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/Rating.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/empty_star.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/excel-icon-transparent-19.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/excel.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/iconAdd.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/iconDelete.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/iconModif.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/iconSearch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/images (1).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/ms-excel-icon-microsoft-excel-11563403320qrubcjzgva.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/png-transparent-search-magnifier-find-zoom-glass-seo-optimization-instagram-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/star.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/416393549_925699639206105_4292219783958835218_n (1).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/Appart.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/Dar-Nesma-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/Villa Zembra.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/cap-250316-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/deal-01.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/deal-02.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/deal-03.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/image1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/image2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/image3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/image4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/one.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/studio2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/téléchargement 1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/téléchargement.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/vilaa1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/vilaa2.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/SignUpController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/SignUpController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/Controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pi/DB/DBUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pi/DB/DBUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/pi/logged-in.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/pi/logged-in.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,9 +73,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Enum" />
         <option value="CSS File" />
+        <option value="Interface" />
         <option value="FxmlFile" />
         <option value="Class" />
       </list>
@@ -49,8 +109,8 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "user",
-    "last_opened_file_path": "/Users/anischebbi/Downloads/PI/src/main/resources",
+    "git-widget-placeholder": "integration",
+    "last_opened_file_path": "/Users/anischebbi/Downloads/PI copie/src/main/resources",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -72,8 +132,8 @@
       <recent name="$PROJECT_DIR$/lib" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources/Gmail" />
       <recent name="$PROJECT_DIR$/src/main/resources/com/example/pi" />
+      <recent name="$PROJECT_DIR$/src/main/resources/Gmail" />
       <recent name="$PROJECT_DIR$/src/main/resources/com/example/pi/icons" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/java/com/example/pi" />
@@ -140,6 +200,7 @@
       <workItem from="1714604978293" duration="7523000" />
       <workItem from="1714683704420" duration="598000" />
       <workItem from="1714738748589" duration="3285000" />
+      <workItem from="1714742514612" duration="18097000" />
     </task>
     <servers />
   </component>
@@ -155,6 +216,10 @@
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
+          <option name="timeStamp" value="2" />
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>

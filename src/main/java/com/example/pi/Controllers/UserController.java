@@ -91,6 +91,8 @@ public class UserController implements Initializable {
     private TextField tf_search;
     @FXML
     private Button btn_sms;
+    @FXML
+    private Button btn_malek;
 
     private final Image iconValid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/check.png")));
     private final Image iconInvalid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/cross.png")));
@@ -99,7 +101,7 @@ public class UserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        addCharCountListenerEmail(tf_email,-366);
+        addCharCountListenerEmail(tf_email,-3);
         addCharCountListener(tf_firstname,56);
         addCharCountListener(tf_lastname,10);
         addCharCountListener(tf_adresse,10);
@@ -151,6 +153,13 @@ public class UserController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 DBUtils.changeScene(event,"/com/example/pi/send-sms.fxml","Send SMS",null);
+            }
+        });
+
+        btn_malek.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DBUtils.changeScene(event,"/com/example/pi/AjouterMaison.fxml","test",null);
             }
         });
 
@@ -410,7 +419,7 @@ public class UserController implements Initializable {
     Connection connection;
         try {
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tunvista",
+                    "jdbc:mysql://localhost:3306/tunvista_integration",
                     "root",
                     "mohamedomar"
             );
@@ -612,8 +621,17 @@ public class UserController implements Initializable {
             String query = "UPDATE user SET ";
             boolean needComma = false;
             boolean roleUpdated = false;
-
-
+            // Vérifier si l'utilisateur a modifié son email et qu'il est déjà utilisé par un autre utilisateur
+            boolean emailAlreadyExists = false;
+            if (tf_email.getText() != null && !tf_email.getText().isEmpty() && !tf_email.getText().equals(selectedUser.getEmail())) {
+                emailAlreadyExists = userExistsWithEmail(tf_email.getText());
+                if (emailAlreadyExists) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Email already exists!");
+                    alert.show();
+                    return;
+                }
+            }
             if (tf_password.getText() != null && !tf_password.getText().isEmpty() && !tf_password.getText().equals(selectedUser.getPassword())) {
                 query += "password = ?";
                 needComma = true;

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="829.0" prefWidth="1128.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pi.Controllers.AfficherMaison">
+    <children>
+        <TableView fx:id="tableView" layoutX="259.0" layoutY="139.0" onMouseClicked="#getData" prefHeight="211.0" prefWidth="635.0">
+            <columns>
+                <TableColumn fx:id="refCol" minWidth="0.0" prefWidth="62.40003967285156" text="Ref" />
+                <TableColumn fx:id="nomCol" prefWidth="92.800048828125" text="Nom" />
+                <TableColumn fx:id="adresseCol" prefWidth="94.4000244140625" text="Adresse" />
+                <TableColumn fx:id="nombreChambreCol" prefWidth="88.0" text="Chambre" />
+                <TableColumn fx:id="prixCol" prefWidth="84.79998779296875" text="Prix" />
+                <TableColumn fx:id="typeCol" prefWidth="82.39990234375" text="Type" />
+                <TableColumn fx:id="imageCol" prefWidth="128.0" text="Image" />
+            </columns>
+        </TableView>
+        <HBox layoutX="460.0" layoutY="357.0" prefHeight="100.0" prefWidth="307.0" spacing="40.0">
+            <children>
+                <Button fx:id="btnModifier" mnemonicParsing="false" onAction="#modifierMaison" prefHeight="38.0" prefWidth="84.0" style="-fx-background-color: #5ea648;">
+                    <font>
+                        <Font name="Bell MT" size="15.0" />
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="27.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@iconModif.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="btnSupprimer" mnemonicParsing="false" onAction="#supprimerMaison" prefHeight="38.0" prefWidth="82.0" style="-fx-background-color: #5ea648;">
+                    <font>
+                        <Font name="Bell MT" size="14.0" />
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@iconDelete.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="bntExcel" mnemonicParsing="false" onAction="#bntExcel" prefHeight="34.0" prefWidth="79.0" style="-fx-background-color: #5ea648;">
+                    <font>
+                        <Font name="Bell MT" size="19.0" />
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@images%20(1).png" />
+                            </image></ImageView>
+                    </graphic>
+                </Button>
+            </children>
+        </HBox>
+        <Label layoutX="347.0" prefHeight="42.0" prefWidth="174.0" style="-fx-background-color: #5ea648;" text="   Listes Maisons">
+            <font>
+                <Font name="Bell MT" size="23.0" />
+            </font>
+        </Label>
+        <VBox layoutX="40.0" layoutY="144.0" prefHeight="211.0" prefWidth="182.0" spacing="15.0" AnchorPane.topAnchor="144.0">
+            <children>
+                <TextField fx:id="nomModif" promptText="Nom" />
+                <TextField fx:id="adresseModif" promptText="Adresse" />
+                <TextField fx:id="nombreChambreModif" promptText="Nombre de Chambre" />
+                <TextField fx:id="prixModif" promptText="Prix" />
+                <ComboBox fx:id="typeModif" prefHeight="26.0" prefWidth="194.0" />
+            </children>
+        </VBox>
+        <ImageView fx:id="imageModif" fitHeight="117.0" fitWidth="159.0" layoutX="52.0" layoutY="376.0" pickOnBounds="true" preserveRatio="true" />
+        <Text fx:id="cheminImage" layoutX="63.0" layoutY="513.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="147.99999618530273" />
+        <Button fx:id="insert" layoutX="91.0" layoutY="561.0" mnemonicParsing="false" onAction="#insertImage" prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: #5ea648;" text="Insert">
+            <font>
+                <Font name="Bell MT" size="15.0" />
+            </font></Button>
+        <Button fx:id="retour" layoutY="-2.0" mnemonicParsing="false" onAction="#retourPage" prefHeight="21.0" prefWidth="47.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+            <graphic>
+                <ImageView fitHeight="24.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@icon.png" />
+                    </image>
+                </ImageView>
+            </graphic></Button>
+        <Line endX="-100.00003051757812" endY="630.0" layoutX="344.0" layoutY="164.0" startX="-100.00001525878906" startY="-39.19999694824219" stroke="#70bc64" />
+        <TextField fx:id="rechercheField" layoutX="347.0" layoutY="74.0" onKeyTyped="#onRechercheFieldTextChanged" prefHeight="26.0" prefWidth="533.0" />
+        <Text fill="#5ea648" layoutX="259.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Recherche">
+            <font>
+                <Font name="Bell MT" size="19.0" />
+            </font>
+        </Text>
+        <TextField fx:id="montantEURField" layoutX="502.0" layoutY="457.0" />
+        <Text fill="#716f6f" layoutX="620.0" layoutY="474.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EUR" wrappingWidth="23.677734375" />
+        <Label layoutX="286.0" layoutY="461.0" text="Convertir les prix du TND en EUR">
+            <font>
+                <Font name="Bell MT" size="14.0" />
+            </font>
+        </Label>
+        <ImageView fitHeight="21.0" fitWidth="24.0" layoutX="860.0" layoutY="76.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@png-transparent-search-magnifier-find-zoom-glass-seo-optimization-instagram-icon.png" />
+            </image>
+        </ImageView>
+        <Pane layoutX="244.0" layoutY="546.0" prefHeight="78.0" prefWidth="205.0">
+            <padding>
+                <Insets left="20.0" right="20.0" />
+            </padding>
+            <children>
+                <Button fx:id="stat" layoutX="53.0" layoutY="14.0" mnemonicParsing="false" onAction="#stat" prefHeight="35.0" prefWidth="97.0" style="-fx-background-color: #5ea648;" text="Afficher Stat">
+                    <styleClass>
+                        <String fx:value="round-layout" />
+                        <String fx:value="tranparent" />
+                    </styleClass>
+                    <font>
+                        <Font name="Bell MT" size="14.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+        <PieChart fx:id="pieChart" layoutX="505.0" layoutY="499.0" prefHeight="211.0" prefWidth="438.0" />
+    </children>
+</AnchorPane>
