@@ -5,8 +5,8 @@ import com.twilio.type.PhoneNumber;
 import javafx.scene.control.Alert;
 
 public class SendSmsService {
-    public static final String ACCOUNT_SID = System.getenv("twilio");
-    public static final String AUTH_TOKEN = "5c86c8b5285f24cebd2386aba33c2905";
+    public static final String ACCOUNT_SID = System.getenv("twilioSid");
+    public static final String AUTH_TOKEN = System.getenv("twilioToken");
 
 
     public static void sendSMS(String toPhoneNumber, String message) {
