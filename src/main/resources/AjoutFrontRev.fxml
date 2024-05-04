@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="829.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjoutFrontRev">
+   <children>
+      <Label layoutX="303.0" layoutY="24.0" prefHeight="63.0" prefWidth="286.0" text="Reserver" textFill="#1d92b9">
+         <font>
+            <Font name="Book Antiqua" size="34.0" />
+         </font>
+      </Label>
+      <Pane layoutX="76.0" layoutY="97.0" prefHeight="227.0" prefWidth="314.0" style="-fx-background-color: grey;">
+         <children>
+            <Label layoutX="34.0" layoutY="30.0" text="id_client" textFill="#101010">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="29.0" layoutY="63.0" text="date_arrivee" textFill="#181818">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="31.0" layoutY="103.0" text="date_depart" textFill="#101010">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="42.0" layoutY="137.0" text="type_r" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="idClientRev" layoutX="150.0" layoutY="26.0" />
+            <Label layoutX="32.0" layoutY="178.0" text="prix_total" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="prixTotalRev" layoutX="150.0" layoutY="176.0" />
+            <DatePicker fx:id="dateArriveeRev" layoutX="150.0" layoutY="59.0" prefHeight="25.0" prefWidth="149.0" />
+            <DatePicker fx:id="dateDepartRev" layoutX="150.0" layoutY="101.0" prefHeight="25.0" prefWidth="149.0" />
+            <TextField fx:id="typeRRev" layoutX="150.0" layoutY="135.0" />
+         </children>
+      </Pane>
+      <Pane layoutX="390.0" layoutY="97.0" prefHeight="227.0" prefWidth="323.0" style="-fx-background-color: grey;">
+         <children>
+            <Label layoutX="23.0" layoutY="27.0" text="nbre_chambre" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="23.0" layoutY="62.0" text="type_chambre" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="31.0" layoutY="103.0" text="nbre_adulte" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="30.0" layoutY="142.0" text="nbre_enfant" textFill="#080808">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nbreChambreRev" layoutX="162.0" layoutY="25.0" />
+            <TextField fx:id="nbreAdulteRev" layoutX="162.0" layoutY="101.0" />
+            <TextField fx:id="nbreEnfantRev" layoutX="162.0" layoutY="140.0" />
+            <Label layoutX="34.0" layoutY="182.0" text="nom_hotel" textFill="#101010">
+               <font>
+                  <Font name="Arial" size="15.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="nomHotelRev" layoutX="161.0" layoutY="178.0" prefWidth="150.0" />
+            <TextField fx:id="typeChambreRev" layoutX="161.0" layoutY="60.0" />
+         </children>
+      </Pane>
+      <Button fx:id="btnreserver" layoutX="141.0" layoutY="364.0" mnemonicParsing="false" onAction="#reserver" style="-fx-background-color: #1d92b9;" text="Reserver" textFill="#f2f2f2">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnPayer" layoutX="260.0" layoutY="364.0" mnemonicParsing="false" onAction="#payer" style="-fx-background-color: #1d92b9;" text="Payer" textFill="#f2f2f2">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+
+      <Button fx:id="btnBackToHome" layoutX="30.0" layoutY="30.0" mnemonicParsing="false" onAction="#backToHome" text="Back to Home" />
+
+   </children>
+</Pane>

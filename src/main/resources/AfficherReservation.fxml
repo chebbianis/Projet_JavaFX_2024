@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="578.0" prefWidth="826.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherReservvation">
    <children>
-      <Label layoutX="309.0" layoutY="14.0" prefHeight="63.0" prefWidth="286.0" text="List Reservation" textFill="BLUE">
+      <Label layoutX="309.0" layoutY="14.0" prefHeight="63.0" prefWidth="286.0" text="List Reservation" textFill="#1d92b9">
          <font>
             <Font name="Book Antiqua" size="34.0" />
          </font>
@@ -31,12 +31,12 @@
             <TableColumn fx:id="nomHotelCol" prefWidth="80.7999267578125" text="nom_hotel" />
          </columns>
       </TableView>
-      <Button fx:id="updateRev" layoutX="683.0" layoutY="390.0" mnemonicParsing="false" onAction="#updateRev" style="-fx-background-color: blue;" text="Update" textFill="#f2f2f2">
+      <Button fx:id="updateRev" layoutX="683.0" layoutY="390.0" mnemonicParsing="false" onAction="#updateRev" style="-fx-background-color: #1d92b9;" text="Update" textFill="#f2f2f2">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="deleteRev" layoutX="683.0" layoutY="464.0" mnemonicParsing="false" onAction="#deleteRev" prefHeight="40.0" prefWidth="92.0" style="-fx-background-color: blue;" text="Delete" textFill="#f7f4f4">
+      <Button fx:id="deleteRev" layoutX="683.0" layoutY="464.0" mnemonicParsing="false" onAction="#deleteRev" prefHeight="40.0" prefWidth="92.0" style="-fx-background-color: #1d92b9;" text="Delete" textFill="#f7f4f4">
          <font>
             <Font size="18.0" />
          </font>
@@ -109,5 +109,6 @@
             <TextField fx:id="nomHotelModif" layoutX="162.0" layoutY="178.0" />
          </children>
       </Pane>
+      <Button fx:id="btnBackToHome" layoutY="14.0" mnemonicParsing="false" onAction="#backToHome" text="Back to Home" />
    </children>
 </AnchorPane>

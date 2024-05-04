@@ -84,6 +84,10 @@ public class Hotel {
         this.image = image;
     }
 
+    public Hotel(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Hotel{" +

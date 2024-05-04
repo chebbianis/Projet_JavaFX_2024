@@ -6,11 +6,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import services.ServiceHotel;
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +29,8 @@ import java.util.Set;*/
 
 public class AjouterHotel {
  //   private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+ @FXML
+ private Button btnBackToHome;
 
     private String imageFilePath;
 
@@ -49,6 +54,38 @@ public class AjouterHotel {
     private Button button_Submit;
     @FXML
     private ImageView imageHotel;
+    @FXML
+    private Button Bt_Hotel;
+
+    @FXML
+    private Button Bt_front;
+
+    @FXML
+    void naviguezVersFront(ActionEvent event) {
+        navigateTo("/FrontListHotel.fxml", event);
+
+
+    }
+
+    @FXML
+    void naviguezVersHotel(ActionEvent event) {
+        navigateTo("/ajouterHotel.fxml", event);
+
+    }
+
+    @FXML
+    void naviguezVersRev(ActionEvent event) {
+        navigateTo("/AfficherReservation.fxml", event);
+
+    }
+    private void navigateTo(String fxmlFile, ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+            ((Button) event.getSource()).getScene().setRoot(root);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
 
     @FXML
     void ajouterHotel(ActionEvent event) {
@@ -227,4 +264,30 @@ public class AjouterHotel {
         alert.setContentText(message);
         alert.showAndWait();
     }
-}
+
+    public void backToHome(ActionEvent event) {
+        try {
+            // Chargement de la vue de réservation à partir du fichier FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/back.fxml"));
+            Parent root = loader.load();
+
+            // Accédez au contrôleur de la vue de réservation si nécessaire pour passer des données
+            back controller = loader.getController();
+            // Par exemple, vous pouvez passer l'ID de l'hôtel sélectionné
+            // controller.setHotelId(selectedHotelId);
+
+            // Créez une nouvelle scène
+            Scene scene = new Scene(root);
+
+            // Obtenez la scène actuelle à partir de n'importe quel nœud dans la vue actuelle
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Affichez la nouvelle scène dans une nouvelle fenêtre
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement de la vue de réservation : " + e.getMessage());
+        }
+    }
+    }
+

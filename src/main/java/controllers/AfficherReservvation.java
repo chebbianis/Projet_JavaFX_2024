@@ -6,12 +6,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import services.ServiceHotel;
 import services.ServiceReservation;
 
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -273,6 +279,31 @@ public class AfficherReservvation {
         return prix_nuit * nbreChambre * nbreNuits;
     }
 
-}
+    public void backToHome(ActionEvent event) {
+        try {
+            // Chargement de la vue de réservation à partir du fichier FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/back.fxml"));
+            Parent root = loader.load();
+
+            // Accédez au contrôleur de la vue de réservation si nécessaire pour passer des données
+            back controller = loader.getController();
+            // Par exemple, vous pouvez passer l'ID de l'hôtel sélectionné
+            // controller.setHotelId(selectedHotelId);
+
+            // Créez une nouvelle scène
+            Scene scene = new Scene(root);
+
+            // Obtenez la scène actuelle à partir de n'importe quel nœud dans la vue actuelle
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Affichez la nouvelle scène dans une nouvelle fenêtre
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement de la vue de réservation : " + e.getMessage());
+        }
+    }
+    }
+
 
 

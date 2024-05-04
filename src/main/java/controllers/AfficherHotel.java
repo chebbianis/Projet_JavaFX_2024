@@ -5,6 +5,9 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import entities.Hotel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -164,7 +167,30 @@ public class AfficherHotel {
     }
 
 
+    public void backToHome(ActionEvent event) {
+        try {
+            // Chargement de la vue de réservation à partir du fichier FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ajouterHotel.fxml"));
+            Parent root = loader.load();
 
+            // Accédez au contrôleur de la vue de réservation si nécessaire pour passer des données
+            AjouterHotel controller = loader.getController();
+            // Par exemple, vous pouvez passer l'ID de l'hôtel sélectionné
+            // controller.setHotelId(selectedHotelId);
+
+            // Créez une nouvelle scène
+            Scene scene = new Scene(root);
+
+            // Obtenez la scène actuelle à partir de n'importe quel nœud dans la vue actuelle
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Affichez la nouvelle scène dans une nouvelle fenêtre
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement de la vue de réservation : " + e.getMessage());
+        }
+    }
 
     @FXML
     void Delete(ActionEvent event) {
@@ -273,32 +299,6 @@ public class AfficherHotel {
         }
     }
 
-  /*  public void sortAsc(ActionEvent actionEvent) {
-        // Obtenez la liste des hôtels actuellement affichés dans la table
-        ObservableList<Hotel> hotels = tableHotel.getItems();
-
-        // Triez la liste des hôtels par ordre croissant en fonction de plusieurs attributs
-        hotels.sort(
-                Comparator.comparing(Hotel::getNom_hotel)
-                        .thenComparing(Hotel::getNbre_etoile)
-                        .thenComparing(Hotel::getAdresse_hotel)
-                        .thenComparing(Hotel::getPrix_nuit)
-        );
-
-        // Mettez à jour la table avec la liste triée
-        tableHotel.setItems(hotels);
-    }
-
-    public void sortDesc(ActionEvent actionEvent) {
-        // Obtenez la liste des hôtels actuellement affichés dans la table
-        ObservableList<Hotel> hotels = tableHotel.getItems();
-
-        // Triez la liste des hôtels par ordre décroissant en fonction du nom de l'hôtel
-        hotels.sort(Comparator.comparing(Hotel::getNom_hotel).reversed());
-
-        // Mettez à jour la table avec la liste triée
-        tableHotel.setItems(hotels);
-    }*/
     public void sortByNameAsc(ActionEvent actionEvent) {
         ObservableList<Hotel> hotels = tableHotel.getItems();
         hotels.sort(Comparator.comparing(Hotel::getNom_hotel));
@@ -310,7 +310,32 @@ public class AfficherHotel {
         hotels.sort(Comparator.comparing(Hotel::getAdresse_hotel));
         tableHotel.setItems(hotels);
     }
+    @FXML
+    void naviguezVersFront(ActionEvent event) {
+        navigateTo("/FrontListHotel.fxml", event);
 
+
+    }
+
+    @FXML
+    void naviguezVersHotel(ActionEvent event) {
+        navigateTo("/ajouterHotel.fxml", event);
+
+    }
+
+    @FXML
+    void naviguezVersRev(ActionEvent event) {
+        navigateTo("/AfficherReservation.fxml", event);
+
+    }
+    private void navigateTo(String fxmlFile, ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+            ((Button) event.getSource()).getScene().setRoot(root);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
     public void sortByPriceAsc(ActionEvent actionEvent) {
         ObservableList<Hotel> hotels = tableHotel.getItems();
         hotels.sort(Comparator.comparing(Hotel::getPrix_nuit));

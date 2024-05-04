@@ -10,4 +10,6 @@ module com.example.projectpi {
     opens entities to javafx.base;
     exports controllers;
     exports test;
+    requires java.persistence;
+    requires org.controlsfx.controls;
 }

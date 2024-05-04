@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="480.0" prefWidth="700.0" stylesheets="styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.FrontListHotel">
+   <children>
+      <Label text="Hôtels Disponibles" textAlignment="CENTER" textFill="#1d92b9">
+         <font>
+            <Font name="Bauhaus 93" size="29.0" />
+         </font>
+      </Label>
+
+      <HBox prefHeight="26.0" prefWidth="154.0">
+         <Label prefHeight="18.0" prefWidth="101.0" text="Recherche" textFill="#101010">
+            <font>
+               <Font name="Arial" size="15.0" />
+            </font>
+         </Label>
+         <TextField fx:id="rechercheField" prefHeight="26.0" prefWidth="225.0" promptText="Rechercher un hôtel..." />
+      </HBox>
+      <ScrollPane fitToHeight="true" fitToWidth="true">
+         <content>
+
+            <TilePane fx:id="hotelsContainer" hgap="10.0" prefHeight="214.0" prefWidth="698.0" vgap="10.0" />
+
+
+         </content>
+      </ScrollPane>
+   </children>
+</VBox>

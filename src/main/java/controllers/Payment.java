@@ -4,126 +4,150 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import org.controlsfx.control.Notifications;
+import entities.Reservation;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
-import java.io.IOException;
-import java.time.DateTimeException;
-import java.time.LocalDate;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Payment {
 
     @FXML
-    private TextField cardNumberInput;
-    @FXML
-    private TextField mmInput;
-    @FXML
-    private TextField yyInput;
-    @FXML
-    private TextField cvcInput;
-    @FXML
-    private TextField zipInput;
-    private boolean validateInputs() {
-        // Validate Card Number
-        if (!cardNumberInput.getText().matches("\\d{13,19}")) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Input", "Card number must be between 13 and 19 digits.");
-            return false;
-        }
+    private TextField nomField;
 
-        // Validate Expiration Date
+    @FXML
+    private TextField prenomField;
+
+    @FXML
+    private Label montantLabel;
+
+    @FXML
+    private Button payerButton;
+
+    private Connection connection;
+    private Reservation reservation; // Ajout de la référence à la réservation
+
+    public void initialize() {
         try {
-            int mm = Integer.parseInt(mmInput.getText());
-            int yy = Integer.parseInt(yyInput.getText()) + 2000; // Assuming input is two digits
-            LocalDate expiryDate = LocalDate.of(yy, mm, 1);
-            if (mm < 1 || mm > 12 || expiryDate.isBefore(LocalDate.now().withDayOfMonth(1))) {
-                showAlert(Alert.AlertType.ERROR, "Invalid Input", "Expiration date is invalid or in the past M >12.");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tunvista", "root", "");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean processPayment() {
+        try {
+            Stripe.apiKey = "stripe.apiKey=sk_test_51OqgDeBLgOBp2CJ7ampNPipL9yCv3vvR3zvnsIdCda7p4A4tjkLOCuCX5DWNXPuE4B02Xgmom2w85y29EgUU0dHX00qbkhgTuu\n";
+            PaymentIntent intent = null;
+
+            try {
+                double totalDouble = reservation.getPrix_total();
+
+                if (totalDouble > 500) {
+                    totalDouble *= 0.75;
+                    Notifications.create()
+                            .title("Félicitations!")
+                            .text("Vous avez droit à une réduction de 25% sur votre paiement.")
+                            .showInformation();
+                }
+
+                long amountInCents = (long) (totalDouble * 100);
+
+                PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+                        .setAmount(amountInCents)
+                        .setCurrency("usd")
+                        .build();
+
+                intent = PaymentIntent.create(params);
+
+            } catch (NumberFormatException e) {
+                System.err.println("Erreur de conversion : " + e.getMessage());
                 return false;
             }
-        } catch (DateTimeException | NumberFormatException e) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Input", "Expiration date is invalid.");
-            return false;
-        }
 
-        // Validate CVC
-        if (!cvcInput.getText().matches("\\d{3,4}")) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Input", "CVC must be 3 or 4 digits.");
-            return false;
-        }
+            Notifications.create()
+                    .title("Paiement réussi")
+                    .text("Le paiement a été effectué avec succès.")
+                    .showInformation();
 
-        // Validate ZIP Code
-        // This is a simple check; consider enhancing based on specific country formats if necessary
-        if (zipInput.getText().isEmpty() || !zipInput.getText().matches("\\w{5,10}")) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Input", "ADD min of 5 Numbers.");
-            return false;
-        }
+            System.out.println("Payment.fxml successful. PaymentIntent ID: " + intent.getId());
+            return true;
 
-        return true; // All validations passed
-    }
-
-    private void StripeFunction(){
-        try {
-// Set your secret key here
-            Stripe.apiKey = "sk_test_51OpE5HEVwc14cTuMysPOGti5rGQxAtiSNIz4H0aGmBzHfF9f1veh8Z4y1OG7hKi7wwDFxHleG8FJE7KivKHntYlQ00hvK05bID";
-
-// Create a PaymentIntent with other payment details
-            PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                    .setAmount(1000L) // Amount in cents (e.g., $10.00)
-                    .setCurrency("usd")
-                    .build();
-
-            PaymentIntent intent = PaymentIntent.create(params);
-
-// If the payment was successful, display a success message
-            System.out.println("Payment successful. PaymentIntent ID: " + intent.getId());
         } catch (StripeException e) {
-// If there was an error processing the payment, display the error message
-            System.out.println("Payment failed. Error: " + e.getMessage());
+            Notifications.create()
+                    .title("Erreur de paiement")
+                    .text("Le paiement a échoué. Erreur : " + e.getMessage())
+                    .showError();
+
+            System.out.println("Payment.fxml failed. Error: " + e.getMessage());
+            return false;
         }
     }
     @FXML
-    void paiement(ActionEvent event) {
-        // Validate input fields first
-        if (validateInputs()) {
-            // Proceed with payment if validation succeeds
-            StripeFunction();
-            Platform.runLater(() -> {
-                try {
-                    // Load the FXML for the home page
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Art/FronClient.fxml"));
-                    Parent root = loader.load();
+    private TextField numCarteField;
 
-                    // Get the stage from the event
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                    // Set the home page as the new scene
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException(e);
-                }
-            });
+// Dans la méthode payerAction(ActionEvent event)
 
+    @FXML
+    void payerAction(ActionEvent event) {
+        // Récupérez le numéro de carte depuis le champ de texte
+        String numCarte = numCarteField.getText();
+
+        // Vérifiez si le numéro de carte est valide (vous pouvez ajouter une validation plus approfondie si nécessaire)
+
+        // Si le numéro de carte est valide, effectuez le paiement
+        if (validateCardNumber(numCarte)) {
+            // Créez une alerte de confirmation pour le paiement réussi
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Paiement réussi");
+            alert.setHeaderText(null);
+            alert.setContentText("Paiement effectué avec succès !");
+            alert.showAndWait();
+
+            // Vous pouvez également gérer la réponse de l'utilisateur
+            if (alert.getResult() == ButtonType.OK) {
+                // L'utilisateur a cliqué sur OK
+                System.out.println("Paiement effectué avec succès !");
+            } else {
+                // L'utilisateur a annulé
+                System.out.println("Paiement annulé.");
+            }
         } else {
-            // Show alert if validation fails
-            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please check your input fields.");
+            // Créez une alerte d'erreur pour un numéro de carte invalide
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur de paiement");
+            alert.setHeaderText(null);
+            alert.setContentText("Numéro de carte invalide. Veuillez vérifier et réessayer.");
+            alert.showAndWait();
+
+            System.out.println("Numéro de carte invalide. Veuillez vérifier et réessayer.");
         }
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+    private boolean validateCardNumber(String numCarte) {
+        // Vérifiez si le numéro de carte est égal à "4242424242424242"
+        return "4242424242424242".equals(numCarte);
+    }
+
+
+
+    private void afficherMessage(String message) {
+        System.out.println(message);
+    }
+
+    // Méthode pour définir la réservation
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }

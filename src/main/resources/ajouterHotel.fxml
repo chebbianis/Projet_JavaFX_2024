@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="466.0" prefWidth="721.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterHotel">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="638.0" prefWidth="908.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterHotel">
    <children>
       <Pane layoutY="-10.0" prefHeight="110.0" prefWidth="722.0">
          <children>
-            <Label layoutX="238.0" layoutY="14.0" prefHeight="63.0" prefWidth="286.0" text="Ajouter Hotel" textFill="BLUE">
+            <Label layoutX="374.0" layoutY="24.0" prefHeight="63.0" prefWidth="286.0" text="Ajouter Hotel" textFill="#1d92b9">
                <font>
                   <Font name="Book Antiqua" size="34.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Pane layoutX="25.0" layoutY="81.0" prefHeight="370.0" prefWidth="335.0" style="-fx-background-color: grey;">
+      <Pane layoutX="244.0" layoutY="116.0" prefHeight="406.0" prefWidth="362.0" style="-fx-background-color: grey;">
          <children>
             <Label layoutX="30.0" layoutY="40.0" text="Nom_hotel" textFill="#101010">
                <font>
@@ -52,25 +54,55 @@
             <TextField fx:id="txtAdresseHotel" layoutX="150.0" layoutY="122.0" />
             <Spinner fx:id="spinnerNbreEtoile" editable="true" layoutX="150.0" layoutY="78.0" />
             <Spinner fx:id="spinnerPrixNuit" editable="true" layoutX="150.0" layoutY="163.0" />
-            <ImageView fx:id="imageHotel" fitHeight="150.0" fitWidth="183.0" layoutX="141.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imageHotel" fitHeight="150.0" fitWidth="183.0" layoutX="138.0" layoutY="206.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
-      <Button fx:id="btninsert" layoutX="394.0" layoutY="386.0" mnemonicParsing="false" onAction="#insertHotel" style="-fx-background-color: blue;" text="insert" textFill="#f2f2f2">
+      <Button fx:id="btninsert" layoutX="671.0" layoutY="432.0" mnemonicParsing="false" onAction="#insertHotel" style="-fx-background-color: #1d92b9;" text="insert" textFill="#f2f2f2">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnajouter" layoutX="592.0" layoutY="147.0" mnemonicParsing="false" onAction="#ajouterHotel" style="-fx-background-color: blue;" text="Ajouter" textFill="#f2f2f2">
+      <Button fx:id="btnajouter" layoutX="810.0" layoutY="256.0" mnemonicParsing="false" onAction="#ajouterHotel" style="-fx-background-color: #1d92b9;" text="Ajouter" textFill="#f2f2f2">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
 
-      <Button fx:id="button_Submit1" layoutX="591.0" layoutY="246.0" mnemonicParsing="false" onAction="#naviguezVersAffichage" style="-fx-background-color: blue;" text="Afficher" textFill="#f2f2f2">
+      <Button fx:id="button_Submit1" layoutX="809.0" layoutY="358.0" mnemonicParsing="false" onAction="#naviguezVersAffichage" style="-fx-background-color: #1d92b9;" text="Afficher" textFill="#f2f2f2">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <ListView fx:id="adresseListView" layoutX="417.0" layoutY="81.0" prefHeight="266.0" prefWidth="139.0" />
+      <ListView fx:id="adresseListView" layoutX="635.0" layoutY="116.0" prefHeight="266.0" prefWidth="139.0" />
+      <Pane layoutY="-8.0" prefHeight="731.0" prefWidth="200.0" style="-fx-background-color: #072741;">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="43.0" layoutY="14.0" pickOnBounds="true" smooth="false">
+               <image>
+                  <Image url="@../../../../../../../../xampp/htdocs/Pidev/public/img/logooo.png" />
+               </image>
+               <styleClass>
+                  <String fx:value="envoyer_btn" />
+                  <String fx:value="content-area-circle-btns" />
+                  <String fx:value="img" />
+               </styleClass>
+            </ImageView>
+            <Button fx:id="Bt_Hotel" layoutX="2.0" layoutY="256.0" mnemonicParsing="false" onAction="#naviguezVersHotel" prefHeight="38.0" prefWidth="198.0" style="-fx-background-color: #1d92b9;" text="Hotel" textFill="WHITE">
+               <font>
+                  <Font name="Bauhaus 93" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="Bt_front" layoutX="1.0" layoutY="325.0" mnemonicParsing="false" onAction="#naviguezVersRev" prefHeight="39.0" prefWidth="198.0" style="-fx-background-color: #1d92b9;" text="Reservation" textFill="WHITE">
+               <font>
+                  <Font name="Bauhaus 93" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="Bt_front" layoutX="2.0" layoutY="389.0" mnemonicParsing="false" onAction="#naviguezVersFront" prefHeight="39.0" prefWidth="198.0" style="-fx-background-color: #1d92b9;" text="Front" textFill="WHITE">
+               <font>
+                  <Font name="Bauhaus 93" size="22.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnBackToHome" layoutX="2.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToHome" text="Back to Home" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

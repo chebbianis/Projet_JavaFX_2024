@@ -13,19 +13,19 @@
    <children>
       <Pane layoutY="-10.0" prefHeight="110.0" prefWidth="722.0">
          <children>
-            <Label layoutX="293.0" layoutY="14.0" prefHeight="63.0" prefWidth="286.0" text="Reserver" textFill="BLUE">
+            <Label layoutX="293.0" layoutY="14.0" prefHeight="63.0" prefWidth="286.0" text="Reserver" textFill="#1d92b9">
                <font>
                   <Font name="Book Antiqua" size="34.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Button fx:id="btnreserver" layoutX="184.0" layoutY="354.0" mnemonicParsing="false" onAction="#reserver" style="-fx-background-color: blue;" text="Reserver" textFill="#f2f2f2">
+      <Button fx:id="btnreserver" layoutX="184.0" layoutY="354.0" mnemonicParsing="false" onAction="#reserver" style="-fx-background-color: #1d92b9;" text="Reserver" textFill="#f2f2f2">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="button_Submit" layoutX="421.0" layoutY="354.0" mnemonicParsing="false" onAction="#naviguezVersAffichage" style="-fx-background-color: blue;" text="Afficher" textFill="#f2f2f2">
+      <Button fx:id="button_Submit" layoutX="421.0" layoutY="354.0" mnemonicParsing="false" onAction="#naviguezVersAffichage" style="-fx-background-color: #1d92b9;" text="Afficher" textFill="#f2f2f2">
          <font>
             <Font size="18.0" />
          </font>
