@@ -1,5 +1,7 @@
 package controllers;
 
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,12 +19,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Location;
 import services.LocationService;
 
 import java.util.ResourceBundle;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.shape.Circle;
+
 
 public class AfficherLControllers {
 
@@ -46,6 +54,7 @@ public class AfficherLControllers {
 
     @FXML
     private TextField txtIdL;
+
 
 
     private Stage stage;
@@ -107,20 +116,28 @@ public class AfficherLControllers {
         }
     }
 
-    @FXML
-    private void openMapDisplayWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MapDisplay.fxml"));
-            Parent root = loader.load();
+    private final MapPoint guarage = new MapPoint(36.9002385, 10.186814);
 
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Map Display");
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @FXML
+    private ScrollPane mapContainer;
+
+    @FXML
+    private VBox address;
+
+    public void initialize() {
+        MapView mapView = createMapView();
+        address.getChildren().add(mapView);
+        VBox.setVgrow(mapView, Priority.ALWAYS);
     }
+
+    private MapView createMapView() {
+        MapView mapView = new MapView();
+        mapView.setPrefSize(400, 300); // Adjust the preferred size to make the map smaller
+        mapView.setZoom(15);
+        mapView.flyTo(0, guarage, 0.1);
+        return mapView;
+    }
+
+
 
 }

@@ -36,10 +36,7 @@ import java.util.stream.Collectors;
 
 
 import javafx.scene.control.Alert;
-/*import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;*/
+
 
 
 public class AfficherVControllers {
@@ -319,51 +316,6 @@ public class AfficherVControllers {
         }
     }
 
-
-
-    /*@FXML
-    private void generatePDF() {
-        // Créer un sélecteur de fichier pour choisir l'emplacement de sauvegarde du PDF
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-        File file = fileChooser.showSaveDialog(null);
-        if (file != null) {
-            try {
-                // Créer un nouveau document PDF
-                PDDocument document = new PDDocument();
-                PDPage page = new PDPage();
-                document.addPage(page);
-
-                // Ajouter du texte au document
-                PDPageContentStream contentStream = new PDPageContentStream(document, page);
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-                contentStream.newLineAtOffset(100, 700);
-                contentStream.showText("Contenu de votre PDF ici...");
-                contentStream.endText();
-                contentStream.close();
-
-                // Sauvegarder le document PDF
-                document.save(file);
-                document.close();
-
-                // Afficher une notification de succès
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("PDF Généré");
-                alert.setHeaderText(null);
-                alert.setContentText("Le PDF a été généré avec succès !");
-                alert.showAndWait();
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Afficher une notification d'erreur en cas d'échec
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setHeaderText(null);
-                alert.setContentText("Une erreur s'est produite lors de la génération du PDF.");
-                alert.showAndWait();
-            }
-        }
-    }*/
 
 
 }

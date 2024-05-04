@@ -29,6 +29,6 @@
     <Button fx:id="sortButton" layoutX="687.0" layoutY="409.0" onAction="#handleSortButtonClick" styleClass="myButton" text="Trier par marque" />
     <Button fx:id="statistiqueButton" layoutX="36.0" layoutY="525.0" mnemonicParsing="false" onAction="#showStatistics" text="Statistique par prix" styleClass="myButton"/>
     <!-- PDF Button -->
-    
+
 </children>
 </AnchorPane>

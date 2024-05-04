@@ -7,12 +7,15 @@
     <children>
         <Button fx:id="Modifier_btn" layoutX="303.0" layoutY="525.0" mnemonicParsing="false" onAction="#goToModification" prefHeight="43.0" prefWidth="160.0" styleClass="myButton" text="modifier Location" />
 
-        <DatePicker fx:id="txtDate_debut" layoutX="50.0" layoutY="118.0" prefHeight="26.0" prefWidth="150.0" styleClass="date-picker"/>
-        <DatePicker fx:id="txtDate_fin" layoutX="51.0" layoutY="170.0" prefHeight="26.0" prefWidth="150.0" styleClass="date-picker"/>
-        <TextField fx:id="txtUser_id" layoutX="51.0" layoutY="223.0" styleClass="text-field"/>
-        <TextField fx:id="txtVoiture_id" layoutX="51.0" layoutY="276.0" styleClass="text-field"/>
-        <TextField fx:id="txtTypePaiement" layoutX="51.0" layoutY="334.0" styleClass="text-field"/>
-        <TextField fx:id="txtIdL" layoutX="51.0" layoutY="63.0" styleClass="text-field"/>
-      <TextField fx:id="txtOptions_supp" layoutX="52.0" layoutY="387.0" prefHeight="86.0" prefWidth="214.0" styleClass="text-field"/>
+        <DatePicker fx:id="txtDate_debut" layoutX="50.0" layoutY="118.0" prefHeight="26.0" prefWidth="150.0" styleClass="date-picker" />
+        <DatePicker fx:id="txtDate_fin" layoutX="51.0" layoutY="170.0" prefHeight="26.0" prefWidth="150.0" styleClass="date-picker" />
+        <TextField fx:id="txtUser_id" layoutX="51.0" layoutY="223.0" styleClass="text-field" />
+        <TextField fx:id="txtVoiture_id" layoutX="51.0" layoutY="276.0" styleClass="text-field" />
+        <TextField fx:id="txtTypePaiement" layoutX="51.0" layoutY="334.0" styleClass="text-field" />
+        <TextField fx:id="txtIdL" layoutX="51.0" layoutY="63.0" styleClass="text-field" />
+        <TextField fx:id="txtOptions_supp" layoutX="52.0" layoutY="387.0" prefHeight="86.0" prefWidth="214.0" styleClass="text-field" />
+
+
+        <VBox fx:id="address" layoutX="212.0" layoutY="23.0" prefHeight="319.0" prefWidth="402.0" />
     </children>
 </AnchorPane>
