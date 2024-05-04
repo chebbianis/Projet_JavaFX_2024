@@ -29,6 +29,7 @@ public class Voyageur {
     public Voyageur() {
 
     }
+
     public Voyageur (int num_pass, String nom, String prenom, int age, String etat_civil, String email) {
         this.num_pass = num_pass;
         this.nom = nom;
@@ -43,6 +44,14 @@ public class Voyageur {
         this.nom = nom;
         this.prenom = prenom;
         this.age = age;
+        this.etat_civil = etat_civil;
+        this.email = email;
+        this.date_nais = date_nais;
+    }
+    public Voyageur(int num_pass, String nom, String prenom, String etat_civil, String email, LocalDate date_nais) {
+        this.num_pass = num_pass;
+        this.nom = nom;
+        this.prenom = prenom;
         this.etat_civil = etat_civil;
         this.email = email;
         this.date_nais = date_nais;

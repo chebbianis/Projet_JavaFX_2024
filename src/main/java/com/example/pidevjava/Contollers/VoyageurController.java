@@ -1,4 +1,5 @@
 package com.example.pidevjava.Contollers;
+import javafx.fxml.Initializable;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -13,7 +14,8 @@ import com.example.pidevjava.Entities.Voyageur;
 import java.io.IOException;
 import java.awt.Color;
 import java.util.*;
-
+import java.time.LocalDate;
+import java.time.Period;
 import com.example.pidevjava.Entities.Voyageur;
 import com.example.pidevjava.service.serviceVoyageur;
 import javafx.beans.binding.Bindings;
@@ -172,7 +174,7 @@ public class VoyageurController {
         col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
         col_nais.setCellValueFactory(new PropertyValueFactory<>("date_nais"));
         List<String> etat = getEtatCivil();
-
+        tf_age.setEditable(false);
 
         cb_etat.getItems().addAll("Single", "Married", "Divorced", "Widowed");
         cb_etat.setValue("Single");
@@ -234,7 +236,38 @@ public class VoyageurController {
                 }
             }
         });
+        tf_nais.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                // Calculez l'âge en années en soustrayant la date de naissance de la date actuelle
+                int age = calculerAge(newValue);
 
+                // Vérifiez si l'âge est supérieur à 18 ans
+                if (age > 18) {
+                    // Remplissez automatiquement le champ d'âge avec l'âge calculé
+                    tf_age.setText(String.valueOf(age));
+                } else {
+                    // Affichez une alerte si l'utilisateur est trop jeune
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("Vous devez avoir au moins 18 ans.");
+                    alert.show();
+                    // Réinitialisez le DatePicker pour supprimer la date sélectionnée invalide
+                    tf_nais.setValue(null);
+                }
+            }
+        });
+    }
+
+    // Méthode pour calculer l'âge à partir de la date de naissance
+    private int calculerAge(LocalDate dateNaissance) {
+        LocalDate dateActuelle = LocalDate.now();
+        int age = dateActuelle.getYear() - dateNaissance.getYear();
+        // Vérifiez si l'anniversaire de la personne est déjà passé cette année
+        if (dateNaissance.getMonthValue() > dateActuelle.getMonthValue() ||
+                (dateNaissance.getMonthValue() == dateActuelle.getMonthValue() &&
+                        dateNaissance.getDayOfMonth() > dateActuelle.getDayOfMonth())) {
+            age--;
+        }
+        return age;
     }
 
     private boolean isValidEmail(String email) {
