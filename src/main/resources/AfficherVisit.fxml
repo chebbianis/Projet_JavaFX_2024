@@ -76,6 +76,7 @@
       </Text>
       <DatePicker fx:id="dateModif" layoutX="113.0" layoutY="322.0" prefHeight="26.0" prefWidth="150.0" />
       <Button fx:id="retour" layoutX="102.0" layoutY="477.0" mnemonicParsing="false" onAction="#retourPage" prefHeight="33.0" prefWidth="90.0" style="-fx-background-color: #5ea648;" text="Retour" />
+      <Button fx:id="Calendrier" layoutX="788.0" layoutY="481.0" mnemonicParsing="false" onAction="#Calendrier" prefHeight="34.0" prefWidth="90.0" text="Calendrier" />
       
    </children>
 </AnchorPane>

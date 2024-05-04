@@ -130,6 +130,17 @@ void modifierVisit(ActionEvent event) {
     }
 }
     @FXML
+    void Calendrier (ActionEvent event) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Calendrier.fxml"));
+        try {
+            emailModif.getScene().setRoot(fxmlLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @FXML
     void initialize() {
         ServiceVisit serviceVisit =new ServiceVisit();
 

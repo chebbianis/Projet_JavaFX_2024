@@ -30,7 +30,6 @@ public class Calendrier {
         // Create a new instance of the agenda
         Agenda agenda = new Agenda();
 
-        // Apply CSS styles to the agenda
         agenda.getStyleClass().addAll("agenda", "style1");
 
         // Create a label for the current month
@@ -56,8 +55,8 @@ public class Calendrier {
     public void addVisitesToAgenda(Collection<Visit> visites, Agenda agenda) {
         for (Visit visite : visites) {
             LocalDate visiteDate = visite.getDateVisit();
-            LocalDateTime start = visiteDate.atTime(9, 0); // Set start time at 9 o'clock
-            LocalDateTime end = visiteDate.atTime(13, 0); // Set end time at 13 o'clock
+            LocalDateTime start = visiteDate.atTime(9, 0);
+            LocalDateTime end = visiteDate.atTime(11, 0);
 
             // Create appointment for the visite
             agenda.appointments().add(new Agenda.AppointmentImplLocal()

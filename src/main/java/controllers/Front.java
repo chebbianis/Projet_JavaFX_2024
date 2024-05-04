@@ -164,7 +164,8 @@ public class Front implements Initializable {
 
         ImageView imageView = new ImageView();
         imageView.setFitWidth(200);
-        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(200);
+        imageView.setPreserveRatio(false);
 
         String imagePath = maison.getImage();
         if (imagePath != null && !imagePath.isEmpty()) {
