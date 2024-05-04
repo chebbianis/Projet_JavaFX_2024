@@ -1,10 +1,12 @@
 package controllers;
 
+import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -22,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Location;
@@ -30,6 +33,7 @@ import services.LocationService;
 import java.util.ResourceBundle;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.shape.Circle;
+import javafx.geometry.Point2D;
 
 
 public class AfficherLControllers {
@@ -133,9 +137,28 @@ public class AfficherLControllers {
     private MapView createMapView() {
         MapView mapView = new MapView();
         mapView.setPrefSize(400, 300); // Adjust the preferred size to make the map smaller
+        mapView.addLayer(new CustomMapLayer());
         mapView.setZoom(15);
         mapView.flyTo(0, guarage, 0.1);
         return mapView;
+    }
+
+    private class CustomMapLayer extends MapLayer {
+
+        private final Node marker;
+
+        public CustomMapLayer() {
+            marker = new Circle(5, Color.RED);
+            getChildren().add(marker);
+
+        }
+
+        @Override
+        protected void layoutLayer() {
+            Point2D point = getMapPoint(guarage.getLatitude(), guarage.getLongitude());
+            marker.setTranslateX(point.getX());
+            marker.setTranslateY(point.getY());
+        }
     }
 
 

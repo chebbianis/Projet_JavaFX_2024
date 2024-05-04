@@ -28,7 +28,7 @@
      <Button fx:id="searchButton" layoutX="406.0" layoutY="42.0" onAction="#searchVoitures" styleClass="myButton" text="🔍" />
     <Button fx:id="sortButton" layoutX="687.0" layoutY="409.0" onAction="#handleSortButtonClick" styleClass="myButton" text="Trier par marque" />
     <Button fx:id="statistiqueButton" layoutX="36.0" layoutY="525.0" mnemonicParsing="false" onAction="#showStatistics" text="Statistique par prix" styleClass="myButton"/>
-    <!-- PDF Button -->
-
+    <!-- Excel Button -->
+    <Button fx:id="exportButton" layoutX="820.0" layoutY="525.0" mnemonicParsing="false" onAction="#exportToExcel" prefHeight="43.0" prefWidth="160.0" styleClass="myButton" text="Export to Excel" />
 </children>
 </AnchorPane>

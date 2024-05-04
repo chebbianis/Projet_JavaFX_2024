@@ -33,9 +33,13 @@ import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-
-
 import javafx.scene.control.Alert;
+
+import javafx.scene.control.TableView;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.awt.Desktop;
+import javafx.stage.FileChooser;
 
 
 
@@ -314,6 +318,58 @@ public class AfficherVControllers {
             alert.setContentText("No voiture data available.");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void exportToExcel(ActionEvent event) {
+        // Get the data from the TableView
+        ObservableList<Voiture> data = tableviewVoiture.getItems();
+
+        // Create a new workbook
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Voiture Data");
+
+        // Create header row
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Marque");
+        headerRow.createCell(1).setCellValue("Annee");
+        headerRow.createCell(2).setCellValue("Prix par jour");
+        headerRow.createCell(3).setCellValue("Kilométrage");
+        headerRow.createCell(4).setCellValue("Nombre de Places");
+
+        // Populate data rows
+        int rowNum = 1;
+        for (Voiture voiture : data) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(voiture.getMarque());
+            row.createCell(1).setCellValue(voiture.getAnnee().toString()); // Assuming 'Annee' is of type LocalDate
+            row.createCell(2).setCellValue(voiture.getPrix_j());
+            row.createCell(3).setCellValue(voiture.getKilometrage());
+            row.createCell(4).setCellValue(voiture.getNbrPlaces());
+        }
+
+        // Choose file location
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Excel File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "C:/Users/user/Desktop/workshopPidev2324-sprintJava/voitures.xlsx"));
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            // Write the workbook content to the chosen file
+            try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                workbook.write(fileOut);
+                System.out.println("Excel file exported successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Open the exported file
+            try {
+                Desktop.getDesktop().open(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 

@@ -3,20 +3,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="525.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterLocationController">
+<AnchorPane prefHeight="525.0" prefWidth="733.0" styleClass="lighter-green" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterLocationController">
    <children>
-      <Label layoutX="149.0" layoutY="61.0" text="Date debut" />
-      <Label layoutX="510.0" layoutY="61.0" text="Date fin" />
-      <TextField fx:id="txtUser_id" layoutX="104.0" layoutY="175.0" />
-      <TextField fx:id="txtVoiture_id" layoutX="457.0" layoutY="175.0" />
-      <Label layoutX="165.0" layoutY="149.0" text="Votre ID" />
-      <Label layoutX="480.0" layoutY="149.0" text="ID de Votre Voiture" />
+      <Label layoutX="90.0" layoutY="89.0" text="Date debut" />
+      <Label layoutX="429.0" layoutY="89.0" text="Date fin" />
+      <TextField fx:id="txtUser_id" layoutX="56.0" layoutY="211.0" />
+      <TextField fx:id="txtVoiture_id" layoutX="386.0" layoutY="211.0" />
+      <Label layoutX="99.0" layoutY="175.0" text="Votre ID" />
+      <Label layoutX="387.0" layoutY="175.0" text="ID de Votre Voiture" />
       <TextField fx:id="txtTypePaiement" layoutX="57.0" layoutY="309.0" />
       <TextField fx:id="txtOptions_supp" layoutX="417.0" layoutY="285.0" prefHeight="127.0" prefWidth="269.0" />
-      <Label layoutX="275.0" layoutY="300.0" prefWidth="140.0" text="Options Supplimentaires : " />
-      <Label layoutX="87.0" layoutY="285.0" text="Type de Paiment" />
-      <DatePicker fx:id="txtDate_debut" layoutX="91.0" layoutY="89.0" />
-      <DatePicker fx:id="txtDate_fin" layoutX="445.0" layoutY="89.0" />
-      <Button fx:id="AjouterButton" layoutX="307.0" layoutY="421.0" mnemonicParsing="false" onAction="#ajouterAction" prefHeight="40.0" prefWidth="105.0" text="Ajouter" />
+      <Label layoutX="275.0" layoutY="300.0" prefHeight="26.0" prefWidth="136.0" text="Options " />
+      <Label layoutX="68.0" layoutY="274.0" text="Type de Paiment" />
+      <DatePicker fx:id="txtDate_debut" layoutX="57.0" layoutY="123.0" prefWidth="150.0" />
+      <DatePicker fx:id="txtDate_fin" layoutX="386.0" layoutY="123.0" prefHeight="26.0" prefWidth="146.0" />
+      <Button fx:id="AjouterButton" layoutX="275.0" layoutY="440.0" mnemonicParsing="false" onAction="#ajouterAction" prefHeight="41.0" prefWidth="126.0" styleClass="myButton" text="Ajouter" />
+      <Label layoutX="275.0" layoutY="321.0" prefHeight="26.0" prefWidth="136.0" text="Supplimentaires :" />
    </children>
 </AnchorPane>

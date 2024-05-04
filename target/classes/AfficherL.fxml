@@ -3,9 +3,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="modifier_btn" prefHeight="631.0" prefWidth="551.0" styleClass="lighter-green" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherLControllers">
+<AnchorPane fx:id="modifier_btn" prefHeight="640.0" prefWidth="683.0" styleClass="lighter-green" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherLControllers">
     <children>
-        <Button fx:id="Modifier_btn" layoutX="303.0" layoutY="525.0" mnemonicParsing="false" onAction="#goToModification" prefHeight="43.0" prefWidth="160.0" styleClass="myButton" text="modifier Location" />
+        <Button fx:id="Modifier_btn" layoutX="79.0" layoutY="517.0" mnemonicParsing="false" onAction="#goToModification" prefHeight="43.0" prefWidth="160.0" styleClass="myButton" text="modifier Location" />
 
         <DatePicker fx:id="txtDate_debut" layoutX="50.0" layoutY="118.0" prefHeight="26.0" prefWidth="150.0" styleClass="date-picker" />
         <DatePicker fx:id="txtDate_fin" layoutX="51.0" layoutY="170.0" prefHeight="26.0" prefWidth="150.0" styleClass="date-picker" />
@@ -16,6 +16,9 @@
         <TextField fx:id="txtOptions_supp" layoutX="52.0" layoutY="387.0" prefHeight="86.0" prefWidth="214.0" styleClass="text-field" />
 
 
-        <VBox fx:id="address" layoutX="212.0" layoutY="23.0" prefHeight="319.0" prefWidth="402.0" />
+        <VBox fx:id="address" layoutX="285.0" layoutY="320.0" prefHeight="275.0" prefWidth="377.0" />
+      <Label layoutX="292.0" layoutY="157.0" prefHeight="26.0" prefWidth="126.0" text="reach us at :" />
+      <Label layoutX="292.0" layoutY="183.0" prefHeight="26.0" prefWidth="214.0" text="esprit bloc ijk ariana soghra" />
+      <Label layoutX="292.0" layoutY="210.0" prefHeight="26.0" prefWidth="214.0" />
     </children>
 </AnchorPane>
