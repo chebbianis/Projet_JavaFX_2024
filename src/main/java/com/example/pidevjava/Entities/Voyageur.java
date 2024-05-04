@@ -12,8 +12,11 @@ public class Voyageur {
     private int age;
     private String etat_civil;
     private String email;
+    private LocalDate date_nais;
+
 
     private Voyage voyage;
+
 
     public Voyage getVoyage() {
         return voyage;
@@ -33,10 +36,28 @@ public class Voyageur {
         this.age = age;
         this.etat_civil = etat_civil;
         this.email = email;
-
     }
 
+    public Voyageur(int num_pass, String nom, String prenom, int age, String etat_civil, String email, LocalDate date_nais) {
+        this.num_pass = num_pass;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.age = age;
+        this.etat_civil = etat_civil;
+        this.email = email;
+        this.date_nais = date_nais;
+    }
 
+    public Voyageur(int id, int num_pass, String nom, String prenom, int age, String etat_civil, String email, LocalDate date_nais) {
+        this.id = id;
+        this.num_pass = num_pass;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.age = age;
+        this.etat_civil = etat_civil;
+        this.email = email;
+        this.date_nais = date_nais;
+    }
 
     public int getId() {
         return id;
@@ -52,6 +73,10 @@ public class Voyageur {
     }
     public String getEtat_civil() {return etat_civil;}
     public String getEmail() {return email;}
+    public LocalDate getDate_nais() {
+        return date_nais;
+    }
+
 
     @Override
     public String toString() {
@@ -63,6 +88,7 @@ public class Voyageur {
                 ", age=" + age +
                 ", etat_civil='" + etat_civil + '\'' +
                 ", email='" + email + '\'' +
+                ", date_nais='" + date_nais + '\'' +
                 ", voyage=" + voyage +
                 '}';
     }
@@ -83,5 +109,9 @@ public class Voyageur {
 
     public void setEtat_civil(String etat_civil) {this.etat_civil = etat_civil;}
     public void setEmail(String email) {this.email = email;}
+    public void setDate_nais(LocalDate date_nais) {
+        this.date_nais= date_nais;
+    }
+
 
 }

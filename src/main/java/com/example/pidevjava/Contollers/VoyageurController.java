@@ -113,6 +113,8 @@ public class VoyageurController {
     @FXML
     private Label tr_prenom;
 
+    @FXML
+    private DatePicker tf_nais;
 
     @FXML
     private TextField rechercheField;
@@ -123,6 +125,8 @@ public class VoyageurController {
     @FXML
     private ComboBox<String> cb_etat;
 
+    @FXML
+    private TableColumn<?, ?> col_nais;
 
 
     @FXML
@@ -157,6 +161,7 @@ public class VoyageurController {
         chatBotDialog.setVisible(true);
     }
     public void initialize() {
+
         // Initialisation des colonnes
         col_idv.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_pass.setCellValueFactory(new PropertyValueFactory<>("num_pass"));
@@ -165,6 +170,7 @@ public class VoyageurController {
         col_age.setCellValueFactory(new PropertyValueFactory<>("age"));
         col_etat.setCellValueFactory(new PropertyValueFactory<>("etat_civil"));
         col_email.setCellValueFactory(new PropertyValueFactory<>("email"));
+        col_nais.setCellValueFactory(new PropertyValueFactory<>("date_nais"));
         List<String> etat = getEtatCivil();
 
 
@@ -272,7 +278,8 @@ public class VoyageurController {
                 tf_prenom.getText(),
                 Integer.parseInt(tf_age.getText()),
                 cb_etat.getValue(),
-                tf_email.getText()
+                tf_email.getText(),
+                tf_nais.getValue()
         );
 
         try {
@@ -292,6 +299,8 @@ public class VoyageurController {
             selectedVoyageur.setAge(Integer.parseInt(tf_age.getText()));
             selectedVoyageur.setEtat_civil(cb_etat.getValue());
             selectedVoyageur.setEmail(tf_email.getText());
+            selectedVoyageur.setDate_nais(tf_nais.getValue());
+
 
             try {
                 service.modifier(selectedVoyageur); // Appel de la méthode de service pour modifier le voyageur
@@ -363,6 +372,8 @@ public class VoyageurController {
                 tf_age.setText(String.valueOf(selectedVoyageur.getAge()));
                 cb_etat.setValue(selectedVoyageur.getEtat_civil());
                 tf_email.setText(selectedVoyageur.getEmail());
+                tf_nais.setValue(selectedVoyageur.getDate_nais());
+
             }
         }
     }
