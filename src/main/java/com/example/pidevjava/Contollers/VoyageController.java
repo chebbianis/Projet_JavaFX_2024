@@ -62,6 +62,10 @@ public class VoyageController implements Initializable {
     @FXML
     private DatePicker tf_dated;
     @FXML
+    private ComboBox<String> deviseComboBox;
+    @FXML
+    private TextField montantEURField;
+    @FXML
     private TextField tf_des;
     @FXML
     private TextField tf_prix;
@@ -185,7 +189,12 @@ public class VoyageController implements Initializable {
             cb_destination.getItems().add(destination);
         }
     }
-
+    private double convertirEurToUsd(double montantEur, double tauxChange) {
+        return montantEur * tauxChange;
+    }
+    private double convertirTndToEur(double montantTnd, double tauxChangeTndEur) {
+        return montantTnd * tauxChangeTndEur;
+    }
     private void openMap(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/pidevjava/Map.fxml"));
@@ -247,6 +256,31 @@ public class VoyageController implements Initializable {
                 tf_prix.setText(selectedVoyage.getPrix());
                 cb_destination.setValue(selectedVoyage.getDestination());
                 updateMapPosition(selectedVoyage.getDestination());
+
+            }
+
+            Voyage voyage = new Voyage();
+
+            String prixStr = voyage.getPrix();
+            double prix = Double.parseDouble(prixStr);
+            String selectedDevise = deviseComboBox.getValue();
+
+            if (selectedDevise != null) {
+                if (selectedDevise.equals("EUR")) {
+
+                    double tauxChangeTND_EUR = 0.30;
+                    double prixEUR = convertirTndToEur(prix, tauxChangeTND_EUR);
+                    montantEURField.setText(String.valueOf(prixEUR));
+                } else if (selectedDevise.equals("USD")) {
+
+                    double tauxChangeEUR_USD = 0.32;
+                    double prixUSD = convertirEurToUsd(prix, tauxChangeEUR_USD);
+                    montantEURField.setText(String.valueOf(prixUSD));
+                } else {
+                    System.err.println("Devise non supportée : " + selectedDevise);
+                }
+            } else {
+                System.err.println("Aucune devise sélectionnée");
             }
         }
     }
@@ -274,6 +308,7 @@ public class VoyageController implements Initializable {
     private void loadVoyageData() {
         ObservableList<Voyage> voyages = getVoyageList();
         table_voyage.setItems(voyages);
+
     }
 
     @FXML

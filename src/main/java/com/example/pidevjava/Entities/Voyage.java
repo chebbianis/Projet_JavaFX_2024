@@ -90,9 +90,8 @@ public class Voyage {
         return date_arrive;
     }
 
-    public String getPrix() {
-        return prix;
-    }
+    public String getPrix() {return prix;}
+
 
     public String getDestination() {
         return destination;
