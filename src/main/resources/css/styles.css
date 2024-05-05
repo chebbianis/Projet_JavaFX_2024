@@ -5,6 +5,20 @@
     -fx-padding: 10px 20px; /* Padding */
 }
 
+.myButton2 {
+    -fx-background-color: #e11919; /* Green background */
+    -fx-text-fill: white; /* White text color */
+    -fx-font-size: 14px; /* Font size */
+    -fx-padding: 10px 20px; /* Padding */
+}
+
+.myButton3 {
+    -fx-background-color: #053bc8; /* Green background */
+    -fx-text-fill: white; /* White text color */
+    -fx-font-size: 14px; /* Font size */
+    -fx-padding: 10px 20px; /* Padding */
+}
+
 /* Define a lighter shade of green */
 .lighter-green {
     -fx-background-color: #ccffcc; /* Change the color code as per your preference */
