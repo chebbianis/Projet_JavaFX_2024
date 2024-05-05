@@ -41,6 +41,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import models.Annonce;
@@ -58,6 +59,8 @@ import services.AnnonceService;
 import services.UserService;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -65,12 +68,9 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-
 
 
 
@@ -153,6 +153,14 @@ public class AnnonceController {
     private TextArea outputTextArea;
 
     private Translator translator;
+    @FXML
+    private ImageView imageView;
+
+    private Stage stage;
+    @FXML
+    private Pagination pagination;
+
+    private int itemsPerPage = 14;
 
 
 
@@ -206,6 +214,9 @@ public class AnnonceController {
             }
 
         });
+//        public void setStage(Stage stage) {
+//            this.stage = stage;
+//        }
         tvAnnonces.setOnMouseClicked(event -> {
             Annonce selectedAnnonce = tvAnnonces.getSelectionModel().getSelectedItem();
             if (selectedAnnonce != null) {
@@ -230,6 +241,22 @@ public class AnnonceController {
         );
         tf_ville_a.setItems(cityList);
 
+
+
+        // Définissez le nombre total d'éléments dans votre TableView
+        int totalItems = getAnnonceList().size();
+        int pageCount = (int) Math.ceil((double) totalItems / itemsPerPage);
+        pagination.setPageCount(pageCount);
+        pagination.setCurrentPageIndex(0);
+        updateTableView(0); // Display the first page initially
+
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
+            try {
+                updateTableView((int) newIndex);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
 
 
@@ -674,16 +701,19 @@ private final MapPoint eiffelPoint = new MapPoint(48.8583701,2.2944813);
     }
 
 
-    private ObservableList<Annonce> getAnnonceList() throws SQLException {
-        ObservableList<Annonce> annonces = FXCollections.observableArrayList();
-        annonces.addAll(AnnonceService.afficher());
-        return annonces;
-    }
+//    private ObservableList<Annonce> getAnnonceList() throws SQLException {
+//        ObservableList<Annonce> annonces = FXCollections.observableArrayList();
+//        annonces.addAll(AnnonceService.afficher());
+//        return annonces;
+//    }
 
     @FXML
     private void loadAnnonceData() throws SQLException {
         ObservableList<Annonce> annonces = getAnnonceList();
         tvAnnonces.setItems(annonces);
+        int pageCount = calculatePageCount();
+        pagination.setPageCount(pageCount);
+        pagination.setCurrentPageIndex(0);
     }
 
     @FXML
@@ -1110,6 +1140,68 @@ private void exportToExcel(ActionEvent event) {
 //    }
 
 
+    @FXML
+    private void loadImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Image File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.hdr", "*.jpg", "*.png", "*.gif"));
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            try {
+                BufferedImage bufferedImage = hdrToBufferedImage(selectedFile);
+                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                imageView.setImage(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private BufferedImage hdrToBufferedImage(File hdrFile) throws IOException {
+        BufferedImage bi = null;
+        ImageInputStream input = ImageIO.createImageInputStream(hdrFile);
+        try {
+            Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
+            if (!readers.hasNext()) {
+                throw new IllegalArgumentException("No reader for: " + hdrFile);
+            }
+            ImageReader reader = readers.next();
+            try {
+                reader.setInput(input);
+                bi = reader.read(0);
+            } finally {
+                reader.dispose();
+            }
+        } finally {
+            input.close();
+        }
+        // You can add further processing here if needed
+        return bi;
+    }
+    public void loadImage(String imagePath) {
+        Image image = new Image(getClass().getResourceAsStream(imagePath));
+        imageView.setImage(image);
+    }
+    private int calculatePageCount() {
+        int pageCount = (int) Math.ceil(tvAnnonces.getItems().size() / (double) itemsPerPage);
+        return pageCount;
+    }
+
+    private void updateTableView(int pageIndex) throws SQLException {
+        int fromIndex = pageIndex * itemsPerPage;
+        int toIndex = Math.min(fromIndex + itemsPerPage, getAnnonceList().size());
+        ObservableList<Annonce> pageData = FXCollections.observableArrayList(getAnnonceList().subList(fromIndex, toIndex));
+        tvAnnonces.setItems(pageData);
+    }
+    private ObservableList<Annonce> getAnnonceList() throws SQLException {
+        ObservableList<Annonce> annonces = FXCollections.observableArrayList();
+        annonces.addAll(AnnonceService.afficher());
+        return annonces;
+    }
+
 
 
 }
+
