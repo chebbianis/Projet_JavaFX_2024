@@ -13,24 +13,18 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
+
 import java.time.LocalDate;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
+
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import models.Location;
-import services.LocationService;
 
-import java.util.ResourceBundle;
+import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.shape.Circle;
 import javafx.geometry.Point2D;
@@ -58,7 +52,6 @@ public class AfficherLControllers {
 
     @FXML
     private TextField txtIdL;
-
 
 
     private Stage stage;

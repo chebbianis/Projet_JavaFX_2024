@@ -2,8 +2,9 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
 
-<AnchorPane fx:id="modifier_btn" prefHeight="640.0" prefWidth="683.0" styleClass="lighter-green" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherLControllers">
+<AnchorPane fx:id="modifier_btn" prefHeight="640.0" prefWidth="906.0" styleClass="lighter-green" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherLControllers">
     <children>
         <Button fx:id="Modifier_btn" layoutX="79.0" layoutY="517.0" mnemonicParsing="false" onAction="#goToModification" prefHeight="43.0" prefWidth="160.0" styleClass="myButton" text="modifier Location" />
 
@@ -20,5 +21,6 @@
       <Label layoutX="292.0" layoutY="157.0" prefHeight="26.0" prefWidth="126.0" text="reach us at :" />
       <Label layoutX="292.0" layoutY="183.0" prefHeight="26.0" prefWidth="214.0" text="esprit bloc ijk ariana soghra" />
       <Label layoutX="292.0" layoutY="210.0" prefHeight="26.0" prefWidth="214.0" />
+
     </children>
 </AnchorPane>

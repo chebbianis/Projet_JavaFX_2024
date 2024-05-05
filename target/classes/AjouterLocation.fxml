@@ -19,5 +19,6 @@
       <DatePicker fx:id="txtDate_fin" layoutX="386.0" layoutY="123.0" prefHeight="26.0" prefWidth="146.0" />
       <Button fx:id="AjouterButton" layoutX="275.0" layoutY="440.0" mnemonicParsing="false" onAction="#ajouterAction" prefHeight="41.0" prefWidth="126.0" styleClass="myButton" text="Ajouter" />
       <Label layoutX="275.0" layoutY="321.0" prefHeight="26.0" prefWidth="136.0" text="Supplimentaires :" />
+      <TextField fx:id="txtTotalPrice" />
    </children>
 </AnchorPane>

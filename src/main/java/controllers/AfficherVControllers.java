@@ -1,5 +1,10 @@
 package controllers;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,13 +16,15 @@ import javafx.scene.control.*;
 
 import javafx.event.ActionEvent;
 //import java.awt.event.MouseEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.*;
+import java.io.*;
 import java.net.URL;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 
 import javafx.fxml.FXMLLoader;
@@ -29,18 +36,22 @@ import javafx.stage.Stage;
 import models.Voiture;
 import services.VoitureService;
 
-import java.util.DoubleSummaryStatistics;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.scene.control.Alert;
 
 import javafx.scene.control.TableView;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.awt.Desktop;
 import javafx.stage.FileChooser;
-
+import net.glxn.qrgen.javase.QRCode;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import net.glxn.qrgen.core.image.ImageType;
+import java.awt.image.BufferedImage;
+import javafx.embed.swing.SwingFXUtils;
 
 
 public class AfficherVControllers {
@@ -96,6 +107,9 @@ public class AfficherVControllers {
 
     @FXML
     private Button searchButton;
+
+    @FXML
+    private ImageView qrCodeImageView;
 
 
 
@@ -174,6 +188,8 @@ public class AfficherVControllers {
         voitureService = new VoitureService();
         setupTableView();
         loadVoitures();
+        String marque = txtVoiture_Marque.getText();
+        loadUserAndGenerateQR(marque);
     }
 
     private void setupTableView() {
@@ -370,6 +386,107 @@ public class AfficherVControllers {
             }
         }
 
+    }
+
+    @FXML
+    private void generateQRCode() {
+        String name = "Ali";
+        String email = "ali@gmail.com";
+
+        // Concatenate user information
+        String userInfo = "Name: " + name + "\n" + "Email: " + email;
+
+        // Generate QR Code
+        ByteArrayOutputStream out = QRCode.from(userInfo).to(ImageType.PNG).stream();
+        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+        qrCodeImageView.setImage(new Image(in));
+    }
+
+    @FXML
+    private void generateQRCode(ActionEvent event) {
+        // Get the selected car from the tableview
+        Voiture selectedVoiture = tableviewVoiture.getSelectionModel().getSelectedItem();
+        if (selectedVoiture != null) {
+            // Construct the message for the QR code using the car's information
+            String message = String.format("Marque: %s\nAnnée: %s\nPrix par jour: %s\nKilométrage: %s\nNombre de places: %s",
+                    selectedVoiture.getMarque(), selectedVoiture.getAnnee(), selectedVoiture.getPrix_j(),
+                    selectedVoiture.getKilometrage(), selectedVoiture.getNbrPlaces());
+
+            try {
+                // Generate the QR code image
+                BufferedImage qrCodeImage = generateQRCode(message);
+
+                // Convert the BufferedImage to JavaFX Image
+                Image qrCodeFXImage = SwingFXUtils.toFXImage(qrCodeImage, null);
+
+                // Set the generated QR code image to the qrCodeImageView
+                qrCodeImageView.setImage(qrCodeFXImage);
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // No car is selected, display an error message or handle it as needed
+            System.out.println("No car selected.");
+        }
+    }
+
+    private void loadUserAndGenerateQR(String marque) {
+        // Database connection parameters
+        String url = "jdbc:mysql://localhost:3306/tunvista";
+        String username = "root";
+        String password = "";
+
+        // SQL query to fetch user details based on user ID
+        String query = "SELECT marque, annee, prix_j, kilometrage, nbrPlaces FROM voiture WHERE marque = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            // Set the user ID parameter in the prepared statement
+            statement.setString(1, marque);
+
+            // Execute the query
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Check if user with the given ID exists
+                /*if (resultSet.next()) {
+                    // Retrieve user details from the result set
+                    String Marque = resultSet.getString("marque");
+                    String annee = resultSet.getString("annee");
+                    String prix_j = resultSet.getString("prix_j");
+                    String kilometrage = resultSet.getString("kilometrage");
+                    String nbrPlaces = resultSet.getString("nbrPlaces");
+
+                    // Format user information as a string
+                    String userInfo = String.format("marque: %s\nannee: %s\nprix_j: %s\nkilometrage: %s\nnbrPlaces: %s",
+                            Marque, annee, prix_j, kilometrage, nbrPlaces);
+
+                    // Generate QR code
+                    //generateQRCode(userInfo);
+                } else {
+                    // User with the given ID does not exist
+                    //System.out.println("Voiture not found");
+                }*/
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle database connection or query errors
+        }
+    }
+
+    private BufferedImage generateQRCode(String message) throws WriterException {
+        int width = 300;
+        int height = 300;
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(message, BarcodeFormat.QR_CODE, width, height, hints);
+        BufferedImage qrCodeImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                qrCodeImage.setRGB(x, y, bitMatrix.get(x, y) ? 0x000000 : 0xFFFFFF);
+            }
+        }
+        return qrCodeImage;
     }
 
 

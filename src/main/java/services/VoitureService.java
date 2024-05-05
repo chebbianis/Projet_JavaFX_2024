@@ -79,5 +79,19 @@ public class VoitureService implements IService<Voiture>{
         return voitures;
     }
 
+    public int getPrixJById(int voitureId) throws SQLException {
+        String sql = "SELECT prix_j FROM voiture WHERE id_voiture = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, voitureId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("prix_j");
+                } else {
+                    throw new SQLException("Voiture with ID " + voitureId + " not found.");
+                }
+            }
+        }
+    }
+
 
 }

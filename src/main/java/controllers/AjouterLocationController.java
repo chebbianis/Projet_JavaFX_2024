@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import services.LocationService;
+import services.VoitureService;
 import models.Location;
 
 import java.awt.event.ActionEvent;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 
 public class AjouterLocationController {
 
@@ -37,6 +40,10 @@ public class AjouterLocationController {
 
     @FXML
     private TextField txtOptions_supp;
+
+    @FXML
+    private TextField txtTotalPrice;
+
 
     public DatePicker getTxtDate_debut() {
         return txtDate_debut;
@@ -104,6 +111,40 @@ public class AjouterLocationController {
     public void setTxtTypePaiement(String txtTypePaiement) { this.txtTypePaiement.setText(txtTypePaiement);
     }
     public void setTxtOptions_supp(String txtOptions_supp) { this.txtOptions_supp.setText(txtOptions_supp);
+    }
+
+    @FXML
+    void initialize() {
+        // Add a listener to txtVoiture_id textField
+        txtVoiture_id.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Check if the new value is not empty
+            if (!newValue.isEmpty()) {
+                try {
+                    // Retrieve the prix_j value from the database
+                    VoitureService voitureService = new VoitureService();
+                    int prixJ = voitureService.getPrixJById(Integer.parseInt(newValue));
+
+                    // Calculate the number of days
+                    LocalDate dateDebut = txtDate_debut.getValue();
+                    LocalDate dateFin = txtDate_fin.getValue();
+                    if (dateDebut != null && dateFin != null) {
+                        long numberOfDays = ChronoUnit.DAYS.between(dateDebut, dateFin);
+
+                        // Calculate the total price
+                        int totalPrice = prixJ * (int) numberOfDays;
+
+                        // Set the total price value in the textField
+                        txtTotalPrice.setText(String.valueOf(totalPrice));
+                    }
+                } catch (SQLException e) {
+                    // Handle SQL exception
+                    e.printStackTrace();
+                }
+            } else {
+                // Clear the total price textField if the voiture ID is empty
+                txtTotalPrice.clear();
+            }
+        });
     }
 
 }
