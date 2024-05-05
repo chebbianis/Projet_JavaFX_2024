@@ -80,4 +80,16 @@ public class Voiture {
     public void setNbrPlaces(int nbrPlaces) {
         this.nbrPlaces = nbrPlaces;
     }
+
+    @Override
+    public String toString() {
+        return "Voiture{" +
+                "id_voiture=" + id_voiture +
+                ", marque='" + marque + '\'' +
+                ", annee=" + annee +
+                ", prix_j=" + prix_j +
+                ", kilometrage=" + kilometrage +
+                ", nbrPlaces=" + nbrPlaces +
+                '}';
+    }
 }

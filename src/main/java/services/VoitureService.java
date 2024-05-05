@@ -92,6 +92,19 @@ public class VoitureService implements IService<Voiture>{
             }
         }
     }
+    public int getVoitureIdByMarque(String marque) throws SQLException {
+        String sql = "SELECT id_voiture FROM voiture WHERE marque = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, marque);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("id_voiture");
+                }
+            }
+        }
+        throw new SQLException("No voiture found with marque: " + marque);
+    }
+
 
 
 }

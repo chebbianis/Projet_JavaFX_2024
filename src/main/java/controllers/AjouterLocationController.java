@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import models.Voiture;
 import services.LocationService;
 import services.VoitureService;
 import models.Location;
@@ -16,11 +18,17 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 
 
 public class AjouterLocationController {
 
     LocationService sv = new LocationService();
+    VoitureService voitureService = new VoitureService();
 
 
     @FXML
@@ -33,7 +41,7 @@ public class AjouterLocationController {
     private TextField txtUser_id;
 
     @FXML
-    private TextField txtVoiture_id;
+    private ComboBox<String> cmbVoiture;
 
     @FXML
     private TextField txtTypePaiement;
@@ -55,43 +63,62 @@ public class AjouterLocationController {
 
     @FXML
     void ajouterAction(javafx.event.ActionEvent event) {
-
         try {
-            Location p = new Location(txtDate_debut.getValue(),txtDate_fin.getValue(), Integer.parseInt(txtUser_id.getText()), Integer.parseInt(txtVoiture_id.getText()), txtTypePaiement.getText(), txtOptions_supp.getText());
-            int generatedId = sv.add(p);
-            //sv.add(new Voiture(txtVoiture_Marque.getText(), txtAnnee.getText(), Integer.parseInt(txtPrix_j.getText())));
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Succes");
-            alert.setContentText("Location Ajouter avec succes");
-            alert.show();
+            LocalDate dateDebut = txtDate_debut.getValue();
+            LocalDate dateFin = txtDate_fin.getValue();
+            String selectedVoitureId = cmbVoiture.getValue();
+            if (dateDebut != null && dateFin != null && selectedVoitureId != null && !selectedVoitureId.isEmpty()) {
+                // Retrieve the selected voiture ID from the ComboBox
+                String selectedVoiture = cmbVoiture.getSelectionModel().getSelectedItem();
+                if (selectedVoiture != null) {
+                    int voitureId = Integer.parseInt(selectedVoiture.split("\\[")[1].split("]")[0]);
+                    // Use voitureId as needed
+                }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherL.fxml"));
+                Location p = new Location(dateDebut, dateFin, Integer.parseInt(txtUser_id.getText()), Integer.parseInt(selectedVoitureId), txtTypePaiement.getText(), txtOptions_supp.getText());
+                int generatedId = sv.add(p);
 
-            try {
-                Parent root = loader.load();
-                AfficherLControllers afficherLControllers = loader.getController();
-                afficherLControllers.setTxtDate_debut(txtDate_debut.getValue());
-                afficherLControllers.setTxtDate_fin(txtDate_fin.getValue());
-                afficherLControllers.setTxtUser_id(txtUser_id.getText());
-                afficherLControllers.setTxtVoiture_id((txtVoiture_id.getText()));
-                afficherLControllers.setTxtTypePaiement((txtTypePaiement.getText()));
-                afficherLControllers.setTxtOptions_supp((txtOptions_supp.getText()));
-                afficherLControllers.setTxtIdL(String.valueOf(generatedId));
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("Location ajoutée avec succès");
+                alert.show();
 
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherL.fxml"));
+                try {
+                    Parent root = loader.load();
+                    AfficherLControllers afficherLControllers = loader.getController();
+                    afficherLControllers.setTxtDate_debut(dateDebut);
+                    afficherLControllers.setTxtDate_fin(dateFin);
+                    afficherLControllers.setTxtUser_id(txtUser_id.getText());
+                    afficherLControllers.setTxtVoiture_id(selectedVoitureId);
+                    afficherLControllers.setTxtTypePaiement(txtTypePaiement.getText());
+                    afficherLControllers.setTxtOptions_supp(txtOptions_supp.getText());
+                    afficherLControllers.setTxtIdL(String.valueOf(generatedId));
 
-                txtOptions_supp.getScene().setRoot(root);
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+                    txtOptions_supp.getScene().setRoot(root);
+                } catch (IOException e) {
+                    // Handle the IOException
+                    e.printStackTrace(); // Print the stack trace for debugging
+                    // You can also show an error message to the user
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setContentText("Failed to load FXML file: " + e.getMessage());
+                    alert.showAndWait();
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("Please fill all required fields.");
+                alert.show();
             }
         } catch (SQLException e) {
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setContentText(e.getMessage());
             alert.show();
-
         }
     }
+
 
 
     public void setTxtDate_debut(LocalDate txtDate_debut) {
@@ -105,7 +132,9 @@ public class AjouterLocationController {
     public void setTxtUser_id(String txtUser_id) { this.txtUser_id.setText(txtUser_id);
     }
 
-    public void setTxtVoiture_id(String txtVoiture_id) { this.txtVoiture_id.setText(txtVoiture_id);
+    public void setTxtVoiture_id(String txtVoiture_id) {
+        // Set the selected voiture ID in the ComboBox
+        cmbVoiture.setValue(txtVoiture_id);
     }
 
     public void setTxtTypePaiement(String txtTypePaiement) { this.txtTypePaiement.setText(txtTypePaiement);
@@ -115,36 +144,44 @@ public class AjouterLocationController {
 
     @FXML
     void initialize() {
-        // Add a listener to txtVoiture_id textField
-        txtVoiture_id.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Check if the new value is not empty
-            if (!newValue.isEmpty()) {
-                try {
-                    // Retrieve the prix_j value from the database
-                    VoitureService voitureService = new VoitureService();
-                    int prixJ = voitureService.getPrixJById(Integer.parseInt(newValue));
+        try {
+            List<Voiture> voitures = voitureService.recuperer();
+            // Populate ComboBox with marque and set the ID as the value
+            ObservableList<String> voitureMarques = FXCollections.observableArrayList(voitures.stream()
+                    .map(Voiture::getMarque)
+                    .collect(Collectors.toList()));
+            cmbVoiture.setItems(voitureMarques);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-                    // Calculate the number of days
-                    LocalDate dateDebut = txtDate_debut.getValue();
-                    LocalDate dateFin = txtDate_fin.getValue();
-                    if (dateDebut != null && dateFin != null) {
-                        long numberOfDays = ChronoUnit.DAYS.between(dateDebut, dateFin);
+        // Add a listener to cmbVoiture ComboBox
+        cmbVoiture.setOnAction(event -> calculateTotalPrice());
 
-                        // Calculate the total price
-                        int totalPrice = prixJ * (int) numberOfDays;
-
-                        // Set the total price value in the textField
-                        txtTotalPrice.setText(String.valueOf(totalPrice));
-                    }
-                } catch (SQLException e) {
-                    // Handle SQL exception
-                    e.printStackTrace();
-                }
-            } else {
-                // Clear the total price textField if the voiture ID is empty
-                txtTotalPrice.clear();
-            }
-        });
+        // Add listeners to date pickers
+        txtDate_debut.setOnAction(event -> calculateTotalPrice());
+        txtDate_fin.setOnAction(event -> calculateTotalPrice());
     }
+
+    private void calculateTotalPrice() {
+        String selectedMarque = cmbVoiture.getValue();
+        if (selectedMarque != null && !selectedMarque.isEmpty()) {
+            try {
+                // Retrieve the voiture ID based on the selected marque
+                int voitureId = voitureService.getVoitureIdByMarque(selectedMarque);
+                int prixJ = voitureService.getPrixJById(voitureId);
+                LocalDate dateDebut = txtDate_debut.getValue();
+                LocalDate dateFin = txtDate_fin.getValue();
+                if (dateDebut != null && dateFin != null) {
+                    long numberOfDays = ChronoUnit.DAYS.between(dateDebut, dateFin);
+                    int totalPrice = prixJ * (int) numberOfDays;
+                    txtTotalPrice.setText(String.valueOf(totalPrice));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 }

@@ -8,9 +8,9 @@
       <Label layoutX="90.0" layoutY="89.0" text="Date debut" />
       <Label layoutX="429.0" layoutY="89.0" text="Date fin" />
       <TextField fx:id="txtUser_id" layoutX="56.0" layoutY="211.0" />
-      <TextField fx:id="txtVoiture_id" layoutX="386.0" layoutY="211.0" />
+      <ComboBox fx:id="cmbVoiture" layoutX="386.0" layoutY="211.0" prefHeight="26.0" prefWidth="146.0" />
       <Label layoutX="99.0" layoutY="175.0" text="Votre ID" />
-      <Label layoutX="387.0" layoutY="175.0" text="ID de Votre Voiture" />
+      <Label layoutX="408.0" layoutY="175.0" text="Votre Voiture" />
       <TextField fx:id="txtTypePaiement" layoutX="57.0" layoutY="309.0" />
       <TextField fx:id="txtOptions_supp" layoutX="417.0" layoutY="285.0" prefHeight="127.0" prefWidth="269.0" />
       <Label layoutX="275.0" layoutY="300.0" prefHeight="26.0" prefWidth="136.0" text="Options " />
@@ -19,6 +19,7 @@
       <DatePicker fx:id="txtDate_fin" layoutX="386.0" layoutY="123.0" prefHeight="26.0" prefWidth="146.0" />
       <Button fx:id="AjouterButton" layoutX="275.0" layoutY="440.0" mnemonicParsing="false" onAction="#ajouterAction" prefHeight="41.0" prefWidth="126.0" styleClass="myButton" text="Ajouter" />
       <Label layoutX="275.0" layoutY="321.0" prefHeight="26.0" prefWidth="136.0" text="Supplimentaires :" />
-      <TextField fx:id="txtTotalPrice" />
+      <TextField fx:id="txtTotalPrice" layoutX="56.0" layoutY="448.0" />
+      <Label layoutX="83.0" layoutY="422.0" text="prix total DT" />
    </children>
 </AnchorPane>
