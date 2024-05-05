@@ -94,12 +94,24 @@ public class EtatCivil implements Initializable {
                         break;
                 }
             }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         // Mettre à jour le PieChart avec les nouvelles valeurs
         pieChart.setData(pieChartData);
+      //  serviceVoyageur service = new serviceVoyageur();
+        try {
+            List<Voyageur> voyageurs = service.rechercherAll(); // Appel à la méthode rechercherAll
+
+            // Update the PieChart with the new data and display percentages
+            updatePieChartWithData(pieChart, voyageurs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
     public static void updatePieChartWithData(PieChart pieChart, List<Voyageur> voyageurs) {
@@ -133,8 +145,12 @@ public class EtatCivil implements Initializable {
         pieChartData.add(new PieChart.Data("Divorced", calculatePercentage(divorcedCount, totalVoyageurs)));
         pieChartData.add(new PieChart.Data("Widowed", calculatePercentage(widowedCount, totalVoyageurs)));
 
-        pieChart.setData(pieChartData);
+        // Set the percentage as labels for each PieChart.Data
+        for (PieChart.Data data : pieChartData) {
+            data.setName(data.getName() + " (" + String.format("%.1f", data.getPieValue()) + "%)");
+        }
 
+        pieChart.setData(pieChartData);
     }
 
     private static double calculatePercentage(int count, int total) {

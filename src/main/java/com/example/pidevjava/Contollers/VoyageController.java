@@ -85,6 +85,8 @@ public class VoyageController implements Initializable {
     private VBox adresse;
     @FXML
     private ComboBox<String> cb_destination;
+
+
     private final serviceVoyage serviceVoyage = new serviceVoyage();
     private MapView mapView;
     private final java.util.Map<String, MapPoint> destinationCoordinates = new HashMap<>();
@@ -114,6 +116,14 @@ public class VoyageController implements Initializable {
         btn_ret.setOnAction(this::retour);
 
         initializeDestinationCoordinates();
+        deviseComboBox.setValue("EUR");
+
+        cb_destination.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                updateMapPosition(newValue);
+            }
+        });
+
     }
 
     private void initializeDestinationCoordinates() {
@@ -257,30 +267,37 @@ public class VoyageController implements Initializable {
                 cb_destination.setValue(selectedVoyage.getDestination());
                 updateMapPosition(selectedVoyage.getDestination());
 
-            }
+                // Validate and convert prix to double
+                String prixStr = selectedVoyage.getPrix();
+                if (prixStr != null && !prixStr.isEmpty()) {
+                    try {
+                        double prix = Double.parseDouble(prixStr);
+                        String selectedDevise = deviseComboBox.getValue();
 
-            Voyage voyage = new Voyage();
+                        if (selectedDevise != null) {
+                            if (selectedDevise.equals("EUR")) {
+                                double tauxChangeTND_EUR =3.00;
+                                double prixEUR = convertirTndToEur(prix, tauxChangeTND_EUR);
+                                // Formater le prix en tant que chaîne avec 3 chiffres après la virgule
+                                String formattedPrixEUR = String.format("%.3f", prixEUR);
+                                montantEURField.setText(formattedPrixEUR);
+                            } else if (selectedDevise.equals("USD")) {
+                                double tauxChangeEUR_USD = 3.4;
+                                double prixUSD = convertirEurToUsd(prix, tauxChangeEUR_USD);
+                                // Formater le prix en tant que chaîne avec 3 chiffres après la virgule
+                                String formattedPrixUSD = String.format("%.3f", prixUSD);
+                                montantEURField.setText(formattedPrixUSD);
+                            }
 
-            String prixStr = voyage.getPrix();
-            double prix = Double.parseDouble(prixStr);
-            String selectedDevise = deviseComboBox.getValue();
-
-            if (selectedDevise != null) {
-                if (selectedDevise.equals("EUR")) {
-
-                    double tauxChangeTND_EUR = 0.30;
-                    double prixEUR = convertirTndToEur(prix, tauxChangeTND_EUR);
-                    montantEURField.setText(String.valueOf(prixEUR));
-                } else if (selectedDevise.equals("USD")) {
-
-                    double tauxChangeEUR_USD = 0.32;
-                    double prixUSD = convertirEurToUsd(prix, tauxChangeEUR_USD);
-                    montantEURField.setText(String.valueOf(prixUSD));
+                        } else {
+                            System.err.println("Aucune devise sélectionnée");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.err.println("Prix non valide : " + prixStr);
+                    }
                 } else {
-                    System.err.println("Devise non supportée : " + selectedDevise);
+                    System.err.println("Prix non défini");
                 }
-            } else {
-                System.err.println("Aucune devise sélectionnée");
             }
         }
     }
