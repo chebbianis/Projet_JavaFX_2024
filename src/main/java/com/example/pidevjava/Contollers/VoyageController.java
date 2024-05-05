@@ -90,7 +90,7 @@ public class VoyageController implements Initializable {
     private final serviceVoyage serviceVoyage = new serviceVoyage();
     private MapView mapView;
     private final java.util.Map<String, MapPoint> destinationCoordinates = new HashMap<>();
-    private final MapPoint eiffelPoint = new MapPoint(48.8583701, 2.2944813);
+    private final MapPoint espritGhazelaPoint = new MapPoint(36.896953, 10.189527);
     Map map = new Map();
 
     @Override
@@ -236,7 +236,7 @@ public class VoyageController implements Initializable {
         mapView.setPrefSize(500, 400);
         mapView.addLayer(new CustomMapLayer());
         mapView.setZoom(15);
-        mapView.flyTo(0, eiffelPoint, 0.1);
+        mapView.flyTo(0, espritGhazelaPoint, 0.1);
         return mapView;
     }
 
@@ -250,7 +250,7 @@ public class VoyageController implements Initializable {
 
         @Override
         protected void layoutLayer() {
-            Point2D point = getMapPoint(eiffelPoint.getLatitude(), eiffelPoint.getLongitude());
+            Point2D point = getMapPoint(espritGhazelaPoint.getLatitude(), espritGhazelaPoint.getLongitude());
             marker.setTranslateX(point.getX());
             marker.setTranslateY(point.getY());
         }

@@ -16,7 +16,7 @@
 <AnchorPane prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pidevjava.Contollers.VoyageController">
     <children>
 
-        <VBox layoutX="500.0" layoutY="31.0" prefHeight="212.0" prefWidth="112.0" spacing="25.0">
+        <VBox layoutX="552.0" layoutY="33.0" prefHeight="212.0" prefWidth="112.0" spacing="25.0">
             <children>
                 <Label fx:id="tf_programme" text="Programme">
                     <font>
@@ -47,7 +47,7 @@
 
             </children>
         </VBox>
-        <VBox fx:id="tr_prix" layoutX="648.0" layoutY="31.0" prefHeight="220.0" prefWidth="220.0" spacing="20.0">
+        <VBox fx:id="tr_prix" layoutX="700.0" layoutY="33.0" prefHeight="220.0" prefWidth="220.0" spacing="20.0">
             <children>
                 <TextField fx:id="tf_prog" prefHeight="30.0" prefWidth="231.0">
                     <font>
@@ -64,7 +64,7 @@
             <ComboBox fx:id="cb_destination" prefHeight="25.0" prefWidth="222.0" />
             </children>
         </VBox>
-        <TableView fx:id="table_voyage" layoutX="467.0" layoutY="253.0" prefHeight="238.0" prefWidth="579.0">
+        <TableView fx:id="table_voyage" layoutX="500.0" layoutY="251.0" prefHeight="305.0" prefWidth="579.0">
             <columns>
                 <TableColumn fx:id="col_id" prefWidth="35.0" text="ID" />
                 <TableColumn fx:id="col_programme" prefWidth="156.0" text="Programe" />
@@ -74,13 +74,13 @@
                 <TableColumn fx:id="col_destination" minWidth="0.0" prefWidth="125.0" text="Destination" />
             </columns>
         </TableView>
-        <Button fx:id="btn_insert" layoutX="947.0" layoutY="47.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9CE794;" text="Insert" />
-        <Button fx:id="btn_update" layoutX="947.0" layoutY="87.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #FFA17A;" text="Update" />
-        <Button fx:id="btn_delete" layoutX="947.0" layoutY="129.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9C0054;" text="Delete" textFill="WHITE" />
+        <Button fx:id="btn_insert" layoutX="983.0" layoutY="48.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9CE794;" text="Insert" />
+        <Button fx:id="btn_update" layoutX="983.0" layoutY="88.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #FFA17A;" text="Update" />
+        <Button fx:id="btn_delete" layoutX="983.0" layoutY="130.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" style="-fx-background-color: #9C0054;" text="Delete" textFill="WHITE" />
       <Button fx:id="btn_ret" layoutX="5.0" layoutY="561.0" mnemonicParsing="false" style="-fx-background-color: #95d3f2;" text="Retour" />
-      <VBox fx:id="adresse" layoutX="9.0" layoutY="22.0" prefHeight="540.0" prefWidth="453.0" />
-      <Button fx:id="btn_map" layoutX="891.0" layoutY="218.0" mnemonicParsing="false" style="-fx-background-color: #95d3f2;" text="Map" />
-          <ComboBox fx:id="deviseComboBox" layoutX="856.0" layoutY="502.0">
+      <VBox fx:id="adresse" layoutX="9.0" layoutY="22.0" prefHeight="540.0" prefWidth="490.0" />
+      <Button fx:id="btn_map" layoutX="943.0" layoutY="220.0" mnemonicParsing="false" style="-fx-background-color: #95d3f2;" text="Map" />
+          <ComboBox fx:id="deviseComboBox" layoutX="856.0" layoutY="566.0">
               <items>
                   <FXCollections fx:factory="observableArrayList">
                       <String fx:value="EUR" />
@@ -89,7 +89,7 @@
               </items>
           </ComboBox>
 
-          <TextField fx:id="montantEURField" layoutX="643.0" layoutY="502.0" prefWidth="200" promptText="Le prix convertit" />
+          <TextField fx:id="montantEURField" layoutX="638.0" layoutY="565.0" prefWidth="200" promptText="Le prix convertit" />
 
     </children>
 </AnchorPane>
