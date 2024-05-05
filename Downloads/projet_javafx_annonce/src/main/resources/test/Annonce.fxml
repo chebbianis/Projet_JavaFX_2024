@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.WebView?>
+<?import java.lang.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="1550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AnnonceController">
+   <children>
+      <VBox layoutX="14.0" layoutY="128.0" prefHeight="434.0" prefWidth="145.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Titre">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="12.0" left="5.0" right="5.0" top="12.0" />
+                     </padding>
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label text="Description">
+                     <padding>
+                        <Insets bottom="12.0" left="5.0" right="5.0" top="12.0" />
+                     </padding>
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label text="Ville">
+                     <padding>
+                        <Insets bottom="12.0" left="5.0" right="5.0" top="12.0" />
+                     </padding>
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label text="Date debut">
+                     <padding>
+                        <Insets bottom="12.0" left="5.0" right="5.0" top="12.0" />
+                     </padding>
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Label text="Nombre des jours">
+               <padding>
+                  <Insets bottom="12.0" left="5.0" right="5.0" top="12.0" />
+               </padding>
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <Label text="Date fin">
+               <padding>
+                  <Insets bottom="12.0" left="5.0" right="5.0" top="12.0" />
+               </padding>
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <Label text="Id user">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <padding>
+                  <Insets bottom="12.0" left="5.0" right="5.0" top="12.0" />
+               </padding>
+            </Label>
+            <Label text="Lien maps">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <padding>
+                  <Insets bottom="12.0" left="5.0" right="5.0" top="12.0" />
+               </padding>
+            </Label>
+
+         </children>
+      </VBox>
+      <VBox layoutX="159.0" layoutY="120.0" prefHeight="434.0" prefWidth="293.0">
+         <children>
+            <TextField fx:id="tf_titre_a">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="tf_description_a">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </TextField>
+            <ComboBox fx:id="tf_ville_a" prefHeight="42.0" prefWidth="327.0">
+
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </ComboBox>
+
+            <DatePicker fx:id="tf_date_debut_a" prefHeight="42.0" prefWidth="328.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </DatePicker>
+            <TextField fx:id="tf_nb_jour_a">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font size="22.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="tf_date_fin_a" editable="false" prefHeight="42.0" prefWidth="327.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="tf_user_id" prefHeight="42.0" prefWidth="327.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </TextField>
+            <TextField fx:id="tf_maps_link" prefHeight="42.0" prefWidth="327.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </TextField>
+
+
+         </children>
+      </VBox>
+      <TableView fx:id="tvAnnonces" layoutX="452.0" layoutY="39.0" onMouseClicked="#onTableClick" prefHeight="381.0" prefWidth="1093.0">
+         <columns>
+            <TableColumn fx:id="colIdAnnonce" prefWidth="71.0" text="Id" />
+            <TableColumn fx:id="colTitreAnnonce" prefWidth="107.0" text="Titre" />
+            <TableColumn fx:id="colDescriptionAnnonce" prefWidth="233.0" text="Description" />
+            <TableColumn fx:id="colVilleAnnonce" minWidth="7.0" prefWidth="121.0" text="Ville" />
+            <TableColumn fx:id="colDateDebutA" prefWidth="147.0" text="Date debut" />
+            <TableColumn fx:id="colNbJourA" minWidth="1.0" prefWidth="63.0" text="Nombre des jours" />
+            <TableColumn fx:id="colDateFinA" prefWidth="130.0" text="Date fin" />
+            <TableColumn fx:id="colUserId" prefWidth="130.0" text="Id user" />
+            <TableColumn fx:id="colMapsLink" prefWidth="91.0" text="Lien maps" />
+
+         </columns>
+      </TableView>
+      <Button fx:id="btn_ajouter" layoutX="42.0" layoutY="552.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="117.0" text="Ajouter">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btn_modifier" layoutX="167.0" layoutY="552.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="117.0" text="Modifier">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btn_supprimer" layoutX="291.0" layoutY="552.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="117.0" text="Supprimer">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <HBox spacing="5" />
+      <TextField fx:id="tf_search" layoutX="50.0" layoutY="51.0" prefHeight="39.0" prefWidth="382.0" promptText="Recherche" />
+      <VBox fx:id="adresse" layoutX="452.0" layoutY="427.0" prefHeight="289.0" prefWidth="511.0" />
+      <Button fx:id="btn_generate_qr" layoutX="971.0" layoutY="665.0" mnemonicParsing="false" onAction="#generateQRCode" prefHeight="39.0" prefWidth="220.0" text="Generate QR Code">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+
+      <!-- Add an ImageView to display the QR code -->
+      <ImageView fx:id="qrCodeImageView" fitHeight="223.0" fitWidth="220.0" layoutX="971.0" layoutY="427.0" />
+      <Button fx:id="exportButton" layoutX="230.0" layoutY="599.0" mnemonicParsing="false" onAction="#exportToExcel" prefHeight="39.0" prefWidth="178.0" styleClass="myButton" text="Export to Excel">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Button fx:id="statistiqueButton" layoutX="42.0" layoutY="599.0" mnemonicParsing="false" onAction="#showStatistics" prefHeight="39.0" prefWidth="178.0" styleClass="myButton" text="Statistique par ville">
+         <font>
+            <Font size="18.0" />
+         </font></Button>
+      <Button onAction="#Confirmer" text="Confirmer" />
+      <ImageView fx:id="webcamView" />
+      <WebView fx:id="webView360" layoutX="1201.0" layoutY="425.0" prefHeight="300.0" prefWidth="344.0" />
+
+         
+   </children>
+</AnchorPane>

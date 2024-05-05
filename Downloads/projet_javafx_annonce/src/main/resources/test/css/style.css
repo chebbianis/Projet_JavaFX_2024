@@ -1,0 +1,17 @@
+.custom-button {
+    -fx-border-width: 2px;
+    -fx-border-color: #24b4fb;
+    -fx-background-color: #24b4fb;
+    -fx-border-radius: 0.9em;
+    -fx-padding: 0.8em 1.2em 0.8em 1em;
+    -fx-font-size: 16px;
+}
+
+.custom-button .label {
+    -fx-text-fill: #fff;
+    -fx-font-weight: 600;
+}
+
+.custom-button:hover {
+    -fx-background-color: #0071e2;
+}
