@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.WebView?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="715.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.EvenementController">
     <children>
@@ -89,17 +92,11 @@
                         <Font size="22.0" />
                     </font>
                 </TextField>
-                <TextField fx:id="tf_ville_e">
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </padding>
-                    <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </VBox.margin>
-                    <font>
-                        <Font size="22.0" />
-                    </font>
-                </TextField>
+            <ComboBox fx:id="tf_ville_e" prefHeight="42.0" prefWidth="322.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </ComboBox>
                 <DatePicker fx:id="tf_date_debut_e" prefHeight="42.0" prefWidth="328.0">
                     <VBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -125,7 +122,7 @@
 
             </children>
         </VBox>
-        <TableView fx:id="tvEvenements" layoutX="509.0" layoutY="41.0" prefHeight="626.0" prefWidth="873.0">
+        <TableView fx:id="tvEvenements" layoutX="509.0" layoutY="41.0" prefHeight="375.0" prefWidth="873.0">
             <columns>
                 <TableColumn fx:id="colIdEvenement" prefWidth="71.0" text="Id" />
                 <TableColumn fx:id="colTitreEvenement" prefWidth="107.0" text="Titre" />
@@ -154,6 +151,19 @@
         </Button>
         <HBox spacing="5" />
         <TextField fx:id="tf_search" layoutX="50.0" layoutY="51.0" prefHeight="39.0" prefWidth="382.0" promptText="Recherche" />
+        <VBox fx:id="adresse_b" layoutX="509.0" layoutY="422.0" prefHeight="278.0" prefWidth="558.0" />
+
+        <!--<Button fx:id="exportButton" layoutX="235.0" layoutY="551.0" mnemonicParsing="false" onAction="#exportToPdf" prefHeight="39.0" prefWidth="178.0" styleClass="myButton" text="Export to pdf">
+            <font>
+                <Font size="18.0" />
+            </font></Button>-->
+        <Button fx:id="statistiqueButton" layoutX="50.0" layoutY="551.0" mnemonicParsing="false" onAction="#showStatistics" prefHeight="39.0" prefWidth="178.0" styleClass="myButton" text="Statistique par ville">
+            <font>
+                <Font size="18.0" />
+            </font></Button>
+        <ImageView fx:id="imageView" fitWidth="200" preserveRatio="true" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10" />
+
+        <Pagination fx:id="pagination_b" layoutX="1067.0" layoutY="419.0" />
 
     </children>
 </AnchorPane>

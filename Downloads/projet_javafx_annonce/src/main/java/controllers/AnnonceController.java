@@ -520,7 +520,7 @@ public class AnnonceController {
 //        marker.setStrokeWidth(2);
 //        return marker;
 //    }
-private final MapPoint eiffelPoint = new MapPoint(48.8583701,2.2944813);
+private final MapPoint eiffelPoint = new MapPoint(36.806745,10.181392);
 
     private MapView createMapView(){
         MapView mapView = new MapView();
