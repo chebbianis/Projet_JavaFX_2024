@@ -158,7 +158,7 @@ public class AnnonceController {
     @FXML
     private Pagination pagination;
 
-    private int itemsPerPage = 14;
+    private int itemsPerPage = 11;
     @FXML
     private MapView mapView;
 
@@ -921,64 +921,75 @@ private final MapPoint eiffelPoint = new MapPoint(36.806745,10.181392);
 //    }
 @FXML
 private void exportToExcel(ActionEvent event) {
-    // Get the data from the TableView
-    ObservableList<Annonce> data = tvAnnonces.getItems();
+    String url = "jdbc:mysql://localhost:3306/tunvista";
+    String username = "root";
+    String password = "";
 
-    // Create a new workbook
-    Workbook workbook = new XSSFWorkbook();
-    Sheet sheet = workbook.createSheet("Annonce Data");
+    // SQL query to fetch annonce data
+    String query = "SELECT * FROM annonce";
 
-    // Create header row
-    Row headerRow = sheet.createRow(0);
-    headerRow.createCell(0).setCellValue("Id");
-    headerRow.createCell(1).setCellValue("Titre");
-    headerRow.createCell(2).setCellValue("Description");
-    headerRow.createCell(3).setCellValue("Ville");
-    headerRow.createCell(4).setCellValue("Date debut");
-    headerRow.createCell(5).setCellValue("NB jour");
-    headerRow.createCell(6).setCellValue("Date fin");
-    headerRow.createCell(7).setCellValue("User id");
-    headerRow.createCell(8).setCellValue("Lien maps");
+    try (Connection connection = DriverManager.getConnection(url, username, password);
+         Statement statement = connection.createStatement();
+         ResultSet resultSet = statement.executeQuery(query)) {
 
+        // Create a new workbook
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Annonce Data");
 
-    // Populate data rows
-    int rowNum = 1;
-    for (Annonce annonce : data) {
-        Row row = sheet.createRow(rowNum++);
-        row.createCell(0).setCellValue(annonce.getIdAnnonce());
-        row.createCell(1).setCellValue(annonce.getTitreA()); // Assuming 'Annee' is of type LocalDate
-        row.createCell(2).setCellValue(annonce.getDescriptionA());
-        row.createCell(3).setCellValue(annonce.getVilleA());
-        row.createCell(4).setCellValue(annonce.getDateDebut());
-        row.createCell(5).setCellValue(annonce.getNbJour());
-        row.createCell(6).setCellValue(annonce.getDateFin());
-        row.createCell(7).setCellValue(annonce.getUser());
-        row.createCell(8).setCellValue(annonce.getMapsLink());
-    }
+        // Create header row
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Id");
+        headerRow.createCell(1).setCellValue("Titre");
+        headerRow.createCell(2).setCellValue("Description");
+        headerRow.createCell(3).setCellValue("Ville");
+        headerRow.createCell(4).setCellValue("Date debut");
+        headerRow.createCell(5).setCellValue("NB jour");
+        headerRow.createCell(6).setCellValue("Date fin");
+        headerRow.createCell(7).setCellValue("User id");
+        headerRow.createCell(8).setCellValue("Lien maps");
 
-    // Choose file location
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Save Excel File");
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "C:/Users/alima/Downloads/Annonces.xlsx"));
-    File file = fileChooser.showSaveDialog(null);
-    if (file != null) {
-        // Write the workbook content to the chosen file
-        try (FileOutputStream fileOut = new FileOutputStream(file)) {
-            workbook.write(fileOut);
-            System.out.println("Excel file exported successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Populate data rows
+        int rowNum = 1;
+        while (resultSet.next()) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(resultSet.getInt("id_annonce"));
+            row.createCell(1).setCellValue(resultSet.getString("titre_a"));
+            row.createCell(2).setCellValue(resultSet.getString("description_a"));
+            row.createCell(3).setCellValue(resultSet.getString("ville_a"));
+            row.createCell(4).setCellValue(resultSet.getDate("date_debut"));
+            row.createCell(5).setCellValue(resultSet.getString("nb_jour"));
+            row.createCell(6).setCellValue(resultSet.getDate("date_fin"));
+            row.createCell(7).setCellValue(resultSet.getString("user_id"));
+            row.createCell(8).setCellValue(resultSet.getString("maps_link"));
         }
 
-        // Open the exported file
-        try {
-            Desktop.getDesktop().open(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+        // Choose file location
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Excel File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            // Write the workbook content to the chosen file
+            try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                workbook.write(fileOut);
+                System.out.println("Excel file exported successfully.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
+            // Open the exported file
+            try {
+                Desktop.getDesktop().open(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle database connection or query errors
+    }
 }
+
     @FXML
     private void showStatistics() {
         ObservableList<Annonce> annonces = tvAnnonces.getItems();

@@ -720,6 +720,7 @@ public class EvenementController {
 
             // Save the PDF document
             document.save(pdfFile);
+            Desktop.getDesktop().open(pdfFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
