@@ -13,18 +13,26 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.stage.StageStyle;
 import models.Evenement;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import services.EvenementService;
 
+import java.awt.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +42,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static javafx.scene.paint.Color.BLACK;
+import static javafx.scene.paint.Color.RED;
 
 public class EvenementController {
     @FXML
@@ -85,11 +96,16 @@ public class EvenementController {
     @FXML
     private Button exportButton_b;
     @FXML
+    private Button bn_pdf;
+    @FXML
     private MapView mapView_b;
 
     @FXML
     private Pagination pagination_b;
     private int itemsPerPage = 14;
+    @FXML
+    private Button exportPdfButton;
+
 
     private final EvenementService EvenementService = new EvenementService();
 
@@ -164,6 +180,16 @@ public class EvenementController {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+        });
+        bn_pdf.setOnAction(event -> {
+            List<Evenement> evenements = null;
+            try {
+                evenements = getEvenementList();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            String fileName = "C:\\Users\\alima\\Downloads\\Evenement.pdf";
+            generatePDF(evenements, fileName);
         });
 
     }
@@ -254,8 +280,8 @@ public class EvenementController {
         }
 
         private Shape createMarker() {
-            Circle marker = new Circle(10, Color.RED);
-            marker.setStroke(Color.BLACK);
+            Circle marker = new Circle(10, RED);
+            marker.setStroke(BLACK);
             marker.setStrokeWidth(2);
             return marker;
         }
@@ -574,6 +600,130 @@ public class EvenementController {
         ObservableList<Evenement> pageData = FXCollections.observableArrayList(getEvenementList().subList(fromIndex, toIndex));
         tvEvenements.setItems(pageData);
     }
+    private static String truncateText(String text, float width) throws IOException {
+        // If text width exceeds the specified width, truncate it
+        if (PDType1Font.HELVETICA.getStringWidth(text) / 1000 * 12 > width) {
+            // Calculate the maximum number of characters that can fit within the width
+            int maxChars = (int) (width * 1000 / 12) - 3; // Subtracting 3 for the ellipsis
+            if (maxChars <= 0) {
+                return "..."; // Width is too small to fit even an ellipsis
+            }
+            return text.substring(0, Math.min(text.length(), maxChars)) + "...";
+        }
+        return text; // Text fits within the width
+    }
+
+    private static void drawTableRow(PDPageContentStream contentStream, float y, float margin, float tableWidth, String[] rowContent, float[] columnWidths) {
+        try {
+            float rowHeight = 20;
+            contentStream.setFont(PDType1Font.HELVETICA, 10);
+
+            float nextX = margin;
+            float yPosition = y;
+
+            // Draw top border for the row
+            contentStream.moveTo(margin, yPosition);
+            contentStream.lineTo(margin + tableWidth, yPosition);
+            contentStream.stroke();
+
+            for (int i = 0; i < rowContent.length; i++) {
+                String text = rowContent[i];
+                float width = columnWidths[i];
+                float textWidth = PDType1Font.HELVETICA.getStringWidth(text) / 1000 * 10;
+
+                // Adjust text positioning based on column index
+                float xOffset = 5; // Padding
+                if (i == 0) {
+                    // Align text to the left for the first column
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(nextX + xOffset, yPosition - rowHeight / 2 + 5);
+                } else {
+                    // Center text horizontally within the column for other columns
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(nextX + xOffset + (width - textWidth) / 2, yPosition - rowHeight / 2 + 5);
+                }
+                contentStream.showText(text);
+                contentStream.endText();
+
+                // Draw right border for the column
+                contentStream.moveTo(nextX + width, yPosition);
+                contentStream.lineTo(nextX + width, yPosition - rowHeight);
+                contentStream.stroke();
+
+                nextX += width;
+            }
+
+            // Draw bottom border for the row
+            contentStream.moveTo(margin, yPosition - rowHeight);
+            contentStream.lineTo(margin + tableWidth, yPosition - rowHeight);
+            contentStream.stroke();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+    public static void generatePDF(List<Evenement> evenements, String outputPath) {
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage(PDRectangle.A4);
+            document.addPage(page);
+
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                contentStream.setNonStrokingColor(java.awt.Color.RED);
+                contentStream.beginText();
+                float titleWidth = PDType1Font.HELVETICA_BOLD.getStringWidth("Liste des evenements ") / 1000f * 16;
+                float titleHeight = PDType1Font.HELVETICA_BOLD.getFontDescriptor().getFontBoundingBox().getHeight() / 1000f * 16;
+                contentStream.newLineAtOffset((page.getMediaBox().getWidth() - titleWidth) / 2, page.getMediaBox().getHeight() - 30 - titleHeight);
+                contentStream.showText("Liste des evenements");
+                contentStream.endText();
+
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.setNonStrokingColor(Color.BLACK);
+
+                float margin = 50;
+                float yStart = page.getMediaBox().getHeight() - margin - 30 - titleHeight;
+                float tableWidth = page.getMediaBox().getWidth() - 2 * margin;
+                float yPosition = yStart;
+                float rowHeight = 20;
+
+                // Define column widths and headers
+                String[] headers = {"ID", "Titre", "Description", "Ville", "Date debut", "Nb jour", "Date fin"};
+                float[] columnWidths = {25, 100, 150, 50, 80, 40, 80}; // Adjust these values as needed
+
+                // Draw table headers
+                drawTableRow(contentStream, yPosition, margin, tableWidth, headers, columnWidths);
+                yPosition -= rowHeight;
+
+                // Draw table data
+                for (Evenement evenement : evenements) {
+                    String[] rowData = {
+                            evenement.getIdEvenement(),
+                            evenement.getTitreE(),
+                            evenement.getDescriptionE(),
+                            evenement.getVilleE(),
+                            evenement.getDateDebutE().toString(),
+                            evenement.getNbJourE(),
+                            evenement.getDateFinE(),
+
+                    };
+                    drawTableRow(contentStream, yPosition, margin, tableWidth, rowData, columnWidths);
+                    yPosition -= rowHeight;
+                }
+            }
+
+            // Save the PDF document
+            document.save(outputPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
 }

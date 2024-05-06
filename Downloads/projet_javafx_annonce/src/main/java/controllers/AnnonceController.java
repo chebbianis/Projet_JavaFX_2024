@@ -946,7 +946,7 @@ private void exportToExcel(ActionEvent event) {
     // Choose file location
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save Excel File");
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "C:/Users/user/Desktop/workshopPidev2324-sprintJava/voitures.xlsx"));
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "C:/Users/alima/Downloads/voitures.xlsx"));
     File file = fileChooser.showSaveDialog(null);
     if (file != null) {
         // Write the workbook content to the chosen file
