@@ -118,4 +118,7 @@ public class Annonce {
     public void setMapsLink(String maps_link) {
         this.maps_link = maps_link;
     }
+
+
+
 }

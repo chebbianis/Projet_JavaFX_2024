@@ -75,6 +75,8 @@ import java.util.stream.Collectors;
 
 
 
+
+
 public class AnnonceController {
     @FXML
     private Button btn_ajouter;
@@ -141,10 +143,6 @@ public class AnnonceController {
     private Button btn_generate_qr;
     @FXML
     private Button exportButton;
-    @FXML
-    private MapView mapView;
-    @FXML
-    private VBox qrCodeContainer;
     private final ObservableList<String> cities = FXCollections.observableArrayList();
     @FXML
     private TextArea inputTextArea;
@@ -161,6 +159,9 @@ public class AnnonceController {
     private Pagination pagination;
 
     private int itemsPerPage = 14;
+    @FXML
+    private MapView mapView;
+
 
 
 
@@ -223,7 +224,7 @@ public class AnnonceController {
                 handleAnnouncementClick(selectedAnnonce);
             }
         });
-        String imageUrl360 = "https://www.360cities.net/video/atm00841-lofoten-turquoise-waves-rolling-onto-arctic-beach-rm-4-md1-mp4"; // Replace this URL with the actual URL of your 360-degree image
+        String imageUrl360 = "https://www.google.com/maps/@latitude,longitude,fov=80,horizontal_angle=90,vertical_angle=0,tilt=0,pitch=0"; // Replace this URL with the actual URL of your 360-degree image
         webView360.getEngine().load(imageUrl360);
 
 
@@ -261,6 +262,11 @@ public class AnnonceController {
 
 
     }
+
+    public void afficherLocalisationSurMap(Annonce annonce) {
+        MapController mapController = new MapController();
+        mapController.afficherLocalisationSurMap(annonce, webView360);
+    }
     private void loadUserAndGenerateQR(String userId) {
         // Database connection parameters
         String url = "jdbc:mysql://localhost:3306/tunvista";
@@ -292,11 +298,13 @@ public class AnnonceController {
                             email, firstName, lastName, address, city);
 
                     // Generate QR code
-                    //generateQRCode(userInfo);
+                    generateQRCode(userInfo);
                 } else {
                     // User with the given ID does not exist
                     System.out.println("User not found");
                 }
+            } catch (WriterException e) {
+                throw new RuntimeException(e);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -309,9 +317,9 @@ public class AnnonceController {
 //    }
 
     private void displayQRCode(BufferedImage qrCodeImage) {
-        qrCodeContainer.getChildren().clear();
+        //qrCodeContainer.getChildren().clear();
         ImageView imageView = new ImageView(String.valueOf(qrCodeImage));
-        qrCodeContainer.getChildren().add(imageView);
+       // qrCodeContainer.getChildren().add(imageView);
     }
 
     // This method is called when an ad is clicked
@@ -422,6 +430,7 @@ public class AnnonceController {
             e.printStackTrace();
         }
     }
+
 
     private BufferedImage generateQRCode(String message) throws WriterException {
         int width = 300;
@@ -574,10 +583,9 @@ private final MapPoint eiffelPoint = new MapPoint(36.806745,10.181392);
         }
     }
 
-    @Deprecated
     private void handleAnnouncementClick(Annonce annonce) {
         String city = annonce.getVilleA();
-        String coordinates = getCoordinatesByCity(city);
+        afficherLocalisationSurMap(annonce);
 
         if (annonce != null) {
             tf_titre_a.setText(annonce.getTitreA());
@@ -588,18 +596,23 @@ private final MapPoint eiffelPoint = new MapPoint(36.806745,10.181392);
             tf_nb_jour_a.setText(annonce.getNbJour());
             tf_user_id.setText(annonce.getUser());
             tf_maps_link.setText(annonce.getMapsLink());
-        }
-        if (coordinates != null) {
-            String[] parts = coordinates.split(",");
-            double latitude = Double.parseDouble(parts[0]);
-            double longitude = Double.parseDouble(parts[1]);
-            mapView.setCenter(latitude, longitude);
+
+            // Set map center if coordinates are available
+            String coordinates = getCoordinatesByCity(city);
+            if (coordinates != null) {
+                String[] parts = coordinates.split(",");
+                double latitude = Double.parseDouble(parts[0]);
+                double longitude = Double.parseDouble(parts[1]);
+                mapView.setCenter(latitude, longitude);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Coordonnées introuvables",
+                        "Les coordonnées de la ville sélectionnée sont introuvables.");
+            }
         } else {
-            showAlert(Alert.AlertType.ERROR, "Coordonnées introuvables",
-                    "Les coordonnées de la ville sélectionnée sont introuvables.");
+            showAlert(Alert.AlertType.ERROR, "Annonce introuvable",
+                    "L'annonce sélectionnée est introuvable.");
         }
     }
-
 
 
 
@@ -946,7 +959,7 @@ private void exportToExcel(ActionEvent event) {
     // Choose file location
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save Excel File");
-    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "C:/Users/alima/Downloads/voitures.xlsx"));
+    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "C:/Users/alima/Downloads/Annonces.xlsx"));
     File file = fileChooser.showSaveDialog(null);
     if (file != null) {
         // Write the workbook content to the chosen file
@@ -1170,14 +1183,17 @@ private void exportToExcel(ActionEvent event) {
             ImageReader reader = readers.next();
             try {
                 reader.setInput(input);
-                bi = reader.read(0);
+
+                // Read the image with the specified settings
+                bi = reader.read(0, reader.getDefaultReadParam());
+
+                // You may want to perform further processing on the image here
             } finally {
                 reader.dispose();
             }
         } finally {
             input.close();
         }
-        // You can add further processing here if needed
         return bi;
     }
     public void loadImage(String imagePath) {
@@ -1200,6 +1216,11 @@ private void exportToExcel(ActionEvent event) {
         annonces.addAll(AnnonceService.afficher());
         return annonces;
     }
+
+
+
+
+
 
 
 

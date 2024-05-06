@@ -12,9 +12,9 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
@@ -32,6 +32,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import services.EvenementService;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -45,6 +46,7 @@ import java.util.stream.Collectors;
 
 import static javafx.scene.paint.Color.BLACK;
 import static javafx.scene.paint.Color.RED;
+
 
 public class EvenementController {
     @FXML
@@ -666,7 +668,8 @@ public class EvenementController {
 
 
 
-    public static void generatePDF(List<Evenement> evenements, String outputPath) {
+    public static File generatePDF(List<Evenement> evenements, String outputPath) {
+        File pdfFile = new File(outputPath);
         try (PDDocument document = new PDDocument()) {
             PDPage page = new PDPage(PDRectangle.A4);
             document.addPage(page);
@@ -716,10 +719,11 @@ public class EvenementController {
             }
 
             // Save the PDF document
-            document.save(outputPath);
+            document.save(pdfFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return pdfFile;
     }
 
 

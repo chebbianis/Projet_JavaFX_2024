@@ -155,7 +155,7 @@
 
          </children>
       </VBox>
-      <TableView fx:id="tvAnnonces" layoutX="452.0" layoutY="39.0" onMouseClicked="#onTableClick" prefHeight="381.0" prefWidth="1093.0">
+      <TableView fx:id="tvAnnonces" layoutX="452.0" layoutY="39.0" onMouseClicked="#onTableClick" prefHeight="310.0" prefWidth="1093.0">
          <columns>
             <TableColumn fx:id="colIdAnnonce" prefWidth="71.0" text="Id" />
             <TableColumn fx:id="colTitreAnnonce" prefWidth="107.0" text="Titre" />
@@ -186,15 +186,16 @@
       </Button>
       <HBox spacing="5" />
       <TextField fx:id="tf_search" layoutX="50.0" layoutY="51.0" prefHeight="39.0" prefWidth="382.0" promptText="Recherche" />
-      <VBox fx:id="adresse" layoutX="452.0" layoutY="427.0" prefHeight="289.0" prefWidth="426.0" />
-      <Button fx:id="btn_generate_qr" layoutX="868.0" layoutY="681.0" mnemonicParsing="false" onAction="#generateQRCode" prefHeight="39.0" prefWidth="207.0" text="Generate QR Code">
+      <VBox fx:id="adresse" layoutX="452.0" layoutY="357.0" prefHeight="359.0" prefWidth="322.0" />
+      <Button fx:id="btn_generate_qr" layoutX="775.0" layoutY="668.0" mnemonicParsing="false" onAction="#generateQRCode" prefHeight="39.0" prefWidth="207.0" text="Generate QR Code">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
 
+
       <!-- Add an ImageView to display the QR code -->
-      <ImageView fx:id="qrCodeImageView" fitHeight="215.0" fitWidth="207.0" layoutX="868.0" layoutY="463.0" />
+      <ImageView fx:id="qrCodeImageView" fitHeight="256.0" fitWidth="207.0" layoutX="775.0" layoutY="405.0" />
       <Button fx:id="exportButton" layoutX="230.0" layoutY="599.0" mnemonicParsing="false" onAction="#exportToExcel" prefHeight="39.0" prefWidth="178.0" styleClass="myButton" text="Export to Excel">
          <font>
             <Font size="18.0" />
@@ -205,10 +206,10 @@
          </font></Button>
       <Button onAction="#Confirmer" text="Confirmer" />
       <ImageView fx:id="webcamView" />
-      <WebView fx:id="webView360" layoutX="1338.0" layoutY="425.0" prefHeight="300.0" prefWidth="207.0" />
+      <WebView fx:id="webView360" layoutX="986.0" layoutY="355.0" prefHeight="370.0" prefWidth="553.0" />
       <ImageView fx:id="imageView" fitWidth="200" preserveRatio="true" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10" />
 
-      <Pagination fx:id="pagination" layoutX="895.0" layoutY="420.0" />
+      <Pagination fx:id="pagination" layoutX="775.0" layoutY="349.0" prefHeight="56.0" prefWidth="207.0" />
 
 
    </children>

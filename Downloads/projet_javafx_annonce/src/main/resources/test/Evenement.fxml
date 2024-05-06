@@ -151,9 +151,9 @@
         </Button>
         <HBox spacing="5" />
         <TextField fx:id="tf_search" layoutX="50.0" layoutY="51.0" prefHeight="39.0" prefWidth="382.0" promptText="Recherche" />
-        <VBox fx:id="adresse_b" layoutX="509.0" layoutY="422.0" prefHeight="278.0" prefWidth="558.0" />
+        <VBox fx:id="adresse_b" layoutX="509.0" layoutY="422.0" prefHeight="287.0" prefWidth="873.0" />
 
-        <Button fx:id="bn_pdf" layoutX="420.0" layoutY="551.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="178.0" styleClass="myButton" text="Exporter vers PDF">
+        <Button fx:id="bn_pdf" layoutX="234.0" layoutY="551.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="178.0" styleClass="myButton" text="Exporter vers PDF">
             <font>
                 <Font size="18.0" />
             </font>
@@ -165,7 +165,7 @@
             </font></Button>
         <ImageView fx:id="imageView" fitWidth="200" preserveRatio="true" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10" />
 
-        <Pagination fx:id="pagination_b" layoutX="1067.0" layoutY="419.0" />
+        <Pagination fx:id="pagination_b" layoutX="899.0" layoutY="-3.0" />
 
     </children>
 </AnchorPane>
