@@ -3,7 +3,6 @@ package com.example.pi.Controllers;
 import com.example.pi.DB.DBUtils;
 import com.example.pi.Entities.Region;
 import com.example.pi.Entities.User;
-import com.example.pi.Services.GeminiAPI;
 import com.example.pi.Services.UserSession;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,7 +12,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,11 +19,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
@@ -37,6 +33,8 @@ public class UserController implements Initializable {
 
     @FXML
     private Button btn_send;
+    @FXML
+    private Button btn_profil;
     @FXML
     private TableColumn<User, String> col_regionId;
     @FXML
@@ -92,6 +90,7 @@ public class UserController implements Initializable {
     @FXML
     private Button btn_sms;
 
+
     private final Image iconValid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/check.png")));
     private final Image iconInvalid = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/example/pi/icons/cross.png")));
 
@@ -105,6 +104,11 @@ public class UserController implements Initializable {
         addCharCountListener(tf_adresse,10);
         addCharCountListener(tf_ville,10);
         addCharCountListenerPassword(tf_password,-220);
+
+
+
+
+
 
         String userEmail = UserSession.getInstance().getEmail();
 
@@ -151,6 +155,12 @@ public class UserController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 DBUtils.changeScene(event,"/com/example/pi/send-sms.fxml","Send SMS",null);
+            }
+        });
+        btn_profil.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DBUtils.changeScene(event,"/com/example/pi/Profil.fxml","Profil",null);
             }
         });
 
@@ -223,30 +233,8 @@ public class UserController implements Initializable {
         });
 
         showUsers();
-
-//        try {
-//            testGetRequest();
-//            testPostRequest();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
-
-    private static void testGetRequest() throws IOException {
-        System.out.println("Testing GET Request...");
-        GeminiAPI geminiAPI = new GeminiAPI();
-        String response = geminiAPI.getRequest("/exampleEndpoint");
-        System.out.println("GET Response: " + response);
-    }
-
-    private static void testPostRequest() throws IOException {
-        System.out.println("\nTesting POST Request...");
-        GeminiAPI geminiAPI = new GeminiAPI();
-        String requestBody = "{\"key\":\"value\"}";
-        String postResponse = geminiAPI.postRequest("/exampleEndpoint", requestBody);
-        System.out.println("POST Response: " + postResponse);
-    }
 
     private void addSearchListener() {
         // Ajouter un écouteur de changement de texte au champ de recherche
@@ -254,11 +242,6 @@ public class UserController implements Initializable {
             // Appeler la méthode de recherche d'utilisateurs avec le nouveau texte saisi
             searchUsers(newValue);
         });
-    }
-    @FXML
-    private void handleSearch(ActionEvent event) {
-        String searchText = tf_search.getText();
-        searchUsers(searchText);
     }
 
 
@@ -612,8 +595,17 @@ public class UserController implements Initializable {
             String query = "UPDATE user SET ";
             boolean needComma = false;
             boolean roleUpdated = false;
-
-
+            // Vérifier si l'utilisateur a modifié son email et qu'il est déjà utilisé par un autre utilisateur
+            boolean emailAlreadyExists = false;
+            if (tf_email.getText() != null && !tf_email.getText().isEmpty() && !tf_email.getText().equals(selectedUser.getEmail())) {
+                emailAlreadyExists = userExistsWithEmail(tf_email.getText());
+                if (emailAlreadyExists) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Email already exists!");
+                    alert.show();
+                    return;
+                }
+            }
             if (tf_password.getText() != null && !tf_password.getText().isEmpty() && !tf_password.getText().equals(selectedUser.getPassword())) {
                 query += "password = ?";
                 needComma = true;

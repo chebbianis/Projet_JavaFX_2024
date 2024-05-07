@@ -2,6 +2,7 @@ package com.example.pi.DB;
 
 import com.example.pi.Controllers.EmailController;
 import com.example.pi.Entities.User;
+import com.example.pi.Services.GmailService;
 import com.example.pi.Services.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -100,7 +101,13 @@ public class DBUtils {
                 psInsert.setInt(7, regionId);
                 psInsert.setString(8, "[\"ROLE_USER\"]");
                 psInsert.executeUpdate();
+                String message = "Cher/Chere "+DBUtils.getFullNameFromEmail(email)+",\n" +
+                        "\n" +
+                        "Nous sommes ravis de vous accueillir sur Tunvista ! \uD83C\uDF89\n" +
+                        "\n" +
+                        "Votre inscription a ete prise en compte avec succes, et vous faites maintenant partie de notre communaute.";
 
+                GmailService.SendEmail(email, message, "Inscription Tunvista","");
                 System.out.println("Sign up done!");
                 UserSession.getInstance().setEmail(email);
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -109,6 +116,8 @@ public class DBUtils {
                 changeScene(event, "/com/example/pi/logged-in.fxml", "Welcome!", email);
             }
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
             // Fermer les ressources JDBC
@@ -188,4 +197,118 @@ public class DBUtils {
             }
         }
     }
- }
+    public static String getFullNameFromEmail(String email) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String fullName = "";
+
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tunvista_integration",
+                    "root",
+                    "mohamedomar"
+            );
+            preparedStatement = connection.prepareStatement("SELECT first_name, last_name FROM user WHERE email = ?");
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // Récupérer le prénom et le nom de l'utilisateur à partir du résultat de la requête
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                // Concaténer le prénom et le nom dans une seule chaîne de caractères
+                fullName = firstName + " " + lastName;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // Fermer les ressources JDBC
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return fullName;
+    }
+
+    public static User getUserByEmail(String email) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        User user = null;
+
+        try {
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/tunvista",
+                    "root",
+                    "mohamedomar"
+            );
+            preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE email = ?");
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                // Récupérer toutes les données de l'utilisateur à partir du résultat de la requête
+                int userId = resultSet.getInt("id");
+                String retrievedEmail = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String address = resultSet.getString("adresse");
+                String city = resultSet.getString("ville");
+                int regionId = resultSet.getInt("region_id");
+
+                // Créer une instance de User avec les données récupérées
+                user = new User(userId, retrievedEmail, password, firstName, lastName, address, city, regionId);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // Fermer les ressources JDBC
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return user;
+    }
+
+
+}

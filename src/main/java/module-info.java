@@ -11,6 +11,8 @@ module com.example.pi {
     requires org.bytedeco.opencv;
     requires org.bytedeco.javacv;
     requires twilio;
+    requires java.xml.crypto;
+
 
     opens com.example.pi to javafx.fxml;
     exports com.example.pi;

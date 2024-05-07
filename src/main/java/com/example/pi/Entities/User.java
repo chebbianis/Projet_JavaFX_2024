@@ -17,6 +17,9 @@ public class User {
     private String test;
     private Region region;
     private String regionName;
+    private int regionId;
+
+
 
 
     public String getRegionName() {
@@ -38,6 +41,16 @@ public class User {
     public User() {
     }
 
+    public User(int id, String email, String password, String firstName, String lastName, String address, String ville, int regionId) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.adresse = address;
+        this.ville = ville;
+        this.regionId=regionId;
+    }
     public User(int id, String email, String password, String firstName, String lastName, String adresse, String ville, String roles, Region region) {
         this.id = id;
         this.email = email;
